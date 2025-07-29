@@ -11,9 +11,10 @@ For example:
   Copy the entire application directory above into the following structure:
 
   HT32_STD_5xxxx_FWLib_Vm.n.r_vvvv\
-    ¢u¢w¢w application\
-    ¢u¢w¢w BestModules\
-    ¢u¢w¢w example\
-    ¢u¢w¢w library\
-    ¢u¢w¢w project_template\
-    ¢|¢w¢w utilities\
+    HT32_STD_5xxxx_FWLib_Vm.n.r_vvvv/
+      |- application/
+      |- BestModules/
+      |- example/
+      |- library/
+      |- project_template/
+      ¢|- utilities/
