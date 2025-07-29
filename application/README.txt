@@ -10,8 +10,7 @@ For example:
 
   Copy the entire application directory above into the following structure:
 
-  HT32_STD_5xxxx_FWLib_Vm.n.r_vvvv\
-    HT32_STD_5xxxx_FWLib_Vm.n.r_vvvv\
+    HT32_STD_Xxxxx_FWLib_Vm.n.r_vvvv\
       |- application\
       |- BestModules\
       |- example\
