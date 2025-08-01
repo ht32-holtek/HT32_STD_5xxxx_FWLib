@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_rtc.c
- * @version $Rev:: 7336         $
- * @date    $Date:: 2023-11-23 #$
+ * @version $Rev:: 9340         $
+ * @date    $Date:: 2025-07-25 #$
  * @brief   This file provides all the RTC firmware functions.
  *************************************************************************************************************
  * @attention
@@ -89,7 +89,7 @@ void RTC_ClockSourceConfig(RTC_SRC_Enum Source)
  ************************************************************************************************************/
 void RTC_LSILoadTrimData(void)
 {
-  u32 i = 4800;
+  vu32 i = 4800;
   u32 isRTCEnable = HT_CKCU->APBCCR1 & (1 << 6);
 
   HT_CKCU->APBCCR1 |= 1 << 6;

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_ckcu.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9340         $
+ * @date    $Date:: 2025-07-25 #$
  * @brief   This file provides all the Clock Control Unit firmware functions.
  *************************************************************************************************************
  * @attention
@@ -1070,7 +1070,8 @@ void CKCU_HSIAutoTrimCmd(ControlStatus Cmd)
 bool CKCU_HSIAutoTrimIsReady(void)
 {
 #if (LIBCFG_CKCU_AUTO_TRIM_LEGACY)
-  u32 lower_bound, upper_bound, i;
+  u32 lower_bound, upper_bound;
+  vu32 i;
   static u32 ATCR = 0;
 
   if ((HT_CKCU->HSICR & (3ul << 5)) == 0)

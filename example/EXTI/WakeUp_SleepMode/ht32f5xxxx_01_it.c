@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/WakeUp_SleepMode/ht32f5xxxx_01_it.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9299         $
+ * @date    $Date:: 2025-07-15 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -161,7 +161,7 @@ void EXTI4_9_IRQHandler(void)
 }
 #endif
 
-#if defined(USE_HT32F65233_DVB)
+#if defined(USE_HT32F65233_DVB) || defined(USE_HT32F66246_DVB)
 #define SPECIFIC_EXTI_IRQ_CH
 /*********************************************************************************************************//**
  * @brief   This function handles EXTI interrupt.

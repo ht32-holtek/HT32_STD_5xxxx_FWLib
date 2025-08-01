@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    QSPI/Flash_Quad_Mode_PDMA/ht32_board_config.h
- * @version $Rev:: 8284         $
- * @date    $Date:: 2024-11-22 #$
+ * @version $Rev:: 9343         $
+ * @date    $Date:: 2025-07-29 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -42,6 +42,16 @@
    3. Using extra jumper/wired may affect the maximum speed and quality of the signal. For communication interface
       such as SPI/EBI/..., it may be necessary to appropriately reduce the speed by AHB/APB clock prescaler settings.
 */
+
+#if defined(USE_HT32F61245_SK)
+/* !!! NOTICE !!!
+   For HT32F61245 Starter Kit: jumper connection to expansion board is required.
+   Due to this hardware configuration, the SPI clock speed must be reduced to ensure stable communication.
+   Therefore, in the SPI_FLASH_Init() function (inside spi_flash.c), the SPI clock prescaler
+   should be configured as 64.
+*/
+#else
+#endif
 
 #ifdef __cplusplus
 }

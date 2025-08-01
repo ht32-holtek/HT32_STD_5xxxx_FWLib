@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    BFTM/TimeMeasure/main.c
- * @version $Rev:: 8666         $
- * @date    $Date:: 2025-04-29 #$
+ * @version $Rev:: 9309         $
+ * @date    $Date:: 2025-07-17 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -125,8 +125,8 @@ void TimeMeasureFun(void)
     printf("\r\nTimer overflow, the uCount is invalid!\r\n"); // Timer overflow, the uCount is invalid
   }
   #endif
-  printf("\r\nMeasure 1 Count=%4u, T=%2.9f mS\r\n", uCount, ((float)uCount)/((float)SystemCoreClock/1000));
 
+  printf("\r\nMeasure 1 Count=%4u, T=%6lu nS\r\n", uCount, ((uCount*1000UL)/(SystemCoreClock/1000000UL)));
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Measure the LED API execution timing                                                                   */
@@ -137,8 +137,7 @@ void TimeMeasureFun(void)
   }
   MeasureEnd(uCount); // Time count based on the system clock, t = uCount/SystemCoreClock
 
-  printf("Measure 2 Count=%4u, T=%2.9f uS\r\n", uCount, ((float)uCount)/((float)SystemCoreClock/1000000));
-
+  printf("Measure 2 Count=%4u, T=%6lu nS\r\n", uCount, ((uCount*1000UL)/(SystemCoreClock/1000000UL)));
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Measure the division execution timing                                                                  */
@@ -151,8 +150,7 @@ void TimeMeasureFun(void)
   }
   MeasureEnd(uCount); // Time count based on the system clock, t = uCount/SystemCoreClock
 
-  printf("Measure 3 Count=%4u, T=%2.9f S, Quotient=%d\r\n", uCount, ((float)uCount)/SystemCoreClock, quo);
-
+  printf("Measure 3 Count=%4u, T=%6lu nS, Quotient=%d\r\n", uCount, ((uCount*1000UL)/(SystemCoreClock/1000000UL)), quo);
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Measure the instruction/function execution timing (may have the Flash Wait effect)                     */
@@ -163,8 +161,7 @@ void TimeMeasureFun(void)
   }
   MeasureEnd(uCount); // Time count based on the system clock, t = uCount/SystemCoreClock
 
-  printf("Measure 4 Count=%4u, T=%2.9f S\r\n", uCount, ((float)uCount)/SystemCoreClock);
-
+  printf("Measure 4 Count=%4u, T=%6lu nS\r\n", uCount, ((uCount*1000UL)/(SystemCoreClock/1000000UL)));
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Measure the instruction/function execution timing (may have the Flash Wait effect)                     */
@@ -175,7 +172,7 @@ void TimeMeasureFun(void)
   }
   MeasureEnd(uCount); // Time count based on the system clock, t = uCount/SystemCoreClock
 
-  printf("Measure 5 Count=%4u, T=%2.9f S\r\n", uCount, ((float)uCount)/SystemCoreClock);
+  printf("Measure 5 Count=%4u, T=%6lu nS\r\n", uCount, ((uCount*1000UL)/(SystemCoreClock/1000000UL)));
 
 }
 

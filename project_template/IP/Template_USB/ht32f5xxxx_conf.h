@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    IP/Example/ht32f5xxxx_conf.h
- * @version $Rev:: 8446         $
- * @date    $Date:: 2025-03-05 #$
+ * @version $Rev:: 9348         $
+ * @date    $Date:: 2025-07-29 #$
  * @brief   Library configuration file.
  *************************************************************************************************************
  * @attention
@@ -65,13 +65,33 @@
 #define RETARGET_PORT        10
 #define _AUTO_RETURN         0
 
+// <q> Use Standard C Library printf() Implementation of GNU Compiler
+//     <i> Replaces the lite printf() with the full-featured version.
+//     <i> Only meaningful when using GNU toolchains or HT32-IDE.
+//     <i> Significantly increases code size (around 3 KB to 16 KB depending on the setting).
+//     <i> !!! NOTICE !!! Standard C Library printf() require heap and stack memory. Please configure sufficient heap and stack memory in the "startup_ht32Xxxxxx_gcc_nn.s".
+//     <i> If you want to print the floating-point number by GNU Standard C Library printf()
+//     <i>  - GNU_ARM: set Linker option "-u _printf_float" 
+//     <i>  - HT32-IDE: turn on the "Use float with nano printf" option on Linker Miscellaneous
+#define PRINTF_USE_CLIB  0
+
+// <q> Use Standard C Library scanf() Implementation of GNU Compiler
+//     <i> Replaces the lite scanf() with the full-featured version.
+//     <i> Only meaningful when using GNU toolchains or HT32-IDE.
+//     <i> Significantly increases code size (around 5 KB to 25 KB depending on the setting).
+//     <i> !!! NOTICE !!! Standard C Library scanf() require heap and stack memory. Please configure sufficient heap and stack memory in the "startup_ht32Xxxxxx_gcc_nn.s".
+//     <i> If you want to scanf the floating-point number by GNU Standard C Library scanf()
+//     <i>  - GNU_ARM: set Linker option "-u _scanf_float" 
+//     <i>  - HT32-IDE: turn on the "Use float with nano scanf" option on Linker Miscellaneous
+#define SCANF_USE_CLIB  0
+
 #ifndef AUTO_RETURN
 #if (_AUTO_RETURN == 1)
 #define AUTO_RETURN
 #endif
 #endif
 
-/* Enable Interrupt Mode for UxART Retarget
+/* Configuration for Retargeting COM/UxART (baudrate, clock source, interrupt mode, ...etc.)
 // <h> Retarget COM/UxART Setting
 //  <o0> UxART Baudrate
 //  <o1> -- UxART IP Clock Setting (CK_UxART)

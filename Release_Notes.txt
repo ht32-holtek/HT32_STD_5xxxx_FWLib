@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Release_Notes.txt
- * @version V1.17.2
- * @date    2025-07-10
+ * @version V1.17.3
+ * @date    2025-07-30
  * @brief   The Release notes of HT32 Firmware Library.
  *************************************************************************************************************
  * @attention
@@ -85,6 +85,38 @@
 //   NW32F61242
 //   HT32F62143, HT50F32023
 //   HT32F59740, HT32F59750
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* HT32_STD_5xxxx_FWLib_V1.17.3_9354                                                                        */
+/*----------------------------------------------------------------------------------------------------------*/
+  Release Date: 2025-07-30
+  Main Changes
+  + Add volatile qualifier to some variables to fix the GNU Compiler optimization issue.
+    - "example/FMC/FLASH_Program/main.c" (change "u32" to "vu32", in the if-condition usage)
+    - "library/HT32F5xxxx_Driver/src/ht32f5xxxx_ckcu.c"
+    - "library/HT32F5xxxx_Driver/src/ht32f5xxxx_pwrcu.c"
+    - "library/HT32F5xxxx_Driver/src/ht32f5xxxx_rtc.c"
+    - "library/HT32F5xxxx_Driver/src/ht32f5xxxx_usbd.c"
+  + Add "PRINTF_USE_CLIB" and "SCANF_USE_CLIB" options in "ht32f5xxxx_conf.h" to switch between lite printf/scanf
+    and C library printf/scanf (default: lite printf/scanf).
+  + Add lite scanf() function in syscalls.c with support for %d and %x formats.
+  + Fix printf() issue:
+    - Unsupported format specifiers (e.g., "%f") could cause a hard fault by modifying the behavior to
+      enter an infinite loop instead.
+    - Resize the buffer used for storing numbers to prevent memory overflow.
+  + Modify "BFTM/TimeMeasure" example to avoid using printf("%f") and display time in nS because lite printf
+    does NOT support "%f".
+  + Modify "EXTI/WakeUp_SleepMode" interrupt trigger for "HT32F66246".
+  + Update "spi_flash.h" to refine "QSPI SIO2/SIO3 config pin" check logic.
+
+  Others
+  + Update comment, format, typing error, and coding style.
+  + Modify "_CreateProjectScript.bat":
+    - Disable DELAYEDEXPANSION before calling "_ProjectConfig.bat".
+    - Add script for creating non-standard HT32-IDE projects.
+  + Update and sync create project related files ("_ProjectConfig.bat", "_ProjectConfig.ini").
+  + Add LICENSE.md license declaration.
+  + Add "README.txt" to introduce the empty Application and BestModule directories.
 
 /*----------------------------------------------------------------------------------------------------------*/
 /* HT32_STD_5xxxx_FWLib_V1.17.2_9296                                                                        */

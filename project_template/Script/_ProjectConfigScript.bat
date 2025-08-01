@@ -1,8 +1,8 @@
 REM @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _ProjectConfigScript.bat
-REM * @version $Rev:: 9072         $
-REM * @date    $Date:: 2025-06-16 #$
+REM * @version $Rev:: 9344         $
+REM * @date    $Date:: 2025-07-29 #$
 REM * @brief   Delete unsupport project related files.
 REM *************************************************************************************************************
 REM * @attention
@@ -100,6 +100,16 @@ FOR /F "tokens=1,2,3,4 delims=," %%i IN (%IC_NAME_FILE%) DO (
 )
 
 :NO_PROJ_CONFIG_INI_FILE
+REM ---------------------------------------------------------------------------------------
+REM Check if the HT32-IDE F12366 project file exists before copying and updating to F22366
+REM ---------------------------------------------------------------------------------------
+IF EXIST "HT32-IDE\Project_12366\.cproject" (
+    xcopy HT32-IDE\Project_12366 HT32-IDE\Project_22366 /E /I /H >nul 2>&1
+    gsar.exe -s"<option id=:x22cmsis.device.name:x22 value=:x22HT32F12366:x22/>" -r"<option id=:x22cmsis.device.name:x22 value=:x22HT32F22366:x22/>" "HT32-IDE\Project_22366\.cproject" -o >nul 2>&1
+    gsar.exe -s"12366</name>" -r"22366</name>" "HT32-IDE\Project_22366\.project" -o >nul 2>&1
+    gsar.exe -s"<option id=:x22cmsis.device.name:x22 value=:x22HT32F12366:x22/>" -r"<option id=:x22cmsis.device.name:x22 value=:x22HT32F22366:x22/>" "HT32-IDE\Project_22366\original.cproject" -o >nul 2>&1
+    gsar.exe -s"12366</name>" -r"22366</name>" "HT32-IDE\Project_22366\original.project" -o >nul 2>&1
+)
 GOTO :EOF
 
 :DELPROJ

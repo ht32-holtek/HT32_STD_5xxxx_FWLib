@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_pwrcu.c
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9340         $
+ * @date    $Date:: 2025-07-25 #$
  * @brief   This file provides all the Power Control Unit firmware functions.
  *************************************************************************************************************
  * @attention
@@ -406,7 +406,7 @@ void PWRCU_PowerDown(void)
     static u8 isLSITrimLoaded = FALSE;
     if (isLSITrimLoaded == FALSE)
     {
-      u32 i = 4800;
+      vu32 i = 4800;
       isLSITrimLoaded = TRUE;
       HT_RTC->CR &= ~(1UL << 2);
       /* Insert a delay must > 1 CK_RTC                                                                     */
@@ -434,7 +434,7 @@ void PWRCU_PowerDown(void)
   __WFE();
 
   {
-    u32 X = (16 * 250);
+    vu32 X = (16 * 250);
     while (X--);
   }
 

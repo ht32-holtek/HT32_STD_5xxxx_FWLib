@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    printf.c
- * @version $Rev:: 93           $
- * @date    $Date:: 2015-11-24 #$
+ * @version $Rev:: 9333         $
+ * @date    $Date:: 2025-07-25 #$
  * @brief   Print functions.
  *************************************************************************************************************
  * @attention
@@ -38,7 +38,7 @@
   * @{
   */
 
-
+#if (PRINTF_USE_CLIB == 0)
 /* Private macro -------------------------------------------------------------------------------------------*/
 /** @defgroup PRINTF_Private_Macro printf private macros
   * @{
@@ -220,8 +220,15 @@ static const char *FormatItem(const char *f, int a)
         }
         default:
         {
-          radix = 3;
-          break;
+          #if (HT32_LIB_LITE == 0)
+          /* !!! NOTICE !!!
+             Unexpected format specifier encountered.
+             Entering infinite loop for debugging purposes.
+          */
+          while(1)
+          {
+          }
+          #endif
         }
       }
     }
@@ -298,7 +305,7 @@ static int PutStringReverse(const char *pString, int index)
  ************************************************************************************************************/
 static void PutNumber(int value, int radix, int width, char fill)
 {
-  char buffer[8];
+  char buffer[11];
   int bi = 0;
   unsigned int uvalue;
   unsigned short digit;
@@ -335,6 +342,12 @@ static void PutNumber(int value, int radix, int width, char fill)
 
   do
   {
+    #if (HT32_LIB_LITE == 0)
+    if (bi >= sizeof(buffer)) {
+      break;
+    }
+    #endif
+
     if (radix != 16)
     {
       digit = uvalue % radix;
@@ -376,6 +389,8 @@ static void PutNumber(int value, int radix, int width, char fill)
     }
   }
 }
+#endif
+
 /**
   * @}
   */

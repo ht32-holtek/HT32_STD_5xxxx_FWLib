@@ -112,8 +112,8 @@ gsar.exe -s"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a       
 gsar.exe -s"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a            <RunUserProg2>0</RunUserProg2>" -r"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a            <RunUserProg2>1</RunUserProg2>" MDK_ARMv5\Project_*.uvprojx -o
 gsar.exe -s"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a            <RunUserProg2>0</RunUserProg2>" -r"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a            <RunUserProg2>1</RunUserProg2>" MDK_ARMv537\Project_*.uvprojx -o
 
-gsar.exe -s"<UserProg2Name>fromelf --text -c -o \"!L.text\" \"!L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARM\Project_*.uvproj -o
-gsar.exe -s"<UserProg2Name>fromelf --text -c -o \"!L.text\" \"!L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARMv5\Project_*.uvprojx -o
-gsar.exe -s"<UserProg2Name>fromelf --text -c -o \"!L.text\" \"!L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARMv537\Project_*.uvprojx -o
+gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARM\Project_*.uvproj -o
+gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARMv5\Project_*.uvprojx -o
+gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARMv537\Project_*.uvprojx -o
 
 gsar.exe -s"REM ADD_YOUR_CODE_HERE" -r"REM ADD_YOUR_CODE_HERE:x0d:x0a..\..\..\_Tools\srec_make_combo.bat :x25VAR_MODE:x25 :x25VAR_OUTPUT_NAME:x25 :x25VAR_IC_NAME:x25 :x25VAR_KEIL_PATH:x25" HT32-IDE\afterbuild.bat -o

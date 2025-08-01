@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    spi_flash.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9307         $
+ * @date    $Date:: 2025-07-17 #$
  * @brief   This file provides a set of functions needed to manage the
  *          communication between SPI peripheral and SPI MX25L1606E FLASH.
  *************************************************************************************************************
@@ -84,13 +84,11 @@ u32 SPI_FLASH_Init(void)
   HT32F_DVB_GPxConfig(FLASH_SPI_SCK_GPIO_ID, FLASH_SPI_SCK_AFIO_PIN, FLASH_SPI_SCK_AFIO_MODE);
   HT32F_DVB_GPxConfig(FLASH_SPI_MISO_GPIO_ID, FLASH_SPI_MISO_AFIO_PIN, FLASH_SPI_MISO_AFIO_MODE);
   HT32F_DVB_GPxConfig(FLASH_SPI_MOSI_GPIO_ID, FLASH_SPI_MOSI_AFIO_PIN, FLASH_SPI_MOSI_AFIO_MODE);
-  #if defined(USE_HT32F52367_SK) || defined(USE_HT32F0006)
-  #if defined(USE_HT32F61355_56_57)
-  #else
+  #if defined(FLASH_SPI_SIO2_GPIO_ID) && defined(FLASH_SPI_SIO2_AFIO_PIN) && defined(FLASH_SPI_SIO2_AFIO_MODE) && \
+      defined(FLASH_SPI_SIO3_GPIO_ID) && defined(FLASH_SPI_SIO3_AFIO_PIN) && defined(FLASH_SPI_SIO3_AFIO_MODE)
   /*  Configure QSPI SIO2 pin, QSPI SIO3 pin                                                                */
   HT32F_DVB_GPxConfig(FLASH_SPI_SIO2_GPIO_ID, FLASH_SPI_SIO2_AFIO_PIN, FLASH_SPI_SIO2_AFIO_MODE);
   HT32F_DVB_GPxConfig(FLASH_SPI_SIO3_GPIO_ID, FLASH_SPI_SIO3_AFIO_PIN, FLASH_SPI_SIO3_AFIO_MODE);
-  #endif
   #endif
 
   /*  SPI Configuration                                                                                     */

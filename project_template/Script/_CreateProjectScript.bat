@@ -1,8 +1,8 @@
 rem @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _CreateProjectScript.bat
-REM * @version $Rev:: 9171         $
-REM * @date    $Date:: 2025-06-23 #$
+REM * @version $Rev:: 9308         $
+REM * @date    $Date:: 2025-07-17 #$
 REM * @brief   Create Project Script.
 REM *************************************************************************************************************
 REM * @attention
@@ -313,6 +313,7 @@ IF EXIST _ProjectConfigM0pl.bat GOTO PROJECT_CONFIG
 GOTO CREATE_PROJECT_END
 
 :PROJECT_CONFIG
+SETLOCAL DISABLEDELAYEDEXPANSION
 IF EXIST MDK_ARM\HT32F5xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0P
 IF EXIST MDK_ARMv5\HT32F5xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0P
 IF EXIST MDK_ARMv537\HT32F5xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0P
@@ -430,26 +431,26 @@ REM  ===========================================================================
 IF %HT_CHANGE_STACK_HEAP%==1 GOTO MemSET
 GOTO MemSET_End
 :MemSET
-gsar.exe -s"Stack_Size          EQU     512" -r"Stack_Size          EQU     %HT_STACK_SIZE%" MDK_ARM\startup_ht32f*.s -o 1> nul 2>&1
-gsar.exe -s"Stack_Size          EQU     512" -r"Stack_Size          EQU     %HT_STACK_SIZE%" MDK_ARMv5\startup_ht32f*.s -o 1> nul 2>&1
-gsar.exe -s"Stack_Size          EQU     512" -r"Stack_Size          EQU     %HT_STACK_SIZE%" MDK_ARMv537\startup_ht32f*.s -o 1> nul 2>&1
-gsar.exe -s"Heap_Size           EQU     0"   -r"Heap_Size           EQU     %HT_HEAP_SIZE%"  MDK_ARM\startup_ht32f*.s -o 1> nul 2>&1
-gsar.exe -s"Heap_Size           EQU     0"   -r"Heap_Size           EQU     %HT_HEAP_SIZE%"  MDK_ARMv5\startup_ht32f*.s -o 1> nul 2>&1
-gsar.exe -s"Heap_Size           EQU     0"   -r"Heap_Size           EQU     %HT_HEAP_SIZE%"  MDK_ARMv537\startup_ht32f*.s -o 1> nul 2>&1
+gsar.exe -s"Stack_Size          EQU     512" -r"Stack_Size          EQU     %HT_STACK_SIZE%" MDK_ARM\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s"Stack_Size          EQU     512" -r"Stack_Size          EQU     %HT_STACK_SIZE%" MDK_ARMv5\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s"Stack_Size          EQU     512" -r"Stack_Size          EQU     %HT_STACK_SIZE%" MDK_ARMv537\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s"Heap_Size           EQU     0"   -r"Heap_Size           EQU     %HT_HEAP_SIZE%"  MDK_ARM\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s"Heap_Size           EQU     0"   -r"Heap_Size           EQU     %HT_HEAP_SIZE%"  MDK_ARMv5\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s"Heap_Size           EQU     0"   -r"Heap_Size           EQU     %HT_HEAP_SIZE%"  MDK_ARMv537\startup_ht32*.s -o 1> nul 2>&1
 
 gsar.exe -s"define symbol __ICFEDIT_size_cstack__ = 0x200;" -r"define symbol __ICFEDIT_size_cstack__ = %HT_STACK_SIZE%;" EWARM\linker.icf -o 1> nul 2>&1
 gsar.exe -s"define symbol __ICFEDIT_size_cstack__ = 0x200;" -r"define symbol __ICFEDIT_size_cstack__ = %HT_STACK_SIZE%;" EWARMv8\linker.icf -o 1> nul 2>&1
 gsar.exe -s"define symbol __ICFEDIT_size_heap__   = 0x0;" -r"define symbol __ICFEDIT_size_heap__   = %HT_HEAP_SIZE%;" EWARM\linker.icf -o 1> nul 2>&1
 gsar.exe -s"define symbol __ICFEDIT_size_heap__   = 0x0;" -r"define symbol __ICFEDIT_size_heap__   = %HT_HEAP_SIZE%;" EWARMv8\linker.icf -o 1> nul 2>&1
 
-gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    GNU_ARM\startup_ht32f*.s -o 1> nul 2>&1
-gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      GNU_ARM\startup_ht32f*.s -o 1> nul 2>&1
+gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    GNU_ARM\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      GNU_ARM\startup_ht32*.s -o 1> nul 2>&1
 
-gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    HT32-IDE\GNU_ARM\startup_ht32f*.s -o 1> nul 2>&1
-gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      HT32-IDE\GNU_ARM\startup_ht32f*.s -o 1> nul 2>&1
+gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    HT32-IDE\GNU_ARM\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      HT32-IDE\GNU_ARM\startup_ht32*.s -o 1> nul 2>&1
 
-gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    SourceryG++Lite\startup_ht32f*.s -o 1> nul 2>&1
-gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      SourceryG++Lite\startup_ht32f*.s -o 1> nul 2>&1
+gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    SourceryG++Lite\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      SourceryG++Lite\startup_ht32*.s -o 1> nul 2>&1
 
 gsar.exe -s"arm_linker_stack_size=:x22512:x22" -r"arm_linker_stack_size=:x22%HT_STACK_SIZE%:x22"    emStudiov4\Project_*.emProject -o 1> nul 2>&1
 gsar.exe -s"arm_linker_heap_size=:x220:x22" -r"arm_linker_heap_size=:x22%HT_HEAP_SIZE%:x22"    emStudiov4\Project_*.emProject -o 1> nul 2>&1
