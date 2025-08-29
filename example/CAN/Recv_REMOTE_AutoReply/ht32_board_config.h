@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
- * @file    CAN/Recv_REMOTE/ht32_board_config.h
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @file    CAN/Recv_REMOTE_AutoReply/ht32_board_config.h
+ * @version $Rev:: 9382         $
+ * @date    $Date:: 2025-08-15 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention

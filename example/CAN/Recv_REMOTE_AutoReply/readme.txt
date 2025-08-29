@@ -1,8 +1,8 @@
 /**
- @page CAN_Recv_REMOTE
+ @page CAN_Recv_REMOTE_AutoReply
 
  @verbatim
- * @file    CAN/Recv_REMOTE/main.c
+ * @file    CAN/Recv_REMOTE_AutoReply/main.c
  * @version V1.00
  * @date    2024-08-13
  * @brief   This example describes how to receive CAN remote frames and prepare data for transmission.
@@ -11,7 +11,8 @@
 @par Example Description:
 
 This example describes how to configure and use the CAN interface to receive remote frames from a
-CAN bus. The example returns data frames upon receiving remote frames from two specific CAN IDs.
+CAN bus. The example automatically transmits CAN message data when a remote frame with either of
+the two specific CAN IDs is received.
 The following CAN receive IDs are used in this example:
   - CAN ID    0x540 (Standard ID), FIFO depth 1 (1 * 8 = 8 byte).
   - CAN ID 0x540540 (Extended ID), FIFO depth 1 (1 * 8 = 8 byte).
@@ -21,10 +22,10 @@ character is used to fill the CAN message data, demonstrating real-time CAN mess
 
 @par Directory Contents:
 
-- CAN/Recv_REMOTE/main.c               Main program
-- CAN/Recv_REMOTE/ht32fxxxxx_nn_it.c   Interrupt handlers
-- CAN/Recv_REMOTE/ht32_board_config.h  Board configuration file
-- CAN/Recv_REMOTE/ht32_can_config.h    CAN configuration file
+- CAN/Recv_REMOTE_AutoReply/main.c               Main program
+- CAN/Recv_REMOTE_AutoReply/ht32fxxxxx_nn_it.c   Interrupt handlers
+- CAN/Recv_REMOTE_AutoReply/ht32_board_config.h  Board configuration file
+- CAN/Recv_REMOTE_AutoReply/ht32_can_config.h    CAN configuration file
 
 @par Hardware and Software Environment:
 

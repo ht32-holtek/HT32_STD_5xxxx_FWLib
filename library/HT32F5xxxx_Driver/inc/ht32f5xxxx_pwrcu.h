@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_pwrcu.h
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9355         $
+ * @date    $Date:: 2025-08-06 #$
  * @brief   The header file of the Power Control Unit library.
  *************************************************************************************************************
  * @attention
@@ -51,10 +51,6 @@
   */
 
 /**
- * @brief Status of Power control unit
- */
-
-/**
  * @brief Wakeup pin selection
  */
 typedef enum
@@ -77,6 +73,10 @@ typedef enum
   PWRCU_WUP_LOW_LEVEL,              /*!< Wakeup pin low-level sensitive                                     */
 } PWRCU_WUPTYPE_Enum;
 #endif
+
+/**
+ * @brief Status of Power control unit
+ */
 typedef enum
 {
   PWRCU_OK = 0,                     /*!< Ready for access or VDD power domain power-on reset is released    */

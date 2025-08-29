@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Release_Notes.txt
- * @version V1.17.3
- * @date    2025-07-30
+ * @version V1.18.1
+ * @date    2025-08-29
  * @brief   The Release notes of HT32 Firmware Library.
  *************************************************************************************************************
  * @attention
@@ -85,6 +85,27 @@
 //   NW32F61242
 //   HT32F62143, HT50F32023
 //   HT32F59740, HT32F59750
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* HT32_STD_5xxxx_FWLib_V1.18.1_9404                                                                        */
+/*----------------------------------------------------------------------------------------------------------*/
+  Release Date: 2025-08-29
+  Main Changes
+  + Add the following API for CAN.
+    - "CAN_RemoteFrameAutoReplyCmd()"
+  + Update CAN example, rename and add an auto-reply feature.
+    - "Recv_REMOTE" to "Recv_REMOTE_AutoReply"
+  + Remove CAN legacy example.
+    - "CAN_Legacy/FIFO"
+  + Update CAN driver with message RAM initialization and improved logic for better reliability and maintainability.
+  + Update "syscalls.c" as below.
+    - Modify "_sbrk()" to add heap size checks and overflow protection for safer memory allocation.
+    - Modify "scanf()" integer limit macros by prefixing them with "HT_" for clearer naming and improved type safety.
+
+  Others
+  + Update comment, format, typing error, and coding style.
+  + Update LICENSE.md license declaration.
+  + Update "Tips/Checksum_CRC16/_Tools/srec_make_combo.bat" to copy output files to TOOL_PATH instead of IN_FULL_PATH.
 
 /*----------------------------------------------------------------------------------------------------------*/
 /* HT32_STD_5xxxx_FWLib_V1.17.3_9354                                                                        */

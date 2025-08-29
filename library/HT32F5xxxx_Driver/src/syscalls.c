@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    syscalls.c
- * @version $Rev:: 9354         $
- * @date    $Date:: 2025-07-30 #$
+ * @version $Rev:: 9391         $
+ * @date    $Date:: 2025-08-21 #$
  * @brief   Implementation of system call related functions.
  *************************************************************************************************************
  * @attention
@@ -28,10 +28,11 @@
 /* Includes ------------------------------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdarg.h>
+#include <errno.h>
 #include <stdbool.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "ht32f5xxxx_conf.h"
+#include "ht32.h"
 
 /** @addtogroup HT32_Peripheral_Driver HT32 Peripheral Driver
   * @{
@@ -50,6 +51,7 @@
 #undef errno
 extern int errno;
 extern int  _end;
+extern int __HeapLimit;
 /**
   * @}
   */
@@ -58,10 +60,10 @@ extern int  _end;
 /** @defgroup SCANF_Private_Macro scanf private macros
   * @{
   */
-#define INT32_MAX      (2147483647)
-#define INT32_MIN      (-2147483648)
-#define ABS_INT32_MIN  (INT32_MAX + 1U)
-#define UINT32_MAX     (0xFFFFFFFF)
+#define HT_INT32_MAX      ((int32_t)  2147483647)
+#define HT_INT32_MIN      ((int32_t) -2147483648)
+#define HT_ABS_INT32_MIN  (HT_INT32_MAX + 1U)
+#define HT_UINT32_MAX     ((uint32_t) 0xFFFFFFFF)
 /**
   * @}
   */
@@ -74,11 +76,30 @@ caddr_t _sbrk(int incr)
 {
   static unsigned char *heap = NULL;
   unsigned char *prev_heap;
+  unsigned char *max_heap = (unsigned char *)&__HeapLimit;
+
+  #if (HT32_LIB_LITE == 0)
+  if (&_end == &__HeapLimit)
+  {
+    /* !!! NOTICE !!!
+       Your code uses heap memory, but the heap size is zero.
+       Please check the heap memory size setting in the startup_ht32xxxxxx_gcc_nn.s
+    */
+    while (1){};
+  }
+  #endif
 
   if (heap == NULL)
   {
     heap = (unsigned char *)&_end;
   }
+
+  if (heap + incr > max_heap)
+  {
+    errno = ENOMEM;
+    return (caddr_t)-1;
+  }
+
   prev_heap = heap;
 
   heap += incr;
@@ -212,8 +233,8 @@ signed int scanf(const char *f, ...)
 
           #if (HT32_LIB_LITE == 0)
           // Check overflow
-          if (((neg == false) && ((uint32_t)val > (INT32_MAX - digit) / 10)) || \
-              ((neg == true)  && ((uint32_t)val > (ABS_INT32_MIN - digit) / 10)))
+          if (((neg == false) && ((uint32_t)val > (HT_INT32_MAX - digit) / 10)) || \
+              ((neg == true)  && ((uint32_t)val > (HT_ABS_INT32_MIN - digit) / 10)))
           {
             overflow = true;
           }
@@ -229,8 +250,8 @@ signed int scanf(const char *f, ...)
         #if (HT32_LIB_LITE == 0)
         if (overflow)
         {
-          if (neg) val = INT32_MIN;
-          else val = INT32_MAX;
+          if (neg) val = HT_INT32_MIN;
+          else val = HT_INT32_MAX;
         }
         else
         #endif
@@ -279,7 +300,7 @@ signed int scanf(const char *f, ...)
 
           #if (HT32_LIB_LITE == 0)
           // Check overflow
-          if (val > (UINT32_MAX - digit) / 16)
+          if (val > (HT_UINT32_MAX - digit) / 16)
           {
             overflow = true;
           }
@@ -293,7 +314,7 @@ signed int scanf(const char *f, ...)
         }
 
         #if (HT32_LIB_LITE == 0)
-        if (overflow) val = UINT32_MAX;
+        if (overflow) val = HT_UINT32_MAX;
         #endif
 
         unsigned int *uint_ptr = va_arg(args, unsigned int *);

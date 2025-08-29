@@ -34,8 +34,8 @@
 #endif
 
 /* Settings ------------------------------------------------------------------------------------------------*/
-#define HT32_FWLIB_VER                  (0x01017003)
-#define HT32_FWLIB_SVN                  (0x9354)
+#define HT32_FWLIB_VER                  (0x01018001)
+#define HT32_FWLIB_SVN                  (0x9404)
 
 #if defined(USE_HT32F52220_30)
   #include "ht32f52220_30_libcfg.h"

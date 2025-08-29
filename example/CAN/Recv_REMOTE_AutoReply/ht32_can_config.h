@@ -1,5 +1,5 @@
 /*********************************************************************************************************//**
- * @file    CAN/Recv_REMOTE/ht32_can_config.h
+ * @file    CAN/Recv_REMOTE_AutoReply/ht32_can_config.h
  * Source:  project_template/IP/Example/ht32_can_config.h
  * @version $Rev:: 9287         $
  * @date    $Date:: 2025-07-02 #$

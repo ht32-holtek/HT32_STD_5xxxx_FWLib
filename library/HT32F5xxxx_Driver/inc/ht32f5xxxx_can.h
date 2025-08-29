@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_can.h
- * @version $Rev:: 8959         $
- * @date    $Date:: 2025-05-29 #$
+ * @version $Rev:: 9384         $
+ * @date    $Date:: 2025-08-15 #$
  * @brief   The header file of the CAN library.
  *************************************************************************************************************
  * @attention
@@ -138,7 +138,6 @@ typedef struct
 #define CAN_STD_FRAME_Msk           0x7FF
 #define CAN_EXT_FRAME_MSB_Msk       0x1FFF
 #define CAN_EXT_FRAME_LSB_Msk       0xFFFF
-
 
 #define CAN_MODE_NORMAL             0
 #define MSG_OBJ_TOTAL_NUM           32
@@ -289,7 +288,7 @@ typedef struct
  * @brief CAN IFn_MASK0 Bit Field Definitions
  */
 #define CAN_IF_MASK0_MSK_Pos       0                                    /*!< CAN_T::IFnMASK0: MSK Position  */
-#define CAN_IF_MASK0_MSK_Msk       (0xFFul << CAN_IF_MASK0_MSK_Pos)     /*!< CAN_T::IFnMASK0: MSK Mask      */
+#define CAN_IF_MASK0_MSK_Msk       (0xFFFFul << CAN_IF_MASK0_MSK_Pos)   /*!< CAN_T::IFnMASK0: MSK Mask      */
 
 /**
  * @brief CAN IFn_MASK1 Bit Field Definitions
@@ -301,7 +300,7 @@ typedef struct
 #define CAN_IF_MASK1_MDIR          (1ul << CAN_IF_MASK1_MDIR_Pos)       /*!< CAN_T::IFnMASK1: MDIR          */
 
 #define CAN_IF_MASK1_MSK_Pos       0                                    /*!< CAN_T::IFnMASK1: MSK Position  */
-#define CAN_IF_MASK1_MSK_Msk       (0x1FFul << CAN_IF_MASK1_MSK_Pos)    /*!< CAN_T::IFnMASK1: MSK Mask      */
+#define CAN_IF_MASK1_MSK_Msk       (0x1FFFul << CAN_IF_MASK1_MSK_Pos)   /*!< CAN_T::IFnMASK1: MSK Mask      */
 
 /**
  * @brief CAN IFn_ARB0 Bit Field Definitions
@@ -478,6 +477,7 @@ ErrStatus CAN_TriggerTxMsg(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg);
 
 /* Set Rx Message Object ************************************************************************************/
 ErrStatus CAN_SetRxMsg(HT_CAN_TypeDef *CANx ,CAN_MSG_TypeDef* pCanMsg, u32 FifoDepth);
+ErrStatus CAN_RemoteFrameAutoReplyCmd(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg, ControlStatus NewState);
 
 /* Message Object status function ***************************************************************************/
 ErrStatus CAN_CancelTransmit(HT_CAN_TypeDef* CANx, CAN_MSG_TypeDef* pCanMsg);
@@ -487,6 +487,7 @@ s32       CAN_TransmitStatus(HT_CAN_TypeDef* CANx, CAN_MSG_TypeDef* pCanMsg);
 bool      CAN_GetMsgPending(HT_CAN_TypeDef* CANx, CAN_MSG_TypeDef* pCanMsg);
 ErrStatus CAN_ClearMsgPendingFlag(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg);
 void      CAN_ClearAllMsgPendingFlag(HT_CAN_TypeDef *CANx);
+
 /**
   * @}
   */

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
- * @file    CAN/Recv_REMOTE/main.c
- * @version $Rev:: 9134         $
- * @date    $Date:: 2025-06-18 #$
+ * @file    CAN/Recv_REMOTE_AutoReply/main.c
+ * @version $Rev:: 9382         $
+ * @date    $Date:: 2025-08-15 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -39,7 +39,7 @@
   * @{
   */
 
-/** @addtogroup Recv_REMOTE
+/** @addtogroup Recv_REMOTE_AutoReply
   * @{
   */
 
@@ -195,12 +195,14 @@ void CAN_MsgInit(void)
   gRx1Msg.IdType    = CAN_STD_ID;
   gRx1Msg.FrameType = CAN_REMOTE_FRAME;
   CAN_SetRxMsg(HTCFG_CAN_PORT, &gRx1Msg, CAN_RECV1_FIFO_SIZE);
+  CAN_RemoteFrameAutoReplyCmd(HTCFG_CAN_PORT, &gRx1Msg, ENABLE);
 
   gRx2Msg.Id        = CAN_RECV_ID2;
   gRx2Msg.IdMask    = 0x1FFFFFFF;
   gRx2Msg.IdType    = CAN_EXT_ID;
   gRx2Msg.FrameType = CAN_REMOTE_FRAME;
   CAN_SetRxMsg(HTCFG_CAN_PORT, &gRx2Msg, CAN_RECV2_FIFO_SIZE);
+  CAN_RemoteFrameAutoReplyCmd(HTCFG_CAN_PORT, &gRx2Msg, ENABLE);
 }
 
 /*********************************************************************************************************//**

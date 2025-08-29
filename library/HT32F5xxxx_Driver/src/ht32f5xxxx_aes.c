@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_aes.c
- * @version $Rev:: 8205         $
- * @date    $Date:: 2024-10-15 #$
+ * @version $Rev:: 9400         $
+ * @date    $Date:: 2025-08-27 #$
  * @brief   This file provides all the AES firmware functions.
  *************************************************************************************************************
  * @attention
@@ -61,7 +61,7 @@ static void _AES_Init(HT_AES_TypeDef* HT_AESn, AES_InitTypeDef* AES_InitStruct);
 void AES_DeInit(HT_AES_TypeDef* HT_AESn)
 {
   RSTCU_PeripReset_TypeDef RSTCUReset = {{0}};
-  
+
   if (HT_AESn == NULL) // Remove the compiler warning
   {
   }
@@ -430,7 +430,7 @@ ErrStatus _AES_CryptData(HT_AES_TypeDef* HT_AESn,
 
   /*Init Index                                                                                              */
   gu32OutputIndex = 0;
-  gu32InputSize  = length/4;
+  gu32InputSize = length/4;
 
   /*Set input data                                                                                          */
   AES_IntConfig(HT_AES, AES_IER_IFINTEN, ENABLE);

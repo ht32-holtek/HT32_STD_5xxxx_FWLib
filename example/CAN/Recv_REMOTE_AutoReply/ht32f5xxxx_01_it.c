@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
- * @file    CAN/Recv_REMOTE/ht32f5xxxx_01_it.c
- * @version $Rev:: 8177         $
- * @date    $Date:: 2024-09-24 #$
+ * @file    CAN/Recv_REMOTE_AutoReply/ht32f5xxxx_01_it.c
+ * @version $Rev:: 9382         $
+ * @date    $Date:: 2025-08-15 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -36,7 +36,7 @@
   * @{
   */
 
-/** @addtogroup Recv_REMOTE
+/** @addtogroup Recv_REMOTE_AutoReply
   * @{
   */
 
