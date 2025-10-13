@@ -60,7 +60,7 @@ LIST OF SOFTWARE COMPONENTS (AND ASSOCIATED LICENSES) IN THE SOFTWARE PACKAGE
 | Component                       | License              | Copyright |
 |:---------                       |:-------              |:----------|
 | CMSIS                           | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)   | Copyright (c) 2009-2018 ARM Limited. All rights reserved. |
-| HOLTEK CMSIS Device             | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)   | ARM Limited - HOLTEK |
+| HOLTEK CMSIS Device             | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)   | ARM Limited - HOLTEK<br>Copyright (C) Holtek Semiconductor Inc. All rights reserved. |
 | HT32 Firmware Library           | [Proprietary](https://mcu.holtek.com.tw/ht32/resource/HOLTEK_PROPRIETARY_NON-EXCLUSIVE_SOFTWARE_LICENSE_AGREEMENT.txt)          | HOLTEK |
 | - IP Drivers                    | [Proprietary](https://mcu.holtek.com.tw/ht32/resource/HOLTEK_PROPRIETARY_NON-EXCLUSIVE_SOFTWARE_LICENSE_AGREEMENT.txt)          | HOLTEK |
 | - Examples                      | [Proprietary](https://mcu.holtek.com.tw/ht32/resource/HOLTEK_PROPRIETARY_NON-EXCLUSIVE_SOFTWARE_LICENSE_AGREEMENT.txt)          | HOLTEK |
