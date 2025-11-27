@@ -1,11 +1,16 @@
 /**
- @page CAN_Send_Recv_DATA
+ @page CAN_DATA_Loopback
 
  @verbatim
- * @file    CAN/Send_Recv_DATA/readme.txt
+ * @file    CAN/DATA_Loopback/readme.txt
  * @version V1.00
  * @date    2023-08-25
  * @brief   This example describes how to use CAN.
+ * @note    This example does not use the CAN controller built-in Test Mode (Loopback Mode).
+ *          Instead, it operates in normal CAN communication mode. The MCU receives data
+ *          with specific IDs (0x540, 0x542) and then transmits the same data with different
+ *          IDs (0x541, 0x543). This requires an actual CAN bus connection and is different
+ *          from the internal controller loopback mode where no physical bus activity occurs.
  @endverbatim
 
 @par Example Description:
@@ -40,10 +45,10 @@ You can find the following table in the user interface of the CAN analyzer.
 
 @par Directory Contents:
 
-- CAN/Send_Recv_DATA/main.c               Main program
-- CAN/Send_Recv_DATA/ht32fxxxxx_nn_it.c   Interrupt handlers
-- CAN/Send_Recv_DATA/ht32_board_config.h  Board configuration file
-- CAN/Send_Recv_DATA/ht32_can_config.h    CAN configuration file
+- CAN/DATA_Loopback/main.c               Main program
+- CAN/DATA_Loopback/ht32fxxxxx_nn_it.c   Interrupt handlers
+- CAN/DATA_Loopback/ht32_board_config.h  Board configuration file
+- CAN/DATA_Loopback/ht32_can_config.h    CAN configuration file
 
 @par Hardware and Software Environment:
 

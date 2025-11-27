@@ -1,5 +1,5 @@
 /*********************************************************************************************************//**
- * @file    CAN/Recv_Interrupt/ht32_board_config.h
+ * @file    CAN/DATA_Loopback/ht32_board_config.h
  * @version $Rev:: 9515         $
  * @date    $Date:: 2025-11-05 #$
  * @brief   The header file of board configuration.
@@ -48,6 +48,7 @@
   #define _HTCFG_CAN_RX_GPIOX                     C
   #define _HTCFG_CAN_RX_GPION                     5
 #endif
+
 
 #if defined(USE_HT32F66246_DVB)
   #define HTCFG_CAN_IPN                           CAN0

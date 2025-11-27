@@ -91,6 +91,8 @@
 #define LIBCFG_I2C_NO_ADDR_MASK           (1)
 #define LIBCFG_I2C_NO_ARBLOS              (1)
 #define LIBCFG_I2C_NO_PDMA                (1)
+#define LIBCFG_I2C_SHLPGR_8BIT            (1)
+#define LIBCFG_I2C_SHLPGR_OVF_FIX         (1)
 #define LIBCFG_MCTM0                      (1)
 #define LIBCFG_MCTM_UEV1DIS               (1)
 #define LIBCFG_OPA                        (1)

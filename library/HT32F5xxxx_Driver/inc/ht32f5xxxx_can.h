@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_can.h
- * @version $Rev:: 9384         $
- * @date    $Date:: 2025-08-15 #$
+ * @version $Rev:: 9427         $
+ * @date    $Date:: 2025-09-04 #$
  * @brief   The header file of the CAN library.
  *************************************************************************************************************
  * @attention
@@ -124,6 +124,10 @@ typedef struct
   CAN_IdType_Enum IdType;          /* CAN_STD_ID (0x0 ~ 0x7FF) or CAN_EXT_ID (0x0 ~ 0x1FFFFFFF)             */
   CAN_FrameType_Enum FrameType;    /* CAN_REMOTE_FRAME or CAN_DATA_FRAME                                    */
 } CAN_MSG_TypeDef;
+
+#define IS_CAN_MSG_ID(ID)               (ID   < 0x20000000)
+#define IS_CAN_MSG_MASK(MASK)           (MASK < 0x20000000)
+
 /**
   * @}
   */
@@ -165,6 +169,8 @@ typedef struct
 
 #define CAN_INT_ALL               (CAN_INT_EIE | CAN_INT_SIE | CAN_INT_IE)
 
+#define IS_CAN_INT(INT)           ((INT & CAN_INT_ALL) != 0)
+
 #define CAN_CR_INIT_Pos           0                                   /*!< CAN_T::CR: INIT Position         */
 #define CAN_CR_INIT               (1ul << CAN_CR_INIT_Pos)            /*!< CAN_T::CR: INIT                  */
 
@@ -188,6 +194,12 @@ typedef struct
 
 #define CAN_LEC_Pos         0                                      /*!< CAN_T::STATUS: LEC Position         */
 #define CAN_LEC_Msk         (0x7ul << CAN_LEC_Pos)                 /*!< CAN_T::STATUS: LEC Mask             */
+
+#define IS_CAN_FLAG(FLAG)  ((FLAG & (CAN_FLAG_BOFF  | \
+                                     CAN_FLAG_EPASS | \
+                                     CAN_FLAG_EPASS | \
+                                     CAN_FLAG_RXOK  | \
+                                     CAN_FLAG_TXOK)) != 0)
 
 /**
  * @brief CAN ECR Bit Field Definitions
@@ -216,6 +228,10 @@ typedef struct
 #define CAN_BTR_BRP_Pos          0                                    /*!< CAN_T::BTR: BRP Position         */
 #define CAN_BTR_BRP_Msk          (0x3Ful << CAN_BTR_BRP_Pos)          /*!< CAN_T::BTR: BRP Mask             */
 
+#define IS_CAN_TSEG0(TSEG0)     (TSEG0 < 17)
+#define IS_CAN_TSEG1(TSEG1)     (TSEG1 < 9)
+#define IS_CAN_SJW(SJW)         (SJW < 5)
+
 /**
  * @brief CAN IR Bit Field Definitions
  */
@@ -242,11 +258,21 @@ typedef struct
 #define CAN_TEST_BASIC_Pos          2                                  /*!< CAN_T::TEST: Basic Position     */
 #define CAN_MODE_BASIC              (1ul << CAN_TEST_BASIC_Pos)        /*!< CAN_T::TEST: Basic              */
 
+#define IS_CAN_MODE(MODE)              ((MODE == CAN_MODE_NORMAL)      || \
+                                        (MODE == CAN_MODE_BASIC)       || \
+                                        (MODE == CAN_MODE_SILENT)      || \
+                                        (MODE == CAN_MODE_LBACK)       || \
+                                        (MODE == CAN_MODE_MONITORER)   || \
+                                        (MODE == CAN_MODE_TX_DOMINANT) || \
+                                        (MODE == CAN_MODE_TX_RECESSIVE))
+
 /**
  * @brief CAN BPRE Bit Field Definitions
  */
 #define CAN_BRPE_BRPE_Pos          0                                  /*!< CAN_T::BRPE: BRPE Position       */
 #define CAN_BRPE_BRPE_Msk          (0xFul << CAN_BRPE_BRPE_Pos)       /*!< CAN_T::BRPE: BRPE Mask           */
+
+#define IS_CAN_BRPRESCALER(PRESCALER)  ((PRESCALER > 0) && (PRESCALER < 1025))
 
 /**
  * @brief CAN IFn_CREQ Bit Field Definitions
@@ -454,8 +480,8 @@ void CAN_Init(HT_CAN_TypeDef* CANx, CAN_InitTypeDef* CAN_InitStruct);
 /* Interrupts and flags management functions ****************************************************************/
 void CAN_IntConfig(HT_CAN_TypeDef *CANx, u32 CAN_Int, ControlStatus NewState);
 FlagStatus CAN_GetIntStatus(HT_CAN_TypeDef* CANx, u32 CAN_Int);
-FlagStatus CAN_GetFlagStatus(HT_CAN_TypeDef* CANx, uint32_t CAN_Flag);
-void CAN_ClearFlag(HT_CAN_TypeDef* CANx, uint32_t CAN_Flag);
+FlagStatus CAN_GetFlagStatus(HT_CAN_TypeDef* CANx, u32 CAN_Flag);
+void CAN_ClearFlag(HT_CAN_TypeDef* CANx, u32 CAN_Flag);
 
 /* Error management functions *******************************************************************************/
 CAN_LastErrorCode_TypeDef CAN_GetLastErrorCode(HT_CAN_TypeDef* CANx);
@@ -464,10 +490,10 @@ u32 CAN_GetLSBTransmitErrorCounter(HT_CAN_TypeDef* CANx);
 void CAN_BusOffRecovery(HT_CAN_TypeDef *CANx);
 
 /* Test Mode functions **************************************************************************************/
-void CAN_EnterTestMode(HT_CAN_TypeDef *CANx, u32 u8TestMask);
+void CAN_EnterTestMode(HT_CAN_TypeDef *CANx, u32 TestMask);
 void CAN_LeaveTestMode(HT_CAN_TypeDef *CANx);
 ErrStatus CAN_BasicSendMsg(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg, u8* data, u8 len);
-ErrStatus CAN_BasicReceiveMsg(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg, u8* data, u8* len);
+CAN_RxStatus_TypeDef CAN_BasicReceiveMsg(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg, u8* data, u8* len);
 
 /* Transmit/Receive functions *******************************************************************************/
 ErrStatus CAN_Transmit(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg, u8* data, u8 len);
@@ -480,7 +506,6 @@ ErrStatus CAN_SetRxMsg(HT_CAN_TypeDef *CANx ,CAN_MSG_TypeDef* pCanMsg, u32 FifoD
 ErrStatus CAN_RemoteFrameAutoReplyCmd(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg, ControlStatus NewState);
 
 /* Message Object status function ***************************************************************************/
-ErrStatus CAN_CancelTransmit(HT_CAN_TypeDef* CANx, CAN_MSG_TypeDef* pCanMsg);
 ErrStatus CAN_DiscardRxMsg(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg);
 bool      CAN_NewDataReceived(HT_CAN_TypeDef *CANx, CAN_MSG_TypeDef* pCanMsg);
 s32       CAN_TransmitStatus(HT_CAN_TypeDef* CANx, CAN_MSG_TypeDef* pCanMsg);

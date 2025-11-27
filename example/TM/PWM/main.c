@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/PWM/main.c
- * @version $Rev:: 6712         $
- * @date    $Date:: 2023-02-03 #$
+ * @version $Rev:: 9537         $
+ * @date    $Date:: 2025-11-10 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -71,8 +71,8 @@ int main(void)
   Delay(5000);
 
   PWM_SetFreq(PWM_FREQ_12K);
-  PWM_UpdateDuty(PWM_CH0, PWM_FREQ_12K * 0.25);
-  PWM_UpdateDuty(PWM_CH1, PWM_FREQ_12K * 0.75);
+  PWM_UpdateDuty(PWM_CH0, (u32)(PWM_FREQ_12K * 0.25));
+  PWM_UpdateDuty(PWM_CH1, (u32)(PWM_FREQ_12K * 0.75));
   PWM_Cmd(ENABLE);
 
   while (1);

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CAN/Recv_BasicMode/main.c
- * @version $Rev:: 8489         $
- * @date    $Date:: 2025-03-19 #$
+ * @version $Rev:: 9426         $
+ * @date    $Date:: 2025-09-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -55,7 +55,7 @@ void CAN_ResetIF(HT_CAN_TypeDef *CANx);
 void CAN_Configuration(void);
 void CAN_MsgInit(void);
 void CAN_MsgRx(void);
-void CAN_MainRoutine(void);
+CAN_LastErrorCode_TypeDef CAN_MainRoutine(void);
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 CAN_MSG_TypeDef gRxMsg;
@@ -95,17 +95,32 @@ int main(void)
 }
 
 /*********************************************************************************************************//**
-  * @brief  CAN_MainRoutine
-  * @retval None
+  * @brief  CAN_MainRoutine will recover from bus-off state and return the Last Error Code (LEC).
+  * @retval CAN_ErrorCode following values:
+  *    - NO_ERROR    : No Error
+  *    - STUFF_ERROR : Stuff Error
+  *    - FORM_ERROR  : Form Error
+  *    - ACK_ERROR   : Acknowledgment Error
+  *    - BIT1_EROR   : Bit Recessive Error
+  *    - BIT0_ERROR  : Bit Dominant Error
+  *    - CRC_ERROR   : CRC Error
+  *    - NO_CHANGE   : Software Set Error
   ***********************************************************************************************************/
-void CAN_MainRoutine(void)
+CAN_LastErrorCode_TypeDef CAN_MainRoutine(void)
 {
   if (CAN_GetFlagStatus(HTCFG_CAN_PORT, CAN_FLAG_BOFF))
   {
     /* Check if the CAN application is in bus-off state. If so, call the CAN_BusOffRecovery function to     */
     /* attempt recovery.                                                                                    */
     CAN_BusOffRecovery(HTCFG_CAN_PORT);
+
+    /* Monitor bus-off (CAN_FLAG_BOFF).                                                                     */
+    /* Example: printf("CAN_FLAG_BOFF: Bus-off detected, recovery initiated\r\n");                          */
+
+    /* Wait until bus-off recovery sequence completes (129 bus idle periods detected).                      */
+    while (CAN_GetFlagStatus(HTCFG_CAN_PORT, CAN_FLAG_BOFF) == SET){}
   }
+  return CAN_GetLastErrorCode(HTCFG_CAN_PORT);
 }
 
 /*********************************************************************************************************//**
@@ -172,15 +187,15 @@ void CAN_MsgRx(void)
 {
   u32 i;
   u8 dataLength;
-  ErrStatus rx_status = ERROR;
+  CAN_RxStatus_TypeDef rx_status;
 
   /* Receive gRxMsg Message                                                                                 */
-  if (CAN_GetFlagStatus(HTCFG_CAN_PORT, CAN_FLAG_RXOK) == SET)
+  rx_status = CAN_BasicReceiveMsg(HTCFG_CAN_PORT, &gRxMsg, gRxMsgBuffer, &dataLength);
+  if (rx_status  == MSG_OVER_RUN)
   {
-    rx_status = CAN_BasicReceiveMsg(HTCFG_CAN_PORT, &gRxMsg, gRxMsgBuffer, &dataLength);
+    printf("ID[%X] rx message over run\r\n", gRxMsg.Id);
   }
-
-  if (rx_status == SUCCESS)
+  else if (rx_status == MSG_RX_FINISH)
   {
     printf("\r\nRx(==>), ID 0x%06X, ID Type %d, Frame Type %d, length: %d, Data: ", gRxMsg.Id,
                                                                                     gRxMsg.IdType,
@@ -192,7 +207,7 @@ void CAN_MsgRx(void)
       if (gRxMsgBuffer[i] != i)
       {
         printf("Comparison failed !!\r\n");
-        while (1);
+        while (1){}
       }
     }
     gbRxMsgCompareResult = TRUE;

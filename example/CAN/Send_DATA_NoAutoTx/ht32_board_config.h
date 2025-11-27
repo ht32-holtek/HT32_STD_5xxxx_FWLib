@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
- * @file    CAN/Recv_Interrupt/ht32_board_config.h
- * @version $Rev:: 9515         $
- * @date    $Date:: 2025-11-05 #$
+ * @file    CAN/Send_DATA_NoAutoTx/ht32_board_config.h
+ * @version $Rev:: 9424         $
+ * @date    $Date:: 2025-09-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -72,9 +72,6 @@
 #define HTCFG_CAN_STB_GPIO_ID                     STRCAT2(GPIO_P,         _HTCFG_CAN_STB_GPIOX)
 #define HTCFG_CAN_STB_AFIO_PIN                    STRCAT2(AFIO_PIN_,      _HTCFG_CAN_STB_GPION)
 #define HTCFG_CAN_STB_GPIO_PORT                   STRCAT2(HT_GPIO,        _HTCFG_CAN_STB_GPIOX)
-
-#define HTCFG_CAN_IRQn                            STRCAT2(HTCFG_CAN_IPN,  _IRQn)
-#define HTCFG_CAN_IRQHandler                      STRCAT2(HTCFG_CAN_IPN,  _IRQHandler)
 
 #ifdef __cplusplus
 }

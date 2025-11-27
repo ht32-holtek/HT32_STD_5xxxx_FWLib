@@ -1,43 +1,36 @@
 /**
- @page CAN_Recv_REMOTE_AutoReply
+ @page CAN_Send_DATA_NoAutoTx
 
  @verbatim
- * @file    CAN/Recv_REMOTE_AutoReply/main.c
+ * @file    CAN/Send_DATA_NoAutoTx/main.c
  * @version V1.00
- * @date    2024-08-13
- * @brief   This example describes how to receive CAN remote frames and prepare data for transmission.
+ * @date    2024-08-23
+ * @brief   This example describes how to send CAN messages.
  @endverbatim
 
 @par Example Description:
 
-This example describes how to configure and use the CAN interface to receive remote frames from a
-CAN bus. The example automatically transmits CAN message data when a remote frame with either of
-the two specific CAN IDs is received.
-The following CAN receive IDs are used in this example:
-  - CAN ID    0x540 (Standard ID), FIFO depth 1 (1 * 8 = 8 byte).
-  - CAN ID 0x540540 (Extended ID), FIFO depth 1 (1 * 8 = 8 byte).
+This example describes how to configure and use the CAN interface for transmitting messages to a CAN bus.
+The example sends messages for three specific CAN IDs and lights up an LED when the messages are
+successfully transmitted. The following CAN receive IDs are used in this example:
+  - CAN ID 0x540 (Standard ID), FIFO depth 1 (1 * 8 = 8 byte).
+  - CAN ID 0x541 (Standard ID), FIFO depth 1 (1 * 8 = 8 byte).
+  - CAN ID 0x542 (Standard ID), FIFO depth 20 (20 * 8 = 160 byte).
 
-Additionally, the system allows the user to input a character via PC serial port. The received
-character is used to fill the CAN message data, demonstrating real-time CAN message updates.
+In this example, automatic retransmission is disabled (DAR enabled). If a transmission fails, the CAN
+controller will not retry automatically; retransmission must be handled by software.
 
 @par Directory Contents:
 
-- CAN/Recv_REMOTE_AutoReply/main.c               Main program
-- CAN/Recv_REMOTE_AutoReply/ht32fxxxxx_nn_it.c   Interrupt handlers
-- CAN/Recv_REMOTE_AutoReply/ht32_board_config.h  Board configuration file
-- CAN/Recv_REMOTE_AutoReply/ht32_can_config.h    CAN configuration file
+- CAN/Send_DATA_NoAutoTx/main.c               Main program
+- CAN/Send_DATA_NoAutoTx/ht32fxxxxx_nn_it.c   Interrupt handlers
+- CAN/Send_DATA_NoAutoTx/ht32_board_config.h  Board configuration file
+- CAN/Send_DATA_NoAutoTx/ht32_can_config.h    CAN configuration file
 
 @par Hardware and Software Environment:
 
 - Requires a CAN bus setup with nodes transmitting messages with the IDs specified above.
-- This example shows the result via RS232.
-- Connect a null-modem female/female RS232 cable between the COM1 DB9 connector and PC serial port.
-  Hyperterminal configuration:
-  - Word Length = 8 Bits
-  - One Stop Bit
-  - No parity
-  - BaudRate = 115200 baud
-  - flow control: None
+- LED1 on the starter kit indicates successful transmission of CAN messages.
 - CAN bit rate: 500K
 
 @par Firmware Disclaimer Information

@@ -1,8 +1,8 @@
 rem @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _CreateProjectScript.bat
-REM * @version $Rev:: 9308         $
-REM * @date    $Date:: 2025-07-17 #$
+REM * @version $Rev:: 9430         $
+REM * @date    $Date:: 2025-09-10 #$
 REM * @brief   Create Project Script.
 REM *************************************************************************************************************
 REM * @attention
@@ -326,6 +326,9 @@ IF EXIST MDK_ARMv537\HT32F4xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM4.ba
 IF EXIST MDK_ARM\HT32L5xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0PL
 IF EXIST MDK_ARMv5\HT32L5xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0PL
 IF EXIST MDK_ARMv537\HT32L5xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0PL
+IF EXIST MDK_ARM\HT32F7xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0P
+IF EXIST MDK_ARMv5\HT32F7xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0P
+IF EXIST MDK_ARMv537\HT32F7xxxx_01_DebugSupport.ini IF EXIST _ProjectConfigM0p.bat GOTO PROJECT_CFG_M0P
 GOTO PROJECT_CFG_ALL
 
 :PROJECT_CFG_M0P

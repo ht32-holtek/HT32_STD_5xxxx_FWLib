@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
- * @file    CAN/Send_DATA/main.c
- * @version $Rev:: 9515         $
- * @date    $Date:: 2025-11-05 #$
+ * @file    CAN/Send_DATA_NoAutoTx/main.c
+ * @version $Rev:: 9426         $
+ * @date    $Date:: 2025-09-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -39,7 +39,7 @@
   * @{
   */
 
-/** @addtogroup Send_DATA
+/** @addtogroup Send_DATA_NoAutoTx
   * @{
   */
 
@@ -153,7 +153,12 @@ void CAN_Configuration(void)
     CAN_InitStruct.CAN_SJW         = CAN_CONF0_BIT_TIME_SJW;
     CAN_InitStruct.CAN_TSEG0       = CAN_CONF0_BIT_TIME_TSEG0;
     CAN_InitStruct.CAN_TSEG1       = CAN_CONF0_BIT_TIME_TSEG1;
-    CAN_InitStruct.CAN_NART        = DISABLE;
+
+    /* NART (No Automatic Retransmission) / DAR (Disable Auto Retransmission)
+     * When enabled (DAR = 1): Disables automatic retransmission.
+     * Message transmission failures will NOT trigger automatic retries.
+     */
+    CAN_InitStruct.CAN_NART        = ENABLE;
     CAN_Init(HTCFG_CAN_PORT, &CAN_InitStruct);
   }
 }
@@ -165,6 +170,7 @@ void CAN_Configuration(void)
 void CAN_MsgTx(void)
 {
   u32 i, j;
+  s32 tx_status;
   gTx1Msg.Id        = CAN_SEND_ID1;
   gTx1Msg.FrameType = CAN_DATA_FRAME;
   gTx1Msg.IdType    = CAN_EXT_ID;
@@ -173,7 +179,14 @@ void CAN_MsgTx(void)
     gTxMsgData[i] = i;
   }
   CAN_Transmit(HTCFG_CAN_PORT, &gTx1Msg, gTxMsgData, 8);
-  while (CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx1Msg) == 0){}  /* Waiting tx Msg idle                       */
+  do
+  {
+    tx_status = CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx1Msg); /* Check Tx status */
+    if(tx_status == -1)
+    {
+      CAN_TriggerTxMsg(HTCFG_CAN_PORT, &gTx1Msg); /* Retrigger transmission if failed */
+    }
+  }while (tx_status != 1); /* Keep checking Tx status until successful */
 
 
   gTx2Msg.Id        = CAN_SEND_ID2;
@@ -184,7 +197,14 @@ void CAN_MsgTx(void)
     gTxMsgData[i] = i;
   }
   CAN_Transmit(HTCFG_CAN_PORT, &gTx2Msg, gTxMsgData, 8);
-  while (CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx2Msg) == 0){}  /* Waiting tx Msg idle                       */
+  do
+  {
+    tx_status = CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx2Msg); /* Check Tx status */
+    if(tx_status == -1)
+    {
+      CAN_TriggerTxMsg(HTCFG_CAN_PORT, &gTx2Msg); /* Retrigger transmission if failed */
+    }
+  }while (tx_status != 1); /* Keep checking Tx status until successful */
 
 
   for (i = 0; i < 20; i++)
@@ -197,7 +217,14 @@ void CAN_MsgTx(void)
     gTx3Msg.FrameType = CAN_DATA_FRAME;
     gTx3Msg.IdType    = CAN_STD_ID;
     CAN_Transmit(HTCFG_CAN_PORT, &gTx3Msg, gTxMsgData, 8);
-    while (CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx3Msg) == 0){}  /* Waiting tx Msg idle                     */
+    do
+    {
+      tx_status = CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx3Msg); /* Check Tx status */
+      if(tx_status == -1)
+      {
+        CAN_TriggerTxMsg(HTCFG_CAN_PORT, &gTx3Msg); /* Retrigger transmission if failed */
+      }
+    }while (tx_status != 1); /* Keep checking Tx status until successful */
   }
 }
 
@@ -221,7 +248,6 @@ void assert_error(u8* filename, u32 uline)
   }
 }
 #endif
-
 /**
   * @}
   */

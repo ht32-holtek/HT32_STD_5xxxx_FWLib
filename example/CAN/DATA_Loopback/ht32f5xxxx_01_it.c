@@ -1,5 +1,5 @@
 /*********************************************************************************************************//**
- * @file    CAN/Recv_Interrupt/ht32f5xxxx_01_it.c
+ * @file    CAN/DATA_Loopback/ht32f5xxxx_01_it.c
  * @version $Rev:: 9515         $
  * @date    $Date:: 2025-11-05 #$
  * @brief   This file provides all interrupt service routine.
@@ -27,9 +27,7 @@
 
 /* Includes ------------------------------------------------------------------------------------------------*/
 #include "ht32.h"
-#include "ht32_board.h"
 #include "ht32_board_config.h"
-#include "recv_Interrupt.h"
 
 /** @addtogroup HT32_Series_Peripheral_Examples HT32 Peripheral Examples
   * @{
@@ -39,13 +37,10 @@
   * @{
   */
 
-/** @addtogroup Recv_Interrupt
+/** @addtogroup DATA_Loopback
   * @{
   */
 
-
-/* Settings ------------------------------------------------------------------------------------------------*/
-#define CAN_RECV_BUFFER_SIZE            256
 
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
@@ -115,97 +110,13 @@ void PendSV_Handler(void)
 void HTCFG_CAN_IRQHandler(void)
 {
   extern CAN_LastErrorCode_TypeDef CAN_MainRoutine(void);
-  u8 rxBuffer[CAN_RECV_BUFFER_SIZE];
+  /* Error Process                                                                                          */
+  CAN_LastErrorCode_TypeDef lec = CAN_MainRoutine();
 
-  CAN_MainRoutine();
+  if (lec != NO_ERROR)
+    printf("LEC: %d\r\n", lec);
 
-  /* Clear all message objects' interrupt pending flag                                                      */
   CAN_ClearAllMsgPendingFlag(HTCFG_CAN_PORT);
-
-  if (CAN_GetFlagStatus(HTCFG_CAN_PORT, CAN_FLAG_RXOK))
-  {
-    u32 i;
-   /* Receiving message process                                                                             */
-    u32 dataLength;
-    CAN_RxStatus_TypeDef rx_status;
-
-    CAN_ClearFlag(HTCFG_CAN_PORT, CAN_FLAG_RXOK); /* Clear RXOK Flag                                        */
-
-    /* Receive gRx1Msg Message                                                                              */
-    rx_status = CAN_Receive(HTCFG_CAN_PORT, &gRx1Msg, rxBuffer, &dataLength);
-    if (rx_status == MSG_OVER_RUN)
-    {
-      printf("ID[%X] rx message over run\r\n", gRx1Msg.Id);
-    }
-    else if (rx_status == MSG_OBJ_NOT_SET)
-    {
-      printf("gRx1Msg message not set  \r\n");
-    }
-    else if (rx_status == MSG_RX_FINISH)
-    {
-      for (i = 0; i < dataLength; i++)
-      {
-        if (gRx1MsgBufferIndex >= CAN_RECV1_BUFFER_SIZE)
-        {
-          printf("gRx1Msg message overrun\r\n");
-          break;
-        }
-        gRx1MsgBuffer[gRx1MsgBufferIndex++] = rxBuffer[i];
-      }
-    }
-
-    /* Receive gRx2Msg Message                                                                              */
-    rx_status = CAN_Receive(HTCFG_CAN_PORT, &gRx2Msg, rxBuffer, &dataLength);
-    if (rx_status  == MSG_OVER_RUN)
-    {
-      printf("ID[%X] rx message over run\r\n", gRx2Msg.Id);
-    }
-    else if (rx_status == MSG_OBJ_NOT_SET)
-    {
-      printf("rx message not set  \r\n");
-    }
-    else if (rx_status == MSG_RX_FINISH)
-    {
-      for (i = 0; i < dataLength; i++)
-      {
-        if (gRx2MsgBufferIndex >= CAN_RECV2_BUFFER_SIZE)
-        {
-          printf("gRx2Msg message overrun\r\n");
-          break;
-        }
-        gRx2MsgBuffer[gRx2MsgBufferIndex++] = rxBuffer[i];
-      }
-    }
-
-    /* Receive gRx3Msg Message                                                                              */
-    rx_status = CAN_Receive(HTCFG_CAN_PORT, &gRx3Msg, rxBuffer, &dataLength);
-    if (rx_status  == MSG_OVER_RUN)
-    {
-      printf("ID[%X] rx message over run\r\n", gRx3Msg.Id);
-    }
-    else if (rx_status == MSG_OBJ_NOT_SET)
-    {
-      printf("rx message not set  \r\n");
-    }
-    else if (rx_status == MSG_RX_FINISH)
-    {
-      for (i = 0; i < dataLength; i++)
-      {
-        if (gRx3MsgBufferIndex >= CAN_RECV3_BUFFER_SIZE)
-        {
-          printf("gRx3Msg message overrun\r\n");
-          break;
-        }
-        gRx3MsgBuffer[gRx3MsgBufferIndex++] = rxBuffer[i];
-      }
-    }
-  }
-
-  if (CAN_GetFlagStatus(HTCFG_CAN_PORT, CAN_FLAG_TXOK))
-  {
-   /* Transmit message finished                                                                             */
-    CAN_ClearFlag(HTCFG_CAN_PORT, CAN_FLAG_TXOK); /* Clear TXOK flag                                        */
-  }
 }
 
 

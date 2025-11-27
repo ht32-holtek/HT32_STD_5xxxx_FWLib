@@ -1,8 +1,8 @@
 REM @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _ProjectSource.bat
-REM * @version $Rev:: 9200         $
-REM * @date    $Date:: 2025-06-24 #$
+REM * @version $Rev:: 9430         $
+REM * @date    $Date:: 2025-09-10 #$
 REM * @brief   Add source file into project.
 REM *************************************************************************************************************
 REM * @attention
@@ -42,19 +42,23 @@ gsar.exe -s"<FilePath>..\ht32f5xxxx_01_it.c</FilePath>:x0a            </File>" -
 gsar.exe -s"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARM\Project_*.uvproj -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARM\Project_*.uvproj -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARM\Project_*.uvproj -o 1> nul 2>&1
+gsar.exe -s"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARM\Project_*.uvproj -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f5xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f5xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv5\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv5\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv5\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv5\Project_*.uvprojx -o 1> nul 2>&1
+gsar.exe -s"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv5\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f5xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f5xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv537\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv537\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv537\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv537\Project_*.uvprojx -o 1> nul 2>&1
+gsar.exe -s"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" MDK_ARMv537\Project_*.uvprojx -o 1> nul 2>&1
 
 gsar.exe -s"<FilePath>..\ht32f5xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f5xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_*.uvprojx -o 1> nul 2>&1
+gsar.exe -s"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_*.uvprojx -o 1> nul 2>&1
 
 gsar.exe -s"SOURCE_NAME_PATH += ../main.c" -r"SOURCE_NAME_PATH += ../main.c:x0d:x0a<HTGSARCONT>" GNU_ARM\*.mk -o 1> nul 2>&1
 
@@ -65,6 +69,7 @@ gsar.exe -s"<FilePath>..\ht32f5xxxx_01_it.c</FilePath>:x0a            </File>" -
 gsar.exe -s"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f1xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f4xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_*.uvprojx -o 1> nul 2>&1
 gsar.exe -s"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32l5xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_*.uvprojx -o 1> nul 2>&1
+gsar.exe -s"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>" -r"<FilePath>..\ht32f7xxxx_01_it.c</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_*.uvprojx -o 1> nul 2>&1
 
 gsar.exe -s"<name>$PROJ_DIR$\..\main.c</name>:x0d:x0a    </file>" -r"<name>$PROJ_DIR$\..\main.c</name>:x0d:x0a    </file>:x0d:x0a<HTGSARCONT>" EWARM\Project_*.ewp -o 1> nul 2>&1
 gsar.exe -s"<name>$PROJ_DIR$\..\main.c</name>:x0d:x0a        </file>" -r"<name>$PROJ_DIR$\..\main.c</name>:x0d:x0a        </file>:x0d:x0a<HTGSARCONT>" EWARMv8\Project_*.ewp -o 1> nul 2>&1
@@ -73,12 +78,14 @@ gsar.exe -s"<file file_name=:x22../ht32f5xxxx_01_it.c:x22 />" -r"<file file_name
 gsar.exe -s"<file file_name=:x22../ht32f1xxxx_01_it.c:x22 />" -r"<file file_name=:x22../ht32f1xxxx_01_it.c:x22 />:x0a<HTGSARCONT>" emStudiov4\Project_*.emProject -o 1> nul 2>&1
 gsar.exe -s"<file file_name=:x22../ht32f4xxxx_01_it.c:x22 />" -r"<file file_name=:x22../ht32f4xxxx_01_it.c:x22 />:x0a<HTGSARCONT>" emStudiov4\Project_*.emProject -o 1> nul 2>&1
 gsar.exe -s"<file file_name=:x22../ht32l5xxxx_01_it.c:x22 />" -r"<file file_name=:x22../ht32l5xxxx_01_it.c:x22 />:x0a<HTGSARCONT>" emStudiov4\Project_*.emProject -o 1> nul 2>&1
+gsar.exe -s"<file file_name=:x22../ht32f7xxxx_01_it.c:x22 />" -r"<file file_name=:x22../ht32f7xxxx_01_it.c:x22 />:x0a<HTGSARCONT>" emStudiov4\Project_*.emProject -o 1> nul 2>&1
 
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s"<locationURI>PARENT-2-PROJECT_LOC/ht32f5xxxx_01_it.c</locationURI>:x0a		</link>" -r"<locationURI>PARENT-2-PROJECT_LOC/ht32f5xxxx_01_it.c</locationURI>:x0a		</link>:x0a<HTGSARCONT>"  %%D\*.project -o 1> nul 2>&1
 gsar.exe -s"<locationURI>PARENT-2-PROJECT_LOC/ht32f1xxxx_01_it.c</locationURI>:x0a		</link>" -r"<locationURI>PARENT-2-PROJECT_LOC/ht32f1xxxx_01_it.c</locationURI>:x0a		</link>:x0a<HTGSARCONT>"  %%D\*.project -o 1> nul 2>&1
 gsar.exe -s"<locationURI>PARENT-2-PROJECT_LOC/ht32f4xxxx_01_it.c</locationURI>:x0a		</link>" -r"<locationURI>PARENT-2-PROJECT_LOC/ht32f4xxxx_01_it.c</locationURI>:x0a		</link>:x0a<HTGSARCONT>"  %%D\*.project -o 1> nul 2>&1
 gsar.exe -s"<locationURI>PARENT-2-PROJECT_LOC/ht32l5xxxx_01_it.c</locationURI>:x0a		</link>" -r"<locationURI>PARENT-2-PROJECT_LOC/ht32l5xxxx_01_it.c</locationURI>:x0a		</link>:x0a<HTGSARCONT>"  %%D\*.project -o 1> nul 2>&1
+gsar.exe -s"<locationURI>PARENT-2-PROJECT_LOC/ht32f7xxxx_01_it.c</locationURI>:x0a		</link>" -r"<locationURI>PARENT-2-PROJECT_LOC/ht32f7xxxx_01_it.c</locationURI>:x0a		</link>:x0a<HTGSARCONT>"  %%D\*.project -o 1> nul 2>&1
 )
 
 FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (

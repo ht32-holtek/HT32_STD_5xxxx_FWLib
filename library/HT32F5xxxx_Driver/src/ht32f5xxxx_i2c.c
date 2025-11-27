@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_i2c.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9454         $
+ * @date    $Date:: 2025-09-24 #$
  * @brief   This file provides all the I2C firmware functions.
  *************************************************************************************************************
  * @attention
@@ -116,14 +116,18 @@ void I2C_DeInit(HT_I2C_TypeDef* I2Cx)
  * @brief Initialize the I2Cx peripheral according to the specified parameters in the I2C_InitStruct.
  * @param I2Cx: where I2Cx is the selected I2C from the I2C peripherals.
  * @param I2C_InitStruct: pointer to a I2C_InitTypeDef structure.
- * @retval None
+ * @retval SUCCESS or ERROR
+ *    - SUCCESS: I2C initialized successfully.
+ *    - ERROR  : In Master mode, this return value indicates a failure to configure the I2C_Speed.
+                 In Slave mode, this return value can be ignored since the device does not generate the clock.
  ************************************************************************************************************/
-void I2C_Init(HT_I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)
+ErrStatus I2C_Init(HT_I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)
 {
   u32 PCLK_Freq = 0;
   s32 sTmp = 0;
   s32 SHPGR = 0;
   s32 SLPGR = 0;
+  CKCU_PeripPrescaler_TypeDef PCLK_I2Cx = CKCU_PCLK_I2C0;
 
   /* Check the parameters                                                                                   */
   Assert_Param(IS_I2C(I2Cx));
@@ -147,15 +151,16 @@ void I2C_Init(HT_I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)
   #endif
 
   if (I2Cx == HT_I2C0)
-    PCLK_Freq = CKCU_GetPeripFrequency(CKCU_PCLK_I2C0);
+    PCLK_I2Cx = CKCU_PCLK_I2C0;
   #if (LIBCFG_I2C1)
   else if (I2Cx == HT_I2C1)
-    PCLK_Freq = CKCU_GetPeripFrequency(CKCU_PCLK_I2C1);
+    PCLK_I2Cx = CKCU_PCLK_I2C1;
   #endif
   #if (LIBCFG_I2C2)
   else if (I2Cx == HT_I2C2)
-    PCLK_Freq = CKCU_GetPeripFrequency(CKCU_PCLK_I2C2);
+    PCLK_I2Cx = CKCU_PCLK_I2C2;
   #endif
+  PCLK_Freq = CKCU_GetPeripFrequency(PCLK_I2Cx);
 
   switch (I2Cx->CR & 0xC000)
   {
@@ -179,11 +184,50 @@ void I2C_Init(HT_I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)
   SHPGR = (PCLK_Freq * 9)/(I2C_InitStruct->I2C_Speed * 20) - sTmp - I2C_InitStruct->I2C_SpeedOffset;
   SLPGR = (PCLK_Freq * 11)/(I2C_InitStruct->I2C_Speed * 20) - sTmp - I2C_InitStruct->I2C_SpeedOffset;
 
-  SHPGR = (SHPGR < 0) ? 0 : SHPGR;
-  SLPGR = (SLPGR < 0) ? 0 : SLPGR;
+  #if (LIBCFG_I2C_SHLPGR_OVF_FIX)
+    #if 0 /* Default disabled */
+    {
+      u32 i = 1;
+      while ((SHPGR > 255) || (SLPGR > 255))
+      {
+        /* !!! NOTICE !!!
+           Following code depend on the CKCU_APBCLKPRE_DIVn is 0, 1, 2, 3.
+        */
+        CKCU_SetPeripPrescaler(PCLK_I2Cx, (CKCU_APBCLKPRE_TypeDef)(CKCU_APBCLKPRE_DIV1 + i));
+
+        PCLK_Freq = CKCU_GetPeripFrequency(PCLK_I2Cx);
+
+        SHPGR = (PCLK_Freq * 9)/(I2C_InitStruct->I2C_Speed * 20) - sTmp - I2C_InitStruct->I2C_SpeedOffset;
+        SLPGR = (PCLK_Freq * 11)/(I2C_InitStruct->I2C_Speed * 20) - sTmp - I2C_InitStruct->I2C_SpeedOffset;
+
+        i++;
+        if (i == 4)
+        {
+          break;
+        }
+      }
+    }
+    #endif
+  #endif
+
+  #if LIBCFG_I2C_SHLPGR_8BIT
+  /* If SHPGR or SLPGR exceeds the 8-bit maximum value (255), it means the current                        */
+  /* PCLK is too high, causing the calculated timing parameters to overflow the 8-bit registers.          */
+  if((SHPGR > 255) || (SLPGR > 255))
+  {
+      return ERROR;
+  }
+  #endif
+
+  if ((SHPGR < 0) || (SLPGR < 0))
+  {
+    return ERROR;
+  }
 
   I2Cx->SHPGR = SHPGR;
   I2Cx->SLPGR = SLPGR;
+
+  return SUCCESS;
 }
 
 /*********************************************************************************************************//**
@@ -375,7 +419,7 @@ void I2C_OwnAddressCmd(HT_I2C_TypeDef* I2Cx, I2C_ADDR_Enum Address, ControlStatu
   {
     value = value << 16;
   }
-  
+
   if (NewState != DISABLE)
   {
     I2Cx->ADDR |= value;

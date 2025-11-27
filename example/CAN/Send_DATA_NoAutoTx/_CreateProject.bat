@@ -1,8 +1,9 @@
+@ECHO OFF
 REM /*********************************************************************************************************//**
-REM * @file    _ProjectConfig.ini
-REM * @version $Rev:: 9431         $
-REM * @date    $Date:: 2025-09-10 #$
-REM * @brief   Supported device list of specific example/application.
+REM * @file    _CreateProject.bat
+REM * @version $Rev:: 5229         $
+REM * @date    $Date:: 2021-02-01 #$
+REM * @brief   Create Project Script user API.
 REM *************************************************************************************************************
 REM * @attention
 REM *
@@ -24,87 +25,32 @@ REM *    the warranties of merchantability, satisfactory quality and fitness for
 REM *
 REM * <h2><center>Copyright (C) Holtek Semiconductor Inc. All rights reserved</center></h2>
 REM ************************************************************************************************************/
+TITLE Create Project
 
-REM FORMAT
-REM ============================================================================
-REM DEVICE_NAME
-REM   + DEVICE_NAME: The Device supported the example/application.
+SET PRJ_TYPE=Template
+IF EXIST "ht32_usbd_descriptor.c" SET PRJ_TYPE=Template_USB
 
-REM DEVICE_NAME
-REM ============================================================================
-0006
-0008
-18b367a
-5032
-5828
-6306
-32002
-32003
-3200S
-3200T
-50030
-50230
-50241
-50343
-50441
-50452
-52142
-52230
-52241
-52244
-52253
-52341
-52352
-52353
-52354
-52367
-53241
-53252
-18b367a
-53a367a
-54241
-54253
-57341
-57352
-59041
-59045
-59740
-59741
-59746
-59750
-61030
-61041
-61052
-61141
-61245
-61352
-61355
-61356
-61357
-61630
-61641
-61730
-61741
-62030
-62040
-62050
-62132
-62140
-62143
-65232
-65233
-65240
-66242
-66246
-67051
-67232
-67233
-67741
-67742
-72388
+IF EXIST "_CreateProjectScript.bat" GOTO PROJECT_ALREADY_EXIST
+IF NOT EXIST "..\..\..\project_template\Script\_CreateProjectScript.bat" GOTO CREATE_PROJECT_ERR
+IF EXIST "_ProjectSource.ini" IF NOT EXIST "..\..\..\project_template\Script\_ProjectSource.bat" GOTO CREATE_PROJECT_ERR
 
-1654
-1656
-12345
-12364
-12366
+COPY /Y "..\..\..\project_template\Script\_CreateProjectScript.bat"  "." 1> nul 2>&1
+
+CALL _CreateProjectScript.bat %PRJ_TYPE%
+IF EXIST "..\..\..\project_template\Script\_CreateProjectConfScript.bat" PAUSE
+GOTO :EOF
+
+:CREATE_PROJECT_ERR
+ECHO.
+ECHO "_CreateProjectScript.bat" or "_ProjectSource.bat" is not exist or has incompatible version.
+ECHO Please update to the latest Firmware Library.
+ECHO.
+PAUSE
+GOTO :EOF
+
+:PROJECT_ALREADY_EXIST
+ECHO.
+ECHO The project related files are already exist. Please remove them first.....
+ECHO.
+PAUSE
+GOTO :EOF

@@ -1,5 +1,5 @@
 /*********************************************************************************************************//**
- * @file    CAN/Send_DATA/main.c
+ * @file    CAN/DATA_Loopback/main.c
  * @version $Rev:: 9515         $
  * @date    $Date:: 2025-11-05 #$
  * @brief   Main program.
@@ -39,27 +39,44 @@
   * @{
   */
 
-/** @addtogroup Send_DATA
+/** @addtogroup DATA_Loopback
   * @{
   */
 
 
 /* Settings ------------------------------------------------------------------------------------------------*/
-#define CAN_SEND_ID1            (0x540)
-#define CAN_SEND_ID2            (0x541)
-#define CAN_SEND_ID3            (0x542)
+#define CAN_RECV_ID1            (0x540)
+#define CAN_SEND_ID1            (0x541)
+#define CAN_RECV_ID2            (0x542)
+#define CAN_SEND_ID2            (0x543)
+
+#define CAN_RECV1_FIFO_SIZE     (1)
+#define CAN_RECV2_FIFO_SIZE     (20)
+
+#define CAN_RECV1_BUFFER_SIZE   (CAN_RECV1_FIFO_SIZE * 8)
+#define CAN_RECV2_BUFFER_SIZE   (CAN_RECV2_FIFO_SIZE * 8)
 
 /* Private function prototypes -----------------------------------------------------------------------------*/
 void CAN_Configuration(void);
+void CAN_MsgInit(void);
+void CAN_MsgRx(void);
 void CAN_MsgTx(void);
 CAN_LastErrorCode_TypeDef CAN_MainRoutine(void);
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 CAN_MSG_TypeDef gTx1Msg;
 CAN_MSG_TypeDef gTx2Msg;
-CAN_MSG_TypeDef gTx3Msg;
+CAN_MSG_TypeDef gRx1Msg;
+CAN_MSG_TypeDef gRx2Msg;
 
-u8 gTxMsgData[8];
+u8 gRx1MsgBuffer[CAN_RECV1_BUFFER_SIZE];
+u8 gRx2MsgBuffer[CAN_RECV2_BUFFER_SIZE];
+
+u32 gRx1BufferPopIndex;
+u32 gRx1BufferPushIndex;
+
+u32 gRx2BufferPopIndex;
+u32 gRx2BufferPushIndex;
 
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
@@ -69,20 +86,19 @@ u8 gTxMsgData[8];
 int main(void)
 {
   RETARGET_Configuration();
-  HT32F_DVB_LEDInit(HT_LED1);
 
   #if (HTCFG_CAN_CONF_CHECK_ENABLE == 1)
   CAN_Config0_Check();
   #endif
 
   CAN_Configuration();
-  CAN_MsgTx();
-
-  HT32F_DVB_LEDOn(HT_LED1);
+  CAN_MsgInit();
 
   while (1)
   {
-    CAN_MainRoutine();
+    CAN_MsgRx();
+    CAN_MsgTx();
+    /* CAN_MainRoutine() is called in the CAN interrupt handler (CANx_IRQHandler).                          */
   }
 }
 
@@ -156,6 +172,67 @@ void CAN_Configuration(void)
     CAN_InitStruct.CAN_NART        = DISABLE;
     CAN_Init(HTCFG_CAN_PORT, &CAN_InitStruct);
   }
+  /* Enable CAN interrupt of NVIC                                                                           */
+  NVIC_EnableIRQ(HTCFG_CAN_IRQn);
+}
+
+/*********************************************************************************************************//**
+  * @brief  CAN_MsgInit
+  * @retval None
+  ***********************************************************************************************************/
+void CAN_MsgInit(void)
+{
+  gRx1Msg.Id        = CAN_RECV_ID1;
+  gRx1Msg.IdMask    = 0x1FFFFFFF;
+  gRx1Msg.IdType    = CAN_EXT_ID;
+  gRx1Msg.FrameType = CAN_DATA_FRAME;
+  CAN_SetRxMsg(HTCFG_CAN_PORT, &gRx1Msg, CAN_RECV1_FIFO_SIZE);
+
+  gRx2Msg.Id        = CAN_RECV_ID2;
+  gRx2Msg.IdMask    = 0x1FFFFFFF;
+  gRx2Msg.IdType    = CAN_EXT_ID;
+  gRx2Msg.FrameType = CAN_DATA_FRAME;
+  CAN_SetRxMsg(HTCFG_CAN_PORT, &gRx2Msg, CAN_RECV2_FIFO_SIZE);
+}
+
+/*********************************************************************************************************//**
+  * @brief  CAN_MsgRx
+  * @retval None
+  ***********************************************************************************************************/
+void CAN_MsgRx(void)
+{
+  u32 dataLength;
+  CAN_RxStatus_TypeDef rx_status;
+
+  /* Receive gRx1Msg Message                                                                                */
+  rx_status = CAN_Receive(HTCFG_CAN_PORT, &gRx1Msg, gRx1MsgBuffer, &dataLength);
+  if (rx_status == MSG_OVER_RUN)
+  {
+    printf("ID[%X] rx message over run\r\n", gRx1Msg.Id);
+  }
+  else if (rx_status == MSG_OBJ_NOT_SET)
+  {
+    printf("rx message not set  \r\n");
+  }
+  else if (rx_status == MSG_RX_FINISH)
+  {
+    gRx1BufferPushIndex += dataLength;
+  }
+
+  /* Receive gRx2Msg Message                                                                                */
+  rx_status = CAN_Receive(HTCFG_CAN_PORT, &gRx2Msg, gRx2MsgBuffer, &dataLength);
+  if (rx_status  == MSG_OVER_RUN)
+  {
+    printf("ID[%X] rx message over run\r\n", gRx2Msg.Id);
+  }
+  else if (rx_status == MSG_OBJ_NOT_SET)
+  {
+    printf("rx message not set  \r\n");
+  }
+  else if (rx_status == MSG_RX_FINISH)
+  {
+    gRx2BufferPushIndex += dataLength;
+  }
 }
 
 /*********************************************************************************************************//**
@@ -164,40 +241,33 @@ void CAN_Configuration(void)
   ***********************************************************************************************************/
 void CAN_MsgTx(void)
 {
-  u32 i, j;
-  gTx1Msg.Id        = CAN_SEND_ID1;
-  gTx1Msg.FrameType = CAN_DATA_FRAME;
-  gTx1Msg.IdType    = CAN_EXT_ID;
-  for (i = 0; i < 8; i++)
+  if (gRx1BufferPopIndex < gRx1BufferPushIndex)
   {
-    gTxMsgData[i] = i;
-  }
-  CAN_Transmit(HTCFG_CAN_PORT, &gTx1Msg, gTxMsgData, 8);
-  while (CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx1Msg) == 0){}  /* Waiting tx Msg idle                       */
-
-
-  gTx2Msg.Id        = CAN_SEND_ID2;
-  gTx2Msg.FrameType = CAN_DATA_FRAME;
-  gTx2Msg.IdType    = CAN_STD_ID;
-  for (i = 0; i < 8; i++)
-  {
-    gTxMsgData[i] = i;
-  }
-  CAN_Transmit(HTCFG_CAN_PORT, &gTx2Msg, gTxMsgData, 8);
-  while (CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx2Msg) == 0){}  /* Waiting tx Msg idle                       */
-
-
-  for (i = 0; i < 20; i++)
-  {
-    for (j = 0; j < 8; j++)
+    gTx1Msg.Id        = CAN_SEND_ID1;
+    gTx1Msg.FrameType = gRx1Msg.FrameType;
+    gTx1Msg.IdType    = gRx1Msg.IdType;
+    while (CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx1Msg) == 0){}  /* Waiting tx Msg idle                     */
+    CAN_Transmit(HTCFG_CAN_PORT, &gTx1Msg, &gRx1MsgBuffer[gRx1BufferPopIndex], 8); /* Loopback data         */
+    gRx1BufferPopIndex += 8;
+    if (gRx1BufferPopIndex >= gRx1BufferPushIndex)
     {
-      gTxMsgData[j] = j + i * 8;
+      gRx1BufferPopIndex = 0;      /* Clear index                                                           */
+      gRx1BufferPushIndex = 0;
     }
-    gTx3Msg.Id        = CAN_SEND_ID3;
-    gTx3Msg.FrameType = CAN_DATA_FRAME;
-    gTx3Msg.IdType    = CAN_STD_ID;
-    CAN_Transmit(HTCFG_CAN_PORT, &gTx3Msg, gTxMsgData, 8);
-    while (CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx3Msg) == 0){}  /* Waiting tx Msg idle                     */
+  }
+  if (gRx2BufferPopIndex < gRx2BufferPushIndex)
+  {
+    gTx2Msg.Id        = CAN_SEND_ID2;
+    gTx2Msg.FrameType = gRx2Msg.FrameType;
+    gTx2Msg.IdType    = gRx2Msg.IdType;
+    while (CAN_TransmitStatus(HTCFG_CAN_PORT, &gTx2Msg) == 0){}  /* Waiting tx Msg idle                     */
+    CAN_Transmit(HTCFG_CAN_PORT, &gTx2Msg, &gRx2MsgBuffer[gRx2BufferPopIndex], 8); /* Loopback data         */
+    gRx2BufferPopIndex += 8;
+    if (gRx2BufferPopIndex >= gRx2BufferPushIndex)
+    {
+      gRx2BufferPopIndex = 0;      /* Clear index                                                           */
+      gRx2BufferPushIndex = 0;
+    }
   }
 }
 
@@ -221,6 +291,7 @@ void assert_error(u8* filename, u32 uline)
   }
 }
 #endif
+
 
 /**
   * @}

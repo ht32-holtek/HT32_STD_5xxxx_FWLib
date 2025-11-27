@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CAN/Silent_Mode/main.c
- * @version $Rev:: 8489         $
- * @date    $Date:: 2025-03-19 #$
+ * @version $Rev:: 9426         $
+ * @date    $Date:: 2025-09-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -54,7 +54,7 @@
 void CAN_Configuration(void);
 void CAN_MsgInit(void);
 void CAN_MsgRx(void);
-void CAN_MainRoutine(void);
+CAN_LastErrorCode_TypeDef CAN_MainRoutine(void);
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 CAN_MSG_TypeDef gRxMsg;
@@ -86,17 +86,32 @@ int main(void)
 }
 
 /*********************************************************************************************************//**
-  * @brief  CAN_MainRoutine
-  * @retval None
+  * @brief  CAN_MainRoutine will recover from bus-off state and return the Last Error Code (LEC).
+  * @retval CAN_ErrorCode following values:
+  *    - NO_ERROR    : No Error
+  *    - STUFF_ERROR : Stuff Error
+  *    - FORM_ERROR  : Form Error
+  *    - ACK_ERROR   : Acknowledgment Error
+  *    - BIT1_EROR   : Bit Recessive Error
+  *    - BIT0_ERROR  : Bit Dominant Error
+  *    - CRC_ERROR   : CRC Error
+  *    - NO_CHANGE   : Software Set Error
   ***********************************************************************************************************/
-void CAN_MainRoutine(void)
+CAN_LastErrorCode_TypeDef CAN_MainRoutine(void)
 {
   if (CAN_GetFlagStatus(HTCFG_CAN_PORT, CAN_FLAG_BOFF))
   {
     /* Check if the CAN application is in bus-off state. If so, call the CAN_BusOffRecovery function to     */
     /* attempt recovery.                                                                                    */
     CAN_BusOffRecovery(HTCFG_CAN_PORT);
+
+    /* Monitor bus-off (CAN_FLAG_BOFF).                                                                     */
+    /* Example: printf("CAN_FLAG_BOFF: Bus-off detected, recovery initiated\r\n");                          */
+
+    /* Wait until bus-off recovery sequence completes (129 bus idle periods detected).                      */
+    while (CAN_GetFlagStatus(HTCFG_CAN_PORT, CAN_FLAG_BOFF) == SET){}
   }
+  return CAN_GetLastErrorCode(HTCFG_CAN_PORT);
 }
 
 /*********************************************************************************************************//**

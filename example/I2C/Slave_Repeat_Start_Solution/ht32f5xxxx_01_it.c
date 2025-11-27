@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
- * @file    CAN/Send_Recv_DATA/ht32f5xxxx_01_it.c
- * @version $Rev:: 8489         $
- * @date    $Date:: 2025-03-19 #$
+ * @file    I2C/Slave_Repeat_Start_Solution/ht32f5xxxx_01_it.c
+ * @version $Rev:: 9542         $
+ * @date    $Date:: 2025-11-11 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -27,20 +27,14 @@
 
 /* Includes ------------------------------------------------------------------------------------------------*/
 #include "ht32.h"
+#include "ht32_board.h"
 #include "ht32_board_config.h"
 
-/** @addtogroup HT32_Series_Peripheral_Examples HT32 Peripheral Examples
-  * @{
-  */
-
-/** @addtogroup CAN_Examples CAN
-  * @{
-  */
-
-/** @addtogroup Send_Recv_DATA
-  * @{
-  */
-
+extern void I2CSlave_Configuration(void);
+extern u8 gI2C_Slave_Buffer_Tx[];
+extern u8 gI2C_Slave_Buffer_Rx[];
+extern vu8 gTx_Index;
+extern vu8 gRx_Index;
 
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
@@ -104,31 +98,88 @@ void PendSV_Handler(void)
 }
 
 /*********************************************************************************************************//**
- * @brief   This function handles CAN0 interrupt.
+ * @brief   This function handles SysTick Handler.
  * @retval  None
  ************************************************************************************************************/
-void CAN0_IRQHandler(void)
+void SysTick_Handler(void)
 {
-  extern void CAN_MainRoutine(void);
-  /* Error Process                                                                                          */
-  CAN_LastErrorCode_TypeDef lec = CAN_GetLastErrorCode(HTCFG_CAN_PORT);
-
-  if (lec != NO_ERROR)
-    printf("LEC: %d\r\n", lec);
-
-  CAN_MainRoutine();
-  CAN_ClearAllMsgPendingFlag(HTCFG_CAN_PORT);
 }
 
 
-/**
-  * @}
-  */
+/*********************************************************************************************************//**
+ * @brief   This function handles I2Cn interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void HTCFG_I2C_SLAVE_IRQHandler(void)
+{
+  u32 status = HTCFG_I2C_SLAVE_PORT->SR;
 
-/**
-  * @}
-  */
+  if (status & (I2C_FLAG_BUSERR))
+  {
+    u32 reg0 = rw(HTCFG_I2C_SLAVE_SDA_AFIO_REG);
+    u32 reg1 = rw(HTCFG_AFIO_TOGGLE_IO_AFIO_REG)                                   |
+               (AFIO_FUN_I2C << HTCFG_AFIO_PIN_SHIFT(HTCFG_AFIO_TOGGLE_SCL_GPION)) |
+               (AFIO_FUN_I2C << HTCFG_AFIO_PIN_SHIFT(HTCFG_AFIO_TOGGLE_SDA_GPION));
 
-/**
-  * @}
-  */
+    HTCFG_I2C_SLAVE_PORT->SR = I2C_FLAG_BUSERR | I2C_FLAG_RXNACK;
+    /* Toggle AFIO Mode to generate internal START                                                          */
+    /*
+      Step 1: Configure HTCFG_AFIO_TOGGLE_SCL and HTCFG_AFIO_TOGGLE_SDA to I2C mode,
+              and that the internal I/O generates a  SDA/SCL high-levelsignal.
+              - HTCFG_AFIO_TOGGLE_SCL : GPIO -> I2C.
+              - HTCFG_AFIO_TOGGLE_SDA : GPIO -> I2C.
+      Step 2: Configure HTCFG_I2C_SLAVE_SDA to GPIO mode so that the internal I/O generates a low-level 
+              SDA signal, generating an internal I2C START signal.
+              - HTCFG_I2C_SLAVE_SDA   : I2C -> GPIO.
+      Step 3: Configure HTCFG_AFIO_TOGGLE_SDA to GPIO mode so that the internal I/O generates a low-level SDA
+              signal, and then generate internal START signal.
+              - HTCFG_AFIO_TOGGLE_SDA : I2C -> GPIO.
+      Step 4: Configure HTCFG_AFIO_TOGGLE_SCL to GPIO mode.
+              - HTCFG_I2C_SLAVE_SCA   : I2C -> GPIO.
+      Step 5: Configure HTCFG_I2C_SLAVE_SDA back to I2C mode, and internally reconnect SDA to the real I2C bus
+              through AFIO.
+              - HTCFG_I2C_SLAVE_SDA   : GPIO -> I2C.
+    */
+    ww(HTCFG_AFIO_TOGGLE_IO_AFIO_REG, reg1);
+    ww(HTCFG_I2C_SLAVE_SDA_AFIO_REG,  reg0 & ~(0xFUL << HTCFG_AFIO_PIN_SHIFT(HTCFG_I2C_SLAVE_SDA_GPION)));
+    ww(HTCFG_AFIO_TOGGLE_IO_AFIO_REG, reg1 & ~(0xFUL << HTCFG_AFIO_PIN_SHIFT(HTCFG_AFIO_TOGGLE_SDA_GPION)));
+    ww(HTCFG_AFIO_TOGGLE_IO_AFIO_REG, reg1 & ~(0xFUL << HTCFG_AFIO_PIN_SHIFT(HTCFG_AFIO_TOGGLE_SCL_GPION) |
+                                               0xFUL << HTCFG_AFIO_PIN_SHIFT(HTCFG_AFIO_TOGGLE_SDA_GPION)));
+    ww(HTCFG_I2C_SLAVE_SDA_AFIO_REG,  reg0);
+  }
+
+  if (status & I2C_FLAG_TXNRX)
+  {
+    if (status & I2C_FLAG_ADRS)
+    {
+      gTx_Index = 0;
+      I2C_SendData(HTCFG_I2C_SLAVE_PORT, gI2C_Slave_Buffer_Tx[gTx_Index++]);
+    }
+    else if (status & I2C_FLAG_TXDE)
+    {
+      I2C_SendData(HTCFG_I2C_SLAVE_PORT, gI2C_Slave_Buffer_Tx[gTx_Index++]);
+    }
+  }
+  else
+  {
+    if (status & I2C_FLAG_ADRS)
+    {
+      gRx_Index = 0;
+    }
+    else if ((status & I2C_FLAG_RXDNE))
+    {
+      gI2C_Slave_Buffer_Rx[gRx_Index++] = I2C_ReceiveData(HTCFG_I2C_SLAVE_PORT);
+    }
+  }
+
+  if(status & I2C_FLAG_TOUTF)
+  {
+    I2C_DeInit(HTCFG_I2C_SLAVE_PORT);
+    I2CSlave_Configuration();
+  }
+
+  if (status & I2C_FLAG_RXNACK)
+  {
+    I2C_ClearFlag(HTCFG_I2C_SLAVE_PORT, I2C_FLAG_RXNACK);
+  }
+}

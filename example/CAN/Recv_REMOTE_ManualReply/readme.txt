@@ -1,31 +1,37 @@
 /**
- @page CAN_Recv_REMOTE_AutoReply
+ @page CAN_Recv_REMOTE_ManualReply
 
  @verbatim
- * @file    CAN/Recv_REMOTE_AutoReply/main.c
+ * @file    CAN/Recv_REMOTE_ManualReply/main.c
  * @version V1.00
- * @date    2024-08-13
- * @brief   This example describes how to receive CAN remote frames and prepare data for transmission.
+ * @date    2025-09-04
+ * @brief   This example describes how to receive CAN remote frames and reply manually.
  @endverbatim
 
 @par Example Description:
 
 This example describes how to configure and use the CAN interface to receive remote frames from a
-CAN bus. The example automatically transmits CAN message data when a remote frame with either of
-the two specific CAN IDs is received.
+CAN bus, and reply with CAN data frames manually under software control.
+When a remote frame with one of the two specific CAN IDs is received, the firmware checks the
+reception and then transmits a corresponding data frame by calling 'CAN_Transmit()' explicitly.
 The following CAN receive IDs are used in this example:
   - CAN ID    0x540 (Standard ID), FIFO depth 1 (1 * 8 = 8 byte).
+    This ID uses a standard frame format and also ignores bits 2 and 3 of the ID.
+    Therefore, it can receive messages with IDs 0x540, 0x544, 0x548, and 0x54C.
   - CAN ID 0x540540 (Extended ID), FIFO depth 1 (1 * 8 = 8 byte).
+    This ID uses an extended frame format and has a filtering mask that ignores bits 2 and 3 of the ID.
+    Therefore, it can receive messages with IDs 0x540540, 0x540544, 0x540548, and 0x54054C.
 
 Additionally, the system allows the user to input a character via PC serial port. The received
-character is used to fill the CAN message data, demonstrating real-time CAN message updates.
+character is used to fill the CAN message data buffer ('gTxData'), demonstrating real-time update
+of CAN payload data. The next time a remote frame is received, the updated data will be transmitted.
 
 @par Directory Contents:
 
-- CAN/Recv_REMOTE_AutoReply/main.c               Main program
-- CAN/Recv_REMOTE_AutoReply/ht32fxxxxx_nn_it.c   Interrupt handlers
-- CAN/Recv_REMOTE_AutoReply/ht32_board_config.h  Board configuration file
-- CAN/Recv_REMOTE_AutoReply/ht32_can_config.h    CAN configuration file
+- CAN/Recv_REMOTE_ManualReply/main.c               Main program
+- CAN/Recv_REMOTE_ManualReply/ht32fxxxxx_nn_it.c   Interrupt handlers
+- CAN/Recv_REMOTE_ManualReply/ht32_board_config.h  Board configuration file
+- CAN/Recv_REMOTE_ManualReply/ht32_can_config.h    CAN configuration file
 
 @par Hardware and Software Environment:
 

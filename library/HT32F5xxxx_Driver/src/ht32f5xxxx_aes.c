@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_aes.c
- * @version $Rev:: 9400         $
- * @date    $Date:: 2025-08-27 #$
+ * @version $Rev:: 9421         $
+ * @date    $Date:: 2025-09-04 #$
  * @brief   This file provides all the AES firmware functions.
  *************************************************************************************************************
  * @attention
@@ -45,6 +45,8 @@ u32 gu32OutputIndex = 0;
 u32 *gpu32InputBuff;
 u32 gu32InputSize = 0;
 u32 gu32InputIndex = 0;
+
+vu8 isFirstInputInterruptTrigger;
 
 /* Private functions ---------------------------------------------------------------------------------------*/
 static void _AES_Init(HT_AES_TypeDef* HT_AESn, AES_InitTypeDef* AES_InitStruct);
@@ -364,7 +366,7 @@ void AES_SetKeyTable(HT_AES_TypeDef* HT_AESn, u32 *Key, u32 keySize)
     #endif
   }
 
-  AES_StartKey(HT_AES);
+  AES_StartKey(HT_AESn);
 }
 
 /*********************************************************************************************************//**
@@ -419,7 +421,7 @@ ErrStatus _AES_CryptData(HT_AES_TypeDef* HT_AESn,
   }
 
   /*FIFO Flush                                                                                              */
-  AES_FIFOFlush(HT_AES);
+  AES_FIFOFlush(HT_AESn);
 
   /*Set direction                                                                                           */
   HT_AESn->CR = (HT_AESn->CR & 0xFFFFFFFD) | dir;
@@ -433,10 +435,16 @@ ErrStatus _AES_CryptData(HT_AES_TypeDef* HT_AESn,
   gu32InputSize = length/4;
 
   /*Set input data                                                                                          */
-  AES_IntConfig(HT_AES, AES_IER_IFINTEN, ENABLE);
+  isFirstInputInterruptTrigger = FALSE;
+  AES_IntConfig(HT_AESn, AES_IER_IFINTEN, ENABLE);
 
   /*Waitting for conversion                                                                                 */
-  while (AES_GetStatus(HT_AES, AES_SR_OFNEMPTY));
+  while (isFirstInputInterruptTrigger == FALSE)
+  {
+  }
+  while (HT_AESn->SR & (AES_SR_BUSY | AES_SR_OFNEMPTY))
+  {
+  }
   return SUCCESS;
 }
 
@@ -520,21 +528,26 @@ ErrStatus AES_CTR_CryptData(HT_AES_TypeDef* HT_AESn,
  ************************************************************************************************************/
 void AESCore_IRQHandler(HT_AES_TypeDef* HT_AESn)
 {
-  if (AES_GetIntStatus(HT_AES, AES_INTSR_OFINT))
+  if (AES_GetIntStatus(HT_AESn, AES_INTSR_OFINT))
   {
-    gpu32OutputBuff[gu32OutputIndex++] = AES_GetOutputData(HT_AES);
+    gpu32OutputBuff[gu32OutputIndex++] = AES_GetOutputData(HT_AESn);
   }
-  if (AES_GetIntStatus(HT_AES, AES_INTSR_IFINT))
+  if (AES_GetIntStatus(HT_AESn, AES_INTSR_IFINT))
   {
     if (gu32InputIndex < gu32InputSize)
     {
-      AES_SetInputData(HT_AES, gpu32InputBuff[gu32InputIndex]);
+      AES_SetInputData(HT_AESn, gpu32InputBuff[gu32InputIndex]);
       gu32InputIndex++;
     }
     else
     {
-      AES_IntConfig(HT_AES, AES_IER_IFINTEN, DISABLE);
+      AES_IntConfig(HT_AESn, AES_IER_IFINTEN, DISABLE);
       gu32InputIndex = 0;
+    }
+
+    if (isFirstInputInterruptTrigger == FALSE)
+    {
+      isFirstInputInterruptTrigger = TRUE;
     }
   }
 }

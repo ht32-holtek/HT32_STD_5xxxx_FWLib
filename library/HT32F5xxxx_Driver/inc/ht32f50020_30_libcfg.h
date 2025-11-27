@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f50020_30_libcfg.h
- * @version $Rev:: 8959         $
- * @date    $Date:: 2025-05-29 #$
+ * @version $Rev:: 9436         $
+ * @date    $Date:: 2025-09-12 #$
  * @brief   The library configuration file.
  *************************************************************************************************************
 * @attention
@@ -89,6 +89,7 @@
 #define LIBCFG_I2C_NO_10BIT_MODE          (1)
 #define LIBCFG_I2C_NO_ADDR_MASK           (1)
 #define LIBCFG_I2C_NO_ARBLOS              (1)
+#define LIBCFG_I2C_SHLPGR_8BIT            (1)
 #define LIBCFG_LEDC_NO_COM_8_11           (1)
 #define LIBCFG_NO_PLL                     (1)
 #define LIBCFG_NO_PWRCU_TEST_REG          (1)

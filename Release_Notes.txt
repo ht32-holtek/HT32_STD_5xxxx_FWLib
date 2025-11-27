@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Release_Notes.txt
- * @version V1.18.1
- * @date    2025-08-29
+ * @version V1.19.1
+ * @date    2025-11-11
  * @brief   The Release notes of HT32 Firmware Library.
  *************************************************************************************************************
  * @attention
@@ -85,6 +85,49 @@
 //   NW32F61242
 //   HT32F62143, HT50F32023
 //   HT32F59740, HT32F59750
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* HT32_STD_5xxxx_FWLib_V1.19.1_9542                                                                        */
+/*----------------------------------------------------------------------------------------------------------*/
+  Release Date: 2025-11-11
+  Main Changes
+  + Add new examples.
+    - CAN/CAN_Interactive_Demo
+    - CAN/Recv_REMOTE_ManualReply
+    - CAN/Send_DATA_NoAutoTx
+    - I2C/Slave_Repeat_Start_Solution
+  + Fix I2C SHPGR/SLPGR overflow issue when operating at high PCLK and low SCL speeds on HT32F50030 and HT32F65233.
+  + Update CAN driver
+    - Add a new API, CAN_RemoteFrameAutoReplyCmd(), to enable automatic remote frame reply.
+    - Fix the fail condition check in CAN_TransmitStatus().
+    - Modify the process of CAN_GetMsgPending().
+    - Modify the process of CAN_UpdateTxMsgData().
+    - Modify CAN_SetRxMsg() to disable automatic remote frame reply for the specified Rx message object.
+    - Remove CAN_CancelTransmit().
+    - Update CAN_Init() to disable CAN_CR_DAR during initialization.
+    - Update CAN_BasicSendMsg() to remove unnecessary procedures.
+    - Update CAN_BasicReceiveMsg() to remove unnecessary procedures and add a message overrun detection process.
+    - Update CAN_DiscardRxMsg() to remove unnecessary settings.
+    - Update CAN_Transmit() to initialize the Tx message object with EOB set.
+  + Update CAN example by renaming CAN_MainRoutine() function to GetLastErrorCode(), add a Bus-off recovery
+    wait process, and return the Last Error Code.
+    - CAN/Recv_BasicMode
+    - CAN/Recv_DATA
+    - CAN/Recv_Interrupt
+    - CAN/Recv_Mask_Filter
+    - CAN/Recv_REMOTE_AutoReply
+    - CAN/Send_BasicMode
+    - CAN/Send_DATA
+    - CAN/Send_REMOTE
+    - CAN/Silent_Mode
+  + Modify the CAN example by renaming the "CAN/Send_Recv_DATA example" to "CAN/DATA_Loopback example"
+  + Update "ht32f1xxxx_aes.c" to enhance the waiting mechanism for encryption/decryption process.
+  + Update TM/PWM example by casting the parameter in PWM_UpdateDuty to (u32) to eliminate IAR compiler warnings
+
+  Others
+  + Update comment, format, typing error, and coding style.
+  + Update LICENSE.md license declaration.
+  + Modify CAN API parameter check macro of Library Debug Mode.
 
 /*----------------------------------------------------------------------------------------------------------*/
 /* HT32_STD_5xxxx_FWLib_V1.18.1_9404                                                                        */

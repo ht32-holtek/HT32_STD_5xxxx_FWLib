@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
- * @file    CAN/Send_Recv_DATA/ht32_board_config.h
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @file    CAN/Recv_REMOTE_ManualReply/ht32_board_config.h
+ * @version $Rev:: 9429         $
+ * @date    $Date:: 2025-09-09 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -48,7 +48,6 @@
   #define _HTCFG_CAN_RX_GPIOX                     C
   #define _HTCFG_CAN_RX_GPION                     5
 #endif
-
 
 #if defined(USE_HT32F66246_DVB)
   #define HTCFG_CAN_IPN                           CAN0
