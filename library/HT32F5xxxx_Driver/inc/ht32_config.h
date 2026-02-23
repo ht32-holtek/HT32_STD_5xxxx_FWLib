@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_config.h
- * @version $Rev:: 9294         $
- * @date    $Date:: 2025-07-08 #$
+ * @version $Rev:: 9659         $
+ * @date    $Date:: 2026-01-30 #$
  * @brief   Configuration file of HT32.
  *************************************************************************************************************
  * @attention
@@ -498,6 +498,16 @@
 #endif
 #ifdef USE_MEM_KW32F55
   #define USE_MEM_HT32F52244
+#endif
+
+#ifdef USE_MXTX5030_SK
+  #define USE_HT32F50030_SK
+#endif
+#ifdef USE_MXTX5030
+  #define USE_HT32F50020_30
+#endif
+#ifdef USE_MEM_MXTX5030
+  #define USE_MEM_HT32F50030
 #endif
 
 #ifdef __cplusplus

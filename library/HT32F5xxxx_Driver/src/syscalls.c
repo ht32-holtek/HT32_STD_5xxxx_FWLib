@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    syscalls.c
- * @version $Rev:: 9391         $
- * @date    $Date:: 2025-08-21 #$
+ * @version $Rev:: 9588         $
+ * @date    $Date:: 2025-11-28 #$
  * @brief   Implementation of system call related functions.
  *************************************************************************************************************
  * @attention
@@ -290,7 +290,7 @@ signed int scanf(const char *f, ...)
                (ch >= 'a' && ch <= 'f') ||
                (ch >= 'A' && ch <= 'F'))
         {
-          uint8_t digit;
+          uint8_t digit = 0;
           if (ch >= '0' && ch <= '9')
             digit = (ch - '0');
           else if (ch >= 'a' && ch <= 'f')

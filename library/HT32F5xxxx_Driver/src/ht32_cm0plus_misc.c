@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_cm0plus_misc.c
- * @version $Rev:: 7888         $
- * @date    $Date:: 2024-07-22 #$
+ * @version $Rev:: 9590         $
+ * @date    $Date:: 2025-12-02 #$
  * @brief   This file provides all the miscellaneous firmware functions.
  *************************************************************************************************************
  * @attention
@@ -289,17 +289,23 @@ Loop_Check
   BX LR
   ALIGN
 }
-#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+#elif (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || defined (__GNUC__)
 #define STACKLIMITADDR  "0x20000010"
 #define STACKSTART      "0x20000014"
+#if (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
 u32 _StackLimit __attribute__((section(".ARM.__at_"STACKLIMITADDR))) = HT_SRAM_BASE + LIBCFG_RAM_SIZE;
 u32 _StackStart __attribute__((section(".ARM.__at_"STACKSTART))) = HT_SRAM_BASE;
+#else
+__ASM (".global _StackLimit\n\t.set _StackLimit, " STACKLIMITADDR);
+__ASM (".global _StackStart\n\t.set _StackStart, " STACKSTART);
+#endif
 /*********************************************************************************************************//**
   * @brief  Stack Usage Analysis Init
   * @retval None
   ***********************************************************************************************************/
 __attribute__((noinline)) void StackUsageAnalysisInit(u32 addr)
 {
+  __ASM volatile (".syntax unified");
   __ASM volatile ("  LDR R0, [r0]");
   __ASM volatile ("  LDR R1, =_StackLimit");
   __ASM volatile ("  STR R0, [r1]");
