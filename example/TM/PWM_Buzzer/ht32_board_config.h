@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/PWM_Buzzer/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -167,6 +167,13 @@
   #define  HTCFG_BUZZER_CHN                       0
 #endif
 
+#if defined(USE_HT32F61152_DVB)
+  #define _HTCFG_BUZZER_GPIOX                     A
+  #define _HTCFG_BUZZER_GPION                     11
+  #define  HTCFG_BUZZER_IPN                       SCTM1
+  #define  HTCFG_BUZZER_CHN                       0
+#endif
+
 #if defined(USE_HT32F65240_DVB)
   #define _HTCFG_BUZZER_GPIOX                     A
   #define _HTCFG_BUZZER_GPION                     7
@@ -286,6 +293,13 @@
   #define _HTCFG_BUZZER_GPIOX                     A
   #define _HTCFG_BUZZER_GPION                     3
   #define  HTCFG_BUZZER_IPN                       SCTM1
+  #define  HTCFG_BUZZER_CHN                       0
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_BUZZER_GPIOX                     C
+  #define _HTCFG_BUZZER_GPION                     13
+  #define  HTCFG_BUZZER_IPN                       MCTM0
   #define  HTCFG_BUZZER_CHN                       0
 #endif
 

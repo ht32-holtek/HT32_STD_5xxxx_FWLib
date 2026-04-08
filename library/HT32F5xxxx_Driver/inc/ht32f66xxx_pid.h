@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f66xxx_pid.h
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the PID library.
  *************************************************************************************************************
  * @attention
@@ -54,20 +54,50 @@
  */
 typedef enum
 {
-  PID_SPD_MODE   = 0,
-  PID_IQ_MODE,
-  PID_ID_MODE,
-  PID_FWNK_MODE,
-  PID_PLL_MODE,
-  PID_USR_MODE,
+  PID_SPD0_MODE   = 0,
+  PID_IQ0_MODE,
+  PID_ID0_MODE,
+  PID_FWNK0_MODE,
+  PID_PLL0_MODE,
+  PID_USR0_MODE,
+ #if (LIBCFG_PID_MODE_EXPEND)
+  PID_SPD1_MODE,
+  PID_IQ1_MODE,
+  PID_ID1_MODE,
+  PID_FWNK1_MODE,
+  PID_PLL1_MODE,
+  PID_USR1_MODE,
+#endif
 } PID_Mode_Enum;
+
+#if (LIBCFG_PID_MODE_EXPEND)
+#define IS_PID_SPD1_MODE(x)      (x == PID_SPD1_MODE)
+#define IS_PID_IQ1_MODE(x)       (x == PID_IQ1_MODE)
+#define IS_PID_ID1_MODE(x)       (x == PID_ID1_MODE)
+#define IS_PID_FWNK1_MODE(x)     (x == PID_FWNK1_MODE)
+#define IS_PID_PLL1_MODE(x)      (x == PID_PLL1_MODE)
+#define IS_PID_USR1_MODE(x)      (x == PID_USR1_MODE)
+#else
+#define IS_PID_SPD1_MODE(x)      (0)
+#define IS_PID_IQ1_MODE(x)       (0)
+#define IS_PID_ID1_MODE(x)       (0)
+#define IS_PID_FWNK1_MODE(x)     (0)
+#define IS_PID_PLL1_MODE(x)      (0)
+#define IS_PID_USR1_MODE(x)      (0)
+#endif
 
 #define IS_PID_MODE(PID_MODE)    (((PID_MODE) == PID_SPD_MODE)   || \
                                   ((PID_MODE) == PID_IQ_MODE)    || \
                                   ((PID_MODE) == PID_ID_MODE)    || \
                                   ((PID_MODE) == PID_FWNK_MODE)  || \
                                   ((PID_MODE) == PID_PLL_MODE)   || \
-                                  ((PID_MODE) == PID_USR_MODE))
+                                  ((PID_MODE) == PID_USR_MODE)   || \
+                                  IS_PID_SPD1_MODE(PID_MODE)     || \
+                                  IS_PID_IQ1_MODE(PID_MODE)      || \
+                                  IS_PID_ID1_MODE(PID_MODE)      || \
+                                  IS_PID_FWNK1_MODE(PID_MODE)    || \
+                                  IS_PID_PLL1_MODE(PID_MODE)     || \
+                                  IS_PID_USR1_MODE(PID_MODE))
 
 /**
  * @brief PID paramater init structure

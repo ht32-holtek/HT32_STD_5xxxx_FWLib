@@ -236,6 +236,17 @@
   #define HTCFG_INTERNAL_CH                       ADC_CH_BANDGAP
 #endif
 
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_VR_GPIOX                         C
+  #define _HTCFG_VR_GPION                         14
+  #define  HTCFG_VR_ADC_CH                        (ADC_CH_6)
+
+  #define _HTCFG_VREF_GPIOX                       A
+  #define _HTCFG_VREF_GPION                       4
+
+  #define HTCFG_INTERNAL_CH                       ADC_CH_BANDGAP
+#endif
+
 #define HTCFG_VR_GPIO_ID                          STRCAT2(GPIO_P,         _HTCFG_VR_GPIOX)
 #define HTCFG_VR_AFIO_PIN                         STRCAT2(AFIO_PIN_,      _HTCFG_VR_GPION)
 #define HTCFG_VREF_GPIO_ID                        STRCAT2(GPIO_P,         _HTCFG_VREF_GPIOX)

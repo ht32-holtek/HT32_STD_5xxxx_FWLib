@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Interrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 7528         $
- * @date    $Date:: 2024-01-18 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -44,11 +44,11 @@
 #define BufferSize        4
 
 /* Private variables ---------------------------------------------------------------------------------------*/
-extern vu8 SPI0_Buffer_Tx[];
-extern vu8 SPI1_Buffer_Tx[];
-extern vu8 SPI0_Buffer_Rx[];
-extern vu8 SPI1_Buffer_Rx[];
-extern vu8 SPI0_Tx_Index, SPI1_Tx_Index, SPI0_Rx_Index, SPI1_Rx_Index;
+extern vu8 SPI_Master_Buffer_Tx[];
+extern vu8 SPI_Slave_Buffer_Tx[];
+extern vu8 SPI_Master_Buffer_Rx[];
+extern vu8 SPI_Slave_Buffer_Rx[];
+extern vu8 SPI_Master_Tx_Index, SPI_Slave_Tx_Index, SPI_Master_Rx_Index, SPI_Slave_Rx_Index;
 
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
@@ -120,30 +120,63 @@ void SysTick_Handler(void)
 }
 
 /*********************************************************************************************************//**
+ * @brief   This function handles common SPI interrupt processing.
+ * @retval  None
+ ************************************************************************************************************/
+__STATIC_INLINE void SPI_Process_Handler(HT_SPI_TypeDef* SPIx, 
+                                        vu8* pRxBuffer, vu8* pRxIndex, 
+                                        vu8* pTxBuffer, vu8* pTxIndex, 
+                                        u32 uBufferSize)
+{
+  if (SPI_GetFlagStatus(SPIx, SPI_FLAG_RXBNE))
+  {
+    /* Read received data                                                                                   */
+    pRxBuffer[(*pRxIndex)++] = SPI_ReceiveData(SPIx);
+  }
+
+  if (SPI_GetFlagStatus(SPIx, SPI_FLAG_TXBE))
+  {
+    if ((*pTxIndex) < uBufferSize)
+    {
+      /* Send SPI0 data                                                                                     */
+      SPI_SendData(SPIx, pTxBuffer[(*pTxIndex)++]);
+    }
+    else
+    {
+      /* Disable SPI0 TXBE interrupt                                                                        */
+      SPI_IntConfig(SPIx, SPI_INT_TXBE, DISABLE);
+    }
+  }
+}
+
+#if defined(LIBCFG_SPI_COMBINED_SPI01)
+/*********************************************************************************************************//**
+ * @brief   This function handles SPI interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void SPI0_1_IRQHandler(void)
+{
+  SPI_Process_Handler(HTCFG_SPI_MASTER, 
+                     SPI_Master_Buffer_Rx, &SPI_Master_Rx_Index, 
+                     SPI_Master_Buffer_Tx, &SPI_Master_Tx_Index, 
+                     BufferSize);
+
+  SPI_Process_Handler(HTCFG_SPI_SLAVE, 
+                     SPI_Slave_Buffer_Rx, &SPI_Slave_Rx_Index, 
+                     SPI_Slave_Buffer_Tx, &SPI_Slave_Tx_Index, 
+                     BufferSize);
+}
+#else
+/*********************************************************************************************************//**
  * @brief   This function handles SPI Master interrupt.
  * @retval  None
  ************************************************************************************************************/
 void HTCFG_SPI_MASTER_IRQHandler(void)
 {
-  if (SPI_GetFlagStatus(HTCFG_SPI_MASTER, SPI_FLAG_RXBNE))
-  {
-    /* Read received data                                                                                   */
-    SPI0_Buffer_Rx[SPI0_Rx_Index++] = SPI_ReceiveData(HTCFG_SPI_MASTER);
-  }
-
-  if (SPI_GetFlagStatus(HTCFG_SPI_MASTER, SPI_FLAG_TXBE))
-  {
-    if (SPI0_Tx_Index < BufferSize)
-    {
-      /* Send SPI0 data                                                                                     */
-      SPI_SendData(HTCFG_SPI_MASTER, SPI0_Buffer_Tx[SPI0_Tx_Index++]);
-    }
-    else
-    {
-      /* Disable SPI0 TXBE interrupt                                                                        */
-      SPI_IntConfig(HTCFG_SPI_MASTER, SPI_INT_TXBE, DISABLE);
-    }
-  }
+  SPI_Process_Handler(HTCFG_SPI_MASTER, 
+                     SPI_Master_Buffer_Rx, &SPI_Master_Rx_Index, 
+                     SPI_Master_Buffer_Tx, &SPI_Master_Tx_Index, 
+                     BufferSize);
 }
 
 /*********************************************************************************************************//**
@@ -152,26 +185,12 @@ void HTCFG_SPI_MASTER_IRQHandler(void)
  ************************************************************************************************************/
 void HTCFG_SPI_SLAVE_IRQHandler(void)
 {
-  if (SPI_GetFlagStatus(HTCFG_SPI_SLAVE, SPI_FLAG_RXBNE))
-  {
-    /* Read received data                                                                                   */
-    SPI1_Buffer_Rx[SPI1_Rx_Index++] = SPI_ReceiveData(HTCFG_SPI_SLAVE);
-  }
-
-  if (SPI_GetFlagStatus(HTCFG_SPI_SLAVE, SPI_FLAG_TXBE))
-  {
-    if (SPI1_Tx_Index < BufferSize)
-    {
-      /* Send SPI1 data                                                                                     */
-      SPI_SendData(HTCFG_SPI_SLAVE, SPI1_Buffer_Tx[SPI1_Tx_Index++]);
-    }
-    else
-    {
-      /* Disable SPI1 TXBE interrupt                                                                        */
-      SPI_IntConfig(HTCFG_SPI_SLAVE, SPI_INT_TXBE, DISABLE);
-    }
-  }
+  SPI_Process_Handler(HTCFG_SPI_SLAVE, 
+                     SPI_Slave_Buffer_Rx, &SPI_Slave_Rx_Index, 
+                     SPI_Slave_Buffer_Tx, &SPI_Slave_Tx_Index, 
+                     BufferSize);
 }
+#endif
 
 
 /**

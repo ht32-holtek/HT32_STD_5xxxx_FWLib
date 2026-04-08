@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_usbd.c
- * @version $Rev:: 9340         $
- * @date    $Date:: 2025-07-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The USB Device Peripheral Driver.
  *************************************************************************************************************
  * @attention
@@ -144,7 +144,7 @@ void USBD_PreInit(USBD_Driver_TypeDef *pDriver)
   pDriver->ept[USBD_EPT7].IER       = _EP7_IER;
   #endif
 
-  #if (LIBCFG_USBD_V2)
+  #if (LIBCFG_USBD_V2) || (LIBCFG_USBD_V3)
   #if (_EP8_ENABLE == 1)
   pDriver->ept[USBD_EPT8].CFGR.word = _EP8_CFG;
   pDriver->ept[USBD_EPT8].IER       = _EP8_IER;
@@ -153,6 +153,23 @@ void USBD_PreInit(USBD_Driver_TypeDef *pDriver)
   #if (_EP9_ENABLE == 1)
   pDriver->ept[USBD_EPT9].CFGR.word = _EP9_CFG;
   pDriver->ept[USBD_EPT9].IER       = _EP9_IER;
+  #endif
+  #endif
+
+  #if (LIBCFG_USBD_V3)
+  #if (_EP10_ENABLE == 1)
+  pDriver->ept[USBD_EPT10].CFGR.word = _EP10_CFG;
+  pDriver->ept[USBD_EPT10].IER       = _EP10_IER;
+  #endif
+
+  #if (_EP11_ENABLE == 1)
+  pDriver->ept[USBD_EPT11].CFGR.word = _EP11_CFG;
+  pDriver->ept[USBD_EPT11].IER       = _EP11_IER;
+  #endif
+
+  #if (_EP12_ENABLE == 1)
+  pDriver->ept[USBD_EPT12].CFGR.word = _EP12_CFG;
+  pDriver->ept[USBD_EPT12].IER       = _EP12_IER;
   #endif
   #endif
   return;
@@ -329,8 +346,9 @@ void USBD_SetAddress(u32 address)
 /*********************************************************************************************************//**
   * @brief  Enable USB Device interrupt.
   * @param  INTFlag: USB Device global interrupt flag
-  *         @arg UGIE  | SOFIE  | URSTIE | RSMIE  | SUSPIE | ESOFIE
-  *              EP0IE | EP1IE  | EP2IE  | EP3IE  | EP4IE  | EP5IE  | EP6IE  | EP7IE  | EP8IE  | EP9IE
+  *         @arg UGIE   | SOFIE  | URSTIE | RSMIE  | SUSPIE | ESOFIE
+  *              EP0IE  | EP1IE  | EP2IE  | EP3IE  | EP4IE  | EP5IE  | EP6IE  | EP7IE  | EP8IE  | EP9IE
+  *              EP10IE | EP11IE | EP12IE
   * @retval None
   ***********************************************************************************************************/
 void USBD_EnableINT(u32 INTFlag)
@@ -342,8 +360,9 @@ void USBD_EnableINT(u32 INTFlag)
 /*********************************************************************************************************//**
   * @brief  Disable USB Device interrupt.
   * @param  INTFlag: USB Device global interrupt flag
-  *         @arg UGIE  | SOFIE  | URSTIE | RSMIE  | SUSPIE | ESOFIE
-  *              EP0IE | EP1IE  | EP2IE  | EP3IE  | EP4IE  | EP5IE  | EP6IE  | EP7IE  | EP8IE  | EP9IE
+  *         @arg UGIE   | SOFIE  | URSTIE | RSMIE  | SUSPIE | ESOFIE
+  *              EP0IE  | EP1IE  | EP2IE  | EP3IE  | EP4IE  | EP5IE  | EP6IE  | EP7IE  | EP8IE  | EP9IE
+  *              EP10IE | EP11IE | EP12IE
   * @retval None
   ***********************************************************************************************************/
 void USBD_DisableINT(u32 INTFlag)
@@ -365,8 +384,9 @@ u32 USBD_GetINT(void)
 /*********************************************************************************************************//**
   * @brief  Clear USB Device interrupt flag.
   * @param  INTFlag: USB Device global interrupt flag
-  *         @arg SOFIF | URSTIF | RSMIF | SUSPIF | ESOFIF
-  *              EP0IF | EP1IF  | EP2IF | EP3IF  | EP4IF | EP5IF | EP6IF | EP7IF | EP8IF | EP9IF
+  *         @arg SOFIF  | URSTIF | RSMIF  | SUSPIF | ESOFIF
+  *              EP0IF  | EP1IF  | EP2IF  | EP3IF  | EP4IF | EP5IF | EP6IF | EP7IF | EP8IF | EP9IF
+  *              EP10IF | EP11IF | EP12IF
   * @retval None
   ***********************************************************************************************************/
 void USBD_ClearINT(u32 INTFlag)
@@ -378,9 +398,10 @@ void USBD_ClearINT(u32 INTFlag)
 /*********************************************************************************************************//**
   * @brief  Get USB Endpoint number by interrupt flag.
   * @param  INTFlag: USB Device global interrupt flag
-  *         @arg SOFIF | URSTIF | RSMIF | SUSPIF | ESOFIF
-  *              EP0IF | EP1IF  | EP2IF | EP3IF  | EP4IF | EP5IF | EP6IF | EP7IF | EP8IF | EP9IF
-  * @retval USB Endpoint number from USBD_EPT1 ~ USBD_EPT9
+  *         @arg SOFIF  | URSTIF | RSMIF  | SUSPIF | ESOFIF
+  *              EP0IF  | EP1IF  | EP2IF  | EP3IF  | EP4IF | EP5IF | EP6IF | EP7IF | EP8IF | EP9IF
+  *              EP10IF | EP11IF | EP12IF
+  * @retval USB Endpoint number from USBD_EPT1 ~ USBD_EPT12
   ***********************************************************************************************************/
 USBD_EPTn_Enum USBD_GetEPTnINTNumber(u32 INTFlag)
 {
@@ -399,7 +420,7 @@ USBD_EPTn_Enum USBD_GetEPTnINTNumber(u32 INTFlag)
 /*********************************************************************************************************//**
   * @brief  USB Device Peripheral initialization for Endpoint.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @param  pDriver: USB initialization structure
   * @retval None
   ***********************************************************************************************************/
@@ -421,7 +442,7 @@ void USBD_EPTInit(USBD_EPTn_Enum USBD_EPTn, u32 *pDriver)
 /*********************************************************************************************************//**
   * @brief  Reset Endpoint Status.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval None
   ***********************************************************************************************************/
 void USBD_EPTReset(USBD_EPTn_Enum USBD_EPTn)
@@ -434,7 +455,7 @@ void USBD_EPTReset(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Enable Interrupt for Endpoint.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @param  INTFlag: Interrupt flag
   *         @arg OTRXIE | ODRXIE | ODOVIE | ITRXIE | IDTXIE | NAKIE | STLIE | UERIE |
   *              STRXIE | SDRXIE | SDERIE | ZLRXIE
@@ -449,7 +470,7 @@ void USBD_EPTEnableINT(USBD_EPTn_Enum USBD_EPTn, u32 INTFlag)
 /*********************************************************************************************************//**
   * @brief  Get active USB Device Endpoint interrupt.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval USB Endpoint ISR Flag
   ***********************************************************************************************************/
 u32 USBD_EPTGetINT(USBD_EPTn_Enum USBD_EPTn)
@@ -462,7 +483,7 @@ u32 USBD_EPTGetINT(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Clear Interrupt for Endpoint.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @param  INTFlag: Interrupt flag
   *         @arg OTRXIF | ODRXIF | ODOVIF | ITRXIF | IDTXIF | NAKIF | STLIF | UERIF |
   *              STRXIF | SDRXIF | SDERIF | ZLRXIF
@@ -477,7 +498,7 @@ void USBD_EPTClearINT(USBD_EPTn_Enum USBD_EPTn, u32 INTFlag)
 /*********************************************************************************************************//**
   * @brief  Get Endpoint n Halt status (STLTX or STLRX).
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval Endpoint Halt Status (1: Endpoint is Halt, 0: Endpoint is not Halt)
   ***********************************************************************************************************/
 u32 USBD_EPTGetHalt(USBD_EPTn_Enum USBD_EPTn)
@@ -497,7 +518,7 @@ u32 USBD_EPTGetHalt(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Send STALL on Endpoint n.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval None
   ***********************************************************************************************************/
 void USBD_EPTSendSTALL(USBD_EPTn_Enum USBD_EPTn)
@@ -509,7 +530,7 @@ void USBD_EPTSendSTALL(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Set Endpoint n Halt status (STLTX or STLRX).
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval None
   ***********************************************************************************************************/
 void USBD_EPTSetHalt(USBD_EPTn_Enum USBD_EPTn)
@@ -542,7 +563,7 @@ void USBD_EPTSetHalt(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Clear Endpoint n Halt status (STLTX or STLRX).
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval None
   ***********************************************************************************************************/
 void USBD_EPTClearHalt(USBD_EPTn_Enum USBD_EPTn)
@@ -571,7 +592,7 @@ void USBD_EPTClearHalt(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Wait until STALL transmission is finished
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval None
   ***********************************************************************************************************/
 void USBD_EPTWaitSTALLSent(USBD_EPTn_Enum USBD_EPTn)
@@ -591,7 +612,7 @@ void USBD_EPTWaitSTALLSent(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Clear Endpoint n Data toggle bit (DTGTX or DTGRX).
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval None
   ***********************************************************************************************************/
 void USBD_EPTClearDTG(USBD_EPTn_Enum USBD_EPTn)
@@ -619,7 +640,7 @@ void USBD_EPTClearDTG(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Get Endpoint n buffer 0 address.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval USB Endpoint buffer 0 address
   ***********************************************************************************************************/
 u32 USBD_EPTGetBuffer0Addr(USBD_EPTn_Enum USBD_EPTn)
@@ -631,7 +652,7 @@ u32 USBD_EPTGetBuffer0Addr(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Get Endpoint n buffer 1 address.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval USB Endpoint buffer 1 address
   ***********************************************************************************************************/
 u32 USBD_EPTGetBuffer1Addr(USBD_EPTn_Enum USBD_EPTn)
@@ -643,7 +664,7 @@ u32 USBD_EPTGetBuffer1Addr(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Get Endpoint n buffer length.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval USB Endpoint buffer length
   ***********************************************************************************************************/
 u32 USBD_EPTGetBufferLen(USBD_EPTn_Enum USBD_EPTn)
@@ -654,7 +675,7 @@ u32 USBD_EPTGetBufferLen(USBD_EPTn_Enum USBD_EPTn)
 /*********************************************************************************************************//**
   * @brief  Get Endpoint n Transfer Count.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @param  USBD_TCR_n: USBD_TCR_0 or USBD_TCR_1
   * @retval Endpoint Transfer Count
   ***********************************************************************************************************/
@@ -666,7 +687,7 @@ u32 USBD_EPTGetTransferCount(USBD_EPTn_Enum USBD_EPTn, USBD_TCR_Enum USBD_TCR_n)
 /*********************************************************************************************************//**
   * @brief  Write IN Data from User buffer to USB buffer.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @param  pFrom: Source buffer
   * @param  len: Length for write IN data
   * @retval Total length written by this function
@@ -697,7 +718,7 @@ u32 USBD_EPTWriteINData(USBD_EPTn_Enum USBD_EPTn, u32 *pFrom, u32 len)
 /*********************************************************************************************************//**
   * @brief  Read OUT Data from USB buffer to User buffer.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @param  pTo: Destination memory
   * @param  len: Length for read OUT data, set as 0 for discard current OUT data in the USB buffer
   * @retval Total length read by this function
@@ -723,7 +744,7 @@ u32 USBD_EPTReadOUTData(USBD_EPTn_Enum USBD_EPTn, u32 *pTo, u32 len)
 /*********************************************************************************************************//**
   * @brief  Read memory from endpoint buffer.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @param  pTo: Destination buffer
   * @param  len: Length for read OUT data
   * @retval Total length read by this function
@@ -820,7 +841,7 @@ static void _USBD_CopyMemory(u32 *pFrom, u32 *pTo, u32 len)
 /*********************************************************************************************************//**
   * @brief  Convent USBD_EPTn_Enum to USBEP_TypeDef.
   * @param  USBD_EPTn: USB Endpoint number
-  *         @arg USBD_EPT0 ~ USBD_EPT9
+  *         @arg USBD_EPT0 ~ USBD_EPT12
   * @retval USBEP0 ~ USBEP9
   ***********************************************************************************************************/
 static HT_USBEP_TypeDef * _USBD_GetEPTnAddr(USBD_EPTn_Enum USBD_EPTn)

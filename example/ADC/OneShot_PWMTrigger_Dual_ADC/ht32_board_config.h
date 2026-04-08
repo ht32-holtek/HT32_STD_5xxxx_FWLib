@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_PWMTrigger_Dual_ADC/ht32_board_config.h
- * @version $Rev:: 5068         $
- * @date    $Date:: 2020-11-07 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -49,6 +49,20 @@
 
   #define _HTCFG_ADC1_7_GPIOX                     A
   #define _HTCFG_ADC1_7_GPION                     6
+  #define _HTCFG_ADC1_7_ADC_CHN                   7
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_ADC0_5_GPIOX                     B
+  #define _HTCFG_ADC0_5_GPION                     5
+  #define _HTCFG_ADC0_5_ADC_CHN                   5
+
+  #define _HTCFG_ADC0_6_GPIOX                     C
+  #define _HTCFG_ADC0_6_GPION                     14
+  #define _HTCFG_ADC0_6_ADC_CHN                   6
+
+  #define _HTCFG_ADC1_7_GPIOX                     C
+  #define _HTCFG_ADC1_7_GPION                     4
   #define _HTCFG_ADC1_7_ADC_CHN                   7
 #endif
 

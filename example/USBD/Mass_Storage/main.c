@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/Mass_Storage/main.c
- * @version $Rev:: 7537         $
- * @date    $Date:: 2024-01-22 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The main program of USB Device Mass Storage example.
  *************************************************************************************************************
  * @attention
@@ -98,6 +98,7 @@ void CKCU_Configuration(void)
   CKCUClock.Bit.USBD       = 1;
   CKCUClock.Bit.PA         = 1;
   CKCUClock.Bit.PB         = 1;
+  CKCUClock.Bit.PC         = 1;
   CKCUClock.Bit.AFIO       = 1;
   CKCUClock.Bit.EXTI       = 1;
 

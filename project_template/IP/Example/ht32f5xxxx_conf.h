@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    IP/Example/ht32f5xxxx_conf.h
- * @version $Rev:: 9394         $
- * @date    $Date:: 2025-08-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Library configuration file.
  *************************************************************************************************************
  * @attention
@@ -366,6 +366,20 @@
 //    <i> Those information is only valid after calling "StackUsageAnalysisInit()" function.
 */
 #define HTCFG_STACK_USAGE_ANALYSIS                0
+
+//  <h> Calibration Temperature
+//  <o0> Calibration Temperature Point Source
+//      <0=> Fixed Default Temperature
+//      <1=> Factory Trim Code
+// <i> !!! NOTICE !!! The fixed default temperature is calibrated under specific production test conditions,
+// <i> which represent the environment of that batch only. The actual calibration temperature may slightly
+// <i> between production lots.
+#define ADC_CAL_TEMP_POINT_SORUCE     0
+
+// <o0> Temperature Sensor Calibration Reference
+// <i> Set the calibration reference temperature in milli-degree Celsius.
+// <i> This setting is only effective when ADC_CAL_TEMP_POINT_SORUCE is set to 0 (Fixed Default Temperature).
+#define ADC_FIXED_CAL_TEMP_mC       22000
 
 /* Enable/disable the specific peripheral inclusion                                                         */
 

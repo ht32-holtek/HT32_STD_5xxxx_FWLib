@@ -33,9 +33,12 @@
 #endif
 
 /* Settings ------------------------------------------------------------------------------------------------*/
-#if defined(USE_HT32F61245_SK) || defined(USE_HT32F65233_DVB)
+#if defined(USE_HT32F61245_SK) || defined(USE_HT32F65233_DVB) || defined(USE_HT32F66256_DVB)
   #define _HTCFG_GPIOX                        A
   #define _HTCFG_GPION                        2
+#elif defined(USE_HT32F61152)
+  #define _HTCFG_GPIOX                        A
+  #define _HTCFG_GPION                        6
 #else 
   #define _HTCFG_GPIOX                        A
   #define _HTCFG_GPION                        0

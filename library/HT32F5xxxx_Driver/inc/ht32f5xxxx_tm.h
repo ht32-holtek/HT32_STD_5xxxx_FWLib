@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_tm.h
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the TM library.
  *************************************************************************************************************
  * @attention
@@ -444,7 +444,7 @@ typedef struct
 /**
  * @brief Used to check parameter of the TMx.
  */
-#define IS_TM(x)            (IS_GPTM0(x) || IS_GPTM1(x) || IS_MCTM0(x) || IS_PWM0(x) || IS_PWM1(x) || IS_PWM2(x) || IS_SCTM(x))
+#define IS_TM(x)            (IS_GPTM0(x) || IS_GPTM1(x) || IS_MCTM0(x) || IS_MCTM1(x) || IS_PWM0(x) || IS_PWM1(x) || IS_PWM2(x) || IS_SCTM(x))
 #if (!LIBCFG_NO_GPTM0)
 #define IS_GPTM0(x)         (x == HT_GPTM0)
 #else
@@ -461,6 +461,12 @@ typedef struct
 #define IS_MCTM0(x)         (x == HT_MCTM0)
 #else
 #define IS_MCTM0(x)         (0)
+#endif
+
+#if (LIBCFG_MCTM1)
+#define IS_MCTM1(x)         (x == HT_MCTM1)
+#else
+#define IS_MCTM1(x)         (0)
 #endif
 
 #if (LIBCFG_PWM0)

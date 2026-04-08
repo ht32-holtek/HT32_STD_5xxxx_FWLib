@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Master/ht32f5xxxx_01_it.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -115,7 +115,7 @@ void SysTick_Handler(void)
  * @brief   This function handles EXTI interrupt.
  * @retval  None
  ************************************************************************************************************/
-void EXTI0_1_IRQHandler(void)
+void HTCFG_EXTI_INT_IRQHandler(void)
 {
   extern vu32 gSPIINT;
   if (EXTI_GetEdgeStatus(GPIO2EXTI(HTCFG_INT_GPION), EXTI_EDGE_NEGATIVE) == SET)

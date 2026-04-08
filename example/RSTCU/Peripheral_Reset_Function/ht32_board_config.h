@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    RSTCU/Peripheral_Reset_Function/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -171,6 +171,14 @@
 
 #if defined(USE_HT32F65233_DVB)
   #define HTCFG_LED1_RST                          PA
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_LED1_RST                          PC
+#endif
+
+#if defined(USE_HT32F61152_DVB)
+  #define HTCFG_LED1_RST                          PB
 #endif
 
 #ifdef __cplusplus

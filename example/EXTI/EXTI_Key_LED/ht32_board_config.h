@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/EXTI_Key_LED/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -219,11 +219,21 @@
   #define  HTCFG_WAKE_EXTI_IRQn                   EXTI12_IRQn
 
   #define _HTCFG_KEY1_GPIOX                       B
-  #define  HTCFG_KEY1_GPION                       2
-  #define  HTCFG_KEY1_EXTI_IRQn                   EXTI2_IRQn
+  #define  HTCFG_KEY1_GPION                       0
+  #define  HTCFG_KEY1_EXTI_IRQn                   EXTI0_IRQn
 #endif
 
 #if defined(USE_HT32F61141_SK)  //PRELIMINARY_NOT_TEST
+  #define _HTCFG_WAKE_GPIOX                       B
+  #define  HTCFG_WAKE_GPION                       12
+  #define  HTCFG_WAKE_EXTI_IRQn                   EXTI12_IRQn
+
+  #define _HTCFG_KEY1_GPIOX                       B
+  #define  HTCFG_KEY1_GPION                       0
+  #define  HTCFG_KEY1_EXTI_IRQn                   EXTI0_IRQn
+#endif
+
+#if defined(USE_HT32F61152_DVB)  //PRELIMINARY_NOT_TEST
   #define _HTCFG_WAKE_GPIOX                       B
   #define  HTCFG_WAKE_GPION                       12
   #define  HTCFG_WAKE_EXTI_IRQn                   EXTI12_IRQn
@@ -371,6 +381,16 @@
   #define _HTCFG_KEY1_GPIOX                       C
   #define  HTCFG_KEY1_GPION                       0
   #define  HTCFG_KEY1_EXTI_IRQn                   EXTI0_IRQn
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_WAKE_GPIOX                       B
+  #define  HTCFG_WAKE_GPION                       12
+  #define  HTCFG_WAKE_EXTI_IRQn                   EXTI12_IRQn
+
+  #define _HTCFG_KEY1_GPIOX                       C
+  #define  HTCFG_KEY1_GPION                       5
+  #define  HTCFG_KEY1_EXTI_IRQn                   EXTI5_IRQn
 #endif
 
 #if defined(USE_HT32F65233_DVB)

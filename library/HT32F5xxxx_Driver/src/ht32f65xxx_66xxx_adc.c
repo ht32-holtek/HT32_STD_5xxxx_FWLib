@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f65xxx_66xxx_adc.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all the ADC firmware functions.
  *************************************************************************************************************
  * @attention
@@ -64,6 +64,19 @@
 #if (LIBCFG_ADC_MVDDA)
 #define ADC_VREF_MVDDAEN     (0x00000100)
 #endif
+
+#if (LIBCFG_ADC_TEMP_SENSOR)
+#define ADC_TEMP_SENSOR_ENABLE        (0x00000001)
+#define ADC_TEMP_SENSOR_START_OPERATE (0x00000002)
+
+#define ADC_POS_TSCAL        (0)
+#define ADC_MASK_TSCAL       ((u32)0xFFF << ADC_POS_TSCAL)
+#endif
+
+#if (LIBCFG_ADC_FLEXIBLE_VREFVALR)
+#define ADC_VREFVALR_KEY     (0x9C3A0000)
+#endif
+
 /**
   * @}
   */
@@ -220,17 +233,20 @@ void ADC_HPGroupConfig(HT_ADC_TypeDef* HT_ADCn, u8 ADC_MODE, u8 Length, u8 SubLe
  * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
  * @param ADC_CH_n: the ADC channel to configure
  *   This parameter can be one of the following values:
- *     @arg ADC_CH_n        : ADC Channel x selected, x must between 0 ~ 7
- *     @arg ADC_CH_OPA0     : ADC OPA0O selected
- *     @arg ADC_CH_OPA1     : ADC OPA1O selected
- *     @arg ADC_CH_PGA0O    : ADC PGA0O selected
- *     @arg ADC_CH_PGA1O    : ADC PGA1O selected
- *     @arg ADC_CH_PGA2O    : ADC PGA2O selected
- *     @arg ADC_CH_PGA3O    : ADC PGA3O selected
- *     @arg ADC_CH_GND_VREF : ADC GND VREF selected
- *     @arg ADC_CH_VDD_VREF : ADC VDD VREF selected
- *     @arg ADC_CH_BANDGAP  : ADC BANDGAP selected
- *     @arg ADC_CH_MVDDA    : ADC MVDDA selected
+ *     @arg ADC_CH_n        : ADCn Channel m selected, n must between 0 ~ 7
+ *     @arg ADC_CH_OPA0     : ADCn OPA0O selected
+ *     @arg ADC_CH_OPA1     : ADCn OPA1O selected
+ *     @arg ADCn_CH_PGA0O   : ADCn PGA0O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA1O   : ADCn PGA1O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA2O   : ADCn PGA2O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA3O   : ADCn PGA3O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA4O   : ADCn PGA4O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA5O   : ADCn PGA5O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_VTS     : ADCn temperature sensor selected, n must between 0 ~ 1
+ *     @arg ADC_CH_GND_VREF : ADCn GND VREF selected
+ *     @arg ADC_CH_VDD_VREF : ADCn VDD VREF selected
+ *     @arg ADC_CH_BANDGAP  : ADCn BANDGAP selected
+ *     @arg ADC_CH_MVDDA    : ADCn MVDDA selected
  * @param Rank: The rank in the regular group sequencer.
  *   This parameter must be between 0 to 7.
  * @param SampleClock: Number of sampling clocks.
@@ -246,6 +262,16 @@ void ADC_RegularChannelConfig(HT_ADC_TypeDef* HT_ADCn, u8 ADC_CH_n, u8 Rank, u8 
   Assert_Param(IS_ADC_CHANNEL(ADC_CH_n));
   Assert_Param(IS_ADC_REGULAR_RANK(Rank));
   Assert_Param(IS_ADC_INPUT_SAMPLING_TIME(SampleClock));
+
+  #if (HT32_LIB_LITE == 0)
+  #if (LIBCFG_ADC_CH_CHECK_CHOOSE)
+  if (IS_ADC_CH_CHOOSE(HT_ADCn, ADC_CH_n) == FALSE)
+  {
+    while(1){}; // The selected channel does not belong to the specified ADCn
+  }
+  ADC_CH_n = ADC_CH_REMOVE_MARK(ADC_CH_n);
+  #endif
+  #endif
 
   /* config sampling clock of correspond ADC input channel                                                  */
   #if (LIBCFG_ADC_STR_16_17)
@@ -280,17 +306,20 @@ void ADC_RegularChannelConfig(HT_ADC_TypeDef* HT_ADCn, u8 ADC_CH_n, u8 Rank, u8 
  * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
  * @param ADC_CH_n: the ADC channel to configure
  *   This parameter can be one of the following values:
- *     @arg ADC_CH_n        : ADC Channel x selected, x must between 0 ~ 7
- *     @arg ADC_CH_OPA0     : ADC OPA0O selected
- *     @arg ADC_CH_OPA1     : ADC OPA1O selected
- *     @arg ADC_CH_PGA0O    : ADC PGA0O selected
- *     @arg ADC_CH_PGA1O    : ADC PGA1O selected
- *     @arg ADC_CH_PGA2O    : ADC PGA2O selected
- *     @arg ADC_CH_PGA3O    : ADC PGA3O selected
- *     @arg ADC_CH_GND_VREF : ADC GND VREF selected
- *     @arg ADC_CH_VDD_VREF : ADC VDD VREF selected
- *     @arg ADC_CH_BANDGAP  : ADC BANDGAP selected
- *     @arg ADC_CH_MVDDA    : ADC MVDDA selected
+ *     @arg ADC_CH_n        : ADCn Channel m selected, n must between 0 ~ 7
+ *     @arg ADC_CH_OPA0     : ADCn OPA0O selected
+ *     @arg ADC_CH_OPA1     : ADCn OPA1O selected
+ *     @arg ADCn_CH_PGA0O   : ADCn PGA0O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA1O   : ADCn PGA1O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA2O   : ADCn PGA2O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA3O   : ADCn PGA3O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA4O   : ADCn PGA4O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_PGA5O   : ADCn PGA5O selected, n must between 0 ~ 1
+ *     @arg ADCn_CH_VTS     : ADCn temperature sensor selected, n must between 0 ~ 1
+ *     @arg ADC_CH_GND_VREF : ADCn GND VREF selected
+ *     @arg ADC_CH_VDD_VREF : ADCn VDD VREF selected
+ *     @arg ADC_CH_BANDGAP  : ADCn BANDGAP selected
+ *     @arg ADC_CH_MVDDA    : ADCn MVDDA selected
  * @param Rank: The rank in the high priority group sequencer.
  *   This parameter must be between 0 to 11. (4 ~ 11 only for specific model)
  * @param SampleClock: Number of sampling clocks.
@@ -306,6 +335,16 @@ void ADC_HPChannelConfig(HT_ADC_TypeDef* HT_ADCn, u8 ADC_CH_n, u8 Rank, u8 Sampl
   Assert_Param(IS_ADC_CHANNEL(ADC_CH_n));
   Assert_Param(IS_ADC_HP_RANK(Rank));
   Assert_Param(IS_ADC_INPUT_SAMPLING_TIME(SampleClock));
+
+  #if (HT32_LIB_LITE == 0)
+  #if (LIBCFG_ADC_CH_CHECK_CHOOSE)
+  if (IS_ADC_CH_CHOOSE(HT_ADCn, ADC_CH_n) == FALSE)
+  {
+    while(1){}; // The selected channel does not belong to the specified ADCn
+  }
+  ADC_CH_n = ADC_CH_REMOVE_MARK(ADC_CH_n);
+  #endif
+  #endif
 
   /* config sampling clock of correspond ADC input channel                                                  */
   #if (LIBCFG_ADC_STR_16_17)
@@ -379,6 +418,16 @@ void ADC_RegularTrigConfig(HT_ADC_TypeDef* HT_ADCn, u32 ADC_TRIG_x)
   Assert_Param(IS_ADC(HT_ADCn));
   Assert_Param(IS_ADC_TRIG(ADC_TRIG_x));
 
+  #if (HT32_LIB_LITE == 0)
+  #if (LIBCFG_ADC_TRIG_CHECK_CHOOSE)
+  if (IS_ADC_TRIG_CHOOSE(HT_ADCn, ADC_TRIG_x) == FALSE)
+  {
+    while(1){}; // The selected trigger does not belong to the specified ADCn
+  }
+  ADC_TRIG_x = ADC_TRIG_REMOVE_MARK(ADC_TRIG_x);
+  #endif
+  #endif
+
   /* Config external trigger conversion source of regular group                                             */
   HT_ADCn->TCR = ADC_TRIG_x & 0x0000001F;
   HT_ADCn->TSR = ADC_TRIG_x & (~0x0000001F);
@@ -419,6 +468,16 @@ void ADC_HPTrigConfig(HT_ADC_TypeDef* HT_ADCn, u32 ADC_TRIG_x)
   /* Check the parameters                                                                                   */
   Assert_Param(IS_ADC(HT_ADCn));
   Assert_Param(IS_ADC_TRIG(ADC_TRIG_x));
+
+  #if (HT32_LIB_LITE == 0)
+  #if (LIBCFG_ADC_TRIG_CHECK_CHOOSE)
+  if (IS_ADC_TRIG_CHOOSE(HT_ADCn, ADC_TRIG_x) == FALSE)
+  {
+    while(1){}; // The selected trigger does not belong to the specified ADCn
+  }
+  ADC_TRIG_x = ADC_TRIG_REMOVE_MARK(ADC_TRIG_x);
+  #endif
+  #endif
 
   HT_ADCn->HTCR = ADC_TRIG_x & 0x0000001F;
   HT_ADCn->HTSR = ADC_TRIG_x & (~0x0000001F);
@@ -862,6 +921,97 @@ void ADC_VREFCmd(HT_ADC_TypeDef* HT_ADCn, ControlStatus NewState)
 }
 #endif
 
+#if (LIBCFG_ADC_IVREF_VOLTCONFIG)
+/*********************************************************************************************************//**
+ * @brief Configure the VREF output voltage.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param ADC_VREF_x:
+ *   This parameter can be one of the following value:
+ *     @arg ADC_VREF_2V0 :
+ *     @arg ADC_VREF_2V5 :
+ *     @arg ADC_VREF_2V7 :
+ *     @arg ADC_VREF_3V0 :
+ * @retval None
+ ************************************************************************************************************/
+void ADC_VREFConfig(HT_ADC_TypeDef* HT_ADCn, u32 ADC_VREF_x)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_ADC_VREF_SEL(ADC_VREF_x));
+
+  HT_ADCn->VREFCR = (HT_ADCn->VREFCR & ~(3ul << 4)) | (ADC_VREF_x);
+}
+#endif
+
+#if (LIBCFG_ADC_VREFBUF)
+/*********************************************************************************************************//**
+ * @brief Enable or Disable the VREF output. When enable, the VREF provides a stable voltage output to the
+          ADVREFP pin (ADC reference positive voltage).
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param NewState: This parameter can be ENABLE or DISABLE.
+ * @retval None
+ ************************************************************************************************************/
+void ADC_VREFOutputADVREFPCmd(HT_ADC_TypeDef* HT_ADCn, ControlStatus NewState)
+{
+  /* !!! NOTICE !!!
+     The ADCREFP pin should not be connected to an external voltage when the VREF output is enabled.
+  */
+
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_CONTROL_STATUS(NewState));
+
+  if (NewState != DISABLE)
+  {
+    HT_ADCn->VREFCR |= 0x00000002;
+  }
+  else
+  {
+    HT_ADCn->VREFCR &= ~(0x00000002);
+  }
+}
+#endif
+
+#if (LIBCFG_ADC_FLEXIBLE_VREFVALR)
+/*********************************************************************************************************//**
+ * @brief Set the internal voltage reference calibration value.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param VREFVALR : specify the internal voltage reference calibration value.
+ *   This parameter must be a number between 0 and 0x7F
+ * @retval None
+ ************************************************************************************************************/
+void ADC_SetVoltageReferenceValue(HT_ADC_TypeDef* HT_ADCn, u8 VREFVALR)
+{
+  u32 uVREFVALRTemp;
+
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_ADC_VREFVALR(VREFVALR));
+
+  /* Set the internal voltage reference calibration value                                                   */
+  uVREFVALRTemp = HT_ADCn->VREFVALR & ADC_VREFVALR_MASK;
+
+  /* Disable write protection                                                                               */
+  HT_ADCn->VREFVALR = ADC_VREFVALR_KEY | uVREFVALRTemp;
+
+  /* Set the internal voltage reference calibration value and write protection                              */
+  HT_ADCn->VREFVALR = VREFVALR & ADC_VREFVALR_MASK;
+}
+
+/*********************************************************************************************************//**
+ * @brief Get the internal voltage reference calibration value.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @retval The internal voltage reference calibration value between 0 and 0x7F
+ ************************************************************************************************************/
+u8 ADC_GetVoltageReferenceValue(HT_ADC_TypeDef* HT_ADCn)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+
+  return (u8)(HT_ADCn->VREFVALR & ADC_VREFVALR_MASK);
+}
+#endif
+
 #if (LIBCFG_ADC_MVDDA)
 /*********************************************************************************************************//**
  * @brief Enable or Disable the power of MVDDA (VDDA/2)
@@ -883,6 +1033,228 @@ void ADC_MVDDACmd(HT_ADC_TypeDef* HT_ADCn, ControlStatus NewState)
   {
     HT_ADCn->VREFCR &= ~(ADC_VREF_MVDDAEN);
   }
+}
+#endif
+
+#if (LIBCFG_ADC_TEMP_SENSOR)
+/*********************************************************************************************************//**
+ * @brief Enable or Disable the Temperature Sensor of specified ADC.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param NewState: This parameter can be ENABLE or DISABLE.
+ * @retval None
+ ************************************************************************************************************/
+void ADC_TempSensorCmd(HT_ADC_TypeDef* HT_ADCn, ControlStatus NewState)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_CONTROL_STATUS(NewState));
+
+  /* Enable Temperature Sensor                                                                              */
+  if (NewState != DISABLE)
+  {
+    HT_ADCn->TSCR |= ADC_TEMP_SENSOR_ENABLE;
+  }
+  else
+  {
+    HT_ADCn->TSCR &= ~ADC_TEMP_SENSOR_ENABLE;
+  }
+}
+
+/*********************************************************************************************************//**
+ * @brief This function is used to set the Temperature Sensor clock divider.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param TempSensorClockDiv: specify the value of the TSCLK(PCK) divider as the clock source for the
+ *        temperature sensor.
+ * @retval None
+ * @note  The TempSensorClockDiv range and optimal operation frequency, please refer to the electrical
+          characteristics section of the device datasheet.
+ ************************************************************************************************************/
+void ADC_TempSensorSetClockDivider(HT_ADC_TypeDef* HT_ADCn, u8 TempSensorClockDiv)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_TEMP_SENSOR_DIV(TempSensorClockDiv));
+
+  HT_ADCn->TSCR = (HT_ADCn->TSCR & (~0xF0UL)) | (TempSensorClockDiv << 4);
+}
+
+/*********************************************************************************************************//**
+ * @brief This function is used to set the Temperature Sensor start to operate.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param NewState: This parameter can be ENABLE or DISABLE.
+ * @retval None
+ * @note  This control bit will automatically be reset by the hardware once the temperature sensor's process
+          is complete.
+ ************************************************************************************************************/
+void ADC_TempSensorStartOperateCmd(HT_ADC_TypeDef* HT_ADCn, ControlStatus NewState)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_CONTROL_STATUS(NewState));
+
+  /* Start to operate                                                                                       */
+  if (NewState != DISABLE)
+  {
+    HT_ADCn->TSCR |= ADC_TEMP_SENSOR_START_OPERATE;
+  }
+  else
+  {
+    HT_ADCn->TSCR &= ~ADC_TEMP_SENSOR_START_OPERATE;
+  }
+}
+
+/*********************************************************************************************************//**
+ * @brief Check whether the specified Temperature Sensor flag has been set.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param TempSensorFlag: Specify the flag to check.
+ *   This parameter can be one of the following values:
+ *     @arg TEMP_SENSOR_FLAG_READY : The temperature sensor status is ready to measure with ADC.
+ *          Note:The TEMP_SENSOR_FLAG_READY is only keep the 256 clock periods of TSCLK then hardware auto
+ *          time-out to reset.
+ * @retval SET or RESET
+ ************************************************************************************************************/
+FlagStatus ADC_TempSensorGetFlagStatus(HT_ADC_TypeDef* HT_ADCn, u32 TempSensorFlag)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_TEMP_SENSOR_FLAG(TempSensorFlag));
+
+  if ((HT_ADCn->TSCR & TempSensorFlag) != RESET)
+  {
+    return SET;
+  }
+  else
+  {
+    return RESET;
+  }
+}
+
+/*********************************************************************************************************//**
+ * @brief Clear the specified Temperature Sensor flag.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param TempSensorFlag: Specify the flag to check.
+ *   This parameter can be one of the following values:
+ *     @arg TEMP_SENSOR_FLAG_READY : The temperature sensor status is ready to measure with ADC.
+ *          Note:The TEMP_SENSOR_FLAG_READY is only keep the 256 clock periods of TSCLK then hardware auto
+ *          time-out to reset.
+ * @retval None
+ ************************************************************************************************************/
+void ADC_TempSensorClearFlag(HT_ADC_TypeDef* HT_ADCn, u32 TempSensorFlag)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_TEMP_SENSOR_FLAG(TempSensorFlag));
+
+  HT_ADCn->TSCR &= ~TempSensorFlag;
+}
+
+/*********************************************************************************************************//**
+ * @brief Get the calibration values of the Temperature Sensor.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @retval Return the temperature sensor calibration value.
+ ************************************************************************************************************/
+u16 ADC_TempSensorGetCalValue(HT_ADC_TypeDef* HT_ADCn)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+
+  return HT_ADCn->TSCALR & ADC_MASK_TSCAL;
+}
+
+/*********************************************************************************************************//**
+ * @brief Enable or Disable the specified Temperature Sensor interrupts.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param ADC_INT_TP_x: Specify the temperature sensor interrupt sources that is to be enabled or disabled.
+ *   This parameter can be the following values:
+ *     @arg TEMP_SENSOR_INT_READY        :
+ * @param NewState: This parameter can be ENABLE or DISABLE.
+ * @retval None
+ ************************************************************************************************************/
+void ADC_TempSensorIntConfig(HT_ADC_TypeDef* HT_ADCn, u32 ADC_INT_TP_x, ControlStatus NewState)
+{
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+  Assert_Param(IS_TEMP_SENSOR_INT(ADC_INT_TP_x));
+  Assert_Param(IS_CONTROL_STATUS(NewState));
+
+  if (NewState != DISABLE)
+  {
+    HT_ADCn->TSCR |= ADC_INT_TP_x;
+  }
+  else
+  {
+    HT_ADCn->TSCR &= ~ADC_INT_TP_x;
+  }
+}
+
+/*********************************************************************************************************//**
+ * @brief Get the temperature. (Unit: 0.001 Celsius)
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @param tempPara:  pointer to a ADC_TempSensorParam_TypeDef structure.
+ *   - Advrefp_mV: The reference voltage of ADVREFP in millivolts.
+ *   - TsData: The digital value output by the temperature sensor converted by the ADC.
+ *   - CalTempPoint_mC: The calibration temperature point in milli-degree Celsius
+ * @param temperature_mC: the actual temperature and it is one thousandth degree Celsius.
+ * @retval SUCCESS or ERROR
+ ************************************************************************************************************/
+ErrStatus ADC_TempSensorGetTemp(HT_ADC_TypeDef* HT_ADCn, ADC_TempSensorParam_TypeDef* tempPara ,s32* temperature_mC)
+{
+  u32 ts_calib_vol;   /* The temperature sensor calibration voltage value that is converted from TSCALR     */
+  u32 ts_data_vol;    /* The actual temperature sensor output voltage value                                 */
+
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_ADC(HT_ADCn));
+
+  if (tempPara->TsData > 0xFFF)
+  {
+    return ERROR;
+  }
+
+  if (tempPara->Advrefp_mV > LIBCFG_MAX_VREF_VOL)
+  {
+    return ERROR;
+  }
+
+  /* Calculate the temperature sensor calibration voltage value.                                            */
+  /* Note: Multiplying the calculation result by 100 is to scale down the unit to convert to 10uV, avoiding */
+  /*       floating-point arithmetic later on.                                                              */
+  ts_calib_vol = (ADC_TempSensorGetCalValue(HT_ADCn) * LIBCFG_ADC_TEMP_SENSOR_CALIBRATION_ADVREFP * 100) >> 12;
+
+  /* Calculate the actual temperature sensor output voltage value.                                          */
+  /* Note: Multiplying the calculation result by 100 is to scale down the unit to convert to 10uV, avoiding */
+  /*       floating-point arithmetic later on.                                                              */
+  ts_data_vol  = (tempPara->TsData  * tempPara->Advrefp_mV * 100) >> 12;
+
+  /* Calculate the actual temperature.                                                                      */
+  *temperature_mC = (s32)(((s32)(ts_calib_vol - ts_data_vol) * 1000) / LIBCFG_ADC_TEMP_SENSOR_AVG_SLOPE +
+                    tempPara->CalTempPoint_mC);
+  return SUCCESS;
+}
+
+/*********************************************************************************************************//**
+ * @brief Get the calibration temperature point of the Temperature Sensor.
+ * @param HT_ADCn: where HT_ADCn is the selected ADC from the ADC peripherals.
+ * @retval Return the temperature calibration reference temperature (Unit: 0.001 Celsius).
+ * @note The calibration temperature point can be defined by user selection via the ADC_CAL_TEMP_POINT_SOURCE.
+ *   - 0: A fixed default temperature is used.
+ *     !!! NOTICE !!! The fixed default temperature is calibrated under specific production test conditions,
+ *     which represent the environment of that batch only. The actual calibration temperature may slightly
+ *     between production lots.
+ *   - 1: The value is derived from the factory trim code.
+ ************************************************************************************************************/
+s32 ADC_TempSensorGetCalTempPoint(HT_ADC_TypeDef* HT_ADCn)
+{
+  /* Check the parameters                                                                                    */
+  Assert_Param(IS_ADC(HT_ADCn));
+  #if ADC_CAL_TEMP_POINT_SORUCE
+  /* Get calibration temperature point from factory trim code                                                */
+  /* To Do... */
+   #error "Trim code feature is not yet implemented."
+  #else
+  /* Return fixed default calibration temperature point                                                      */
+  HT_ADCn->TSCALR; /* Used only to avoid "unused parameter" compiler warning.                                */
+  return  ADC_FIXED_CAL_TEMP_mC;
+  #endif
 }
 #endif
 /**

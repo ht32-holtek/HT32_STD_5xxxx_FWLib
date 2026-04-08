@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/TouchKey/main.c
- * @version $Rev:: 4935         $
- * @date    $Date:: 2020-08-26 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -145,6 +145,9 @@ void I2C_Configuration(void)
     I2C_InitStructure.I2C_OwnAddress = 0x00;
     I2C_InitStructure.I2C_Speed = I2C_TOUCHKEY_SPEED;
     I2C_InitStructure.I2C_SpeedOffset = 0;
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+    #endif
     I2C_Init(TOUCHKEY_I2C, &I2C_InitStructure);
   }
 

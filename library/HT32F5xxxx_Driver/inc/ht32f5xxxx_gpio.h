@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_gpio.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the GPIO and AFIO library.
  *************************************************************************************************************
  * @attention
@@ -160,7 +160,11 @@ typedef enum
 #define AFIO_FUN_DAC0       AFIO_MODE_2        /*!< AFIO mode DAC0                                          */
 #endif
 #define AFIO_FUN_ADC0       AFIO_MODE_2        /*!< AFIO mode ADC0                                          */
+#if (LIBCFG_AFIO_ADC1_MODE1)
+#define AFIO_FUN_ADC1       AFIO_MODE_2        /*!< AFIO mode ADC1                                          */
+#else
 #define AFIO_FUN_ADC1       AFIO_MODE_3        /*!< AFIO mode ADC1                                          */
+#endif
 #if (LIBCFG_AFIO_LEDC_MODE3)
 #define AFIO_FUN_LEDC       AFIO_MODE_3        /*!< AFIO mode LEDC                                          */
 #else
@@ -174,8 +178,10 @@ typedef enum
 #define AFIO_FUN_CMP        AFIO_FUN_CMP_OPA   /*!< AFIO mode CMP                                           */
 #define AFIO_FUN_OPA        AFIO_FUN_CMP_OPA   /*!< AFIO mode OPA                                           */
 #elif ((LIBCFG_CMP) && (LIBCFG_PGA))
+#if (!LIBCFG_AFIO_CMP_PGA_NO_SHARE)
 #define AFIO_FUN_CMP        AFIO_FUN_CMP_PGA   /*!< AFIO mode CMP                                           */
 #define AFIO_FUN_PGA        AFIO_FUN_CMP_PGA   /*!< AFIO mode PGA                                           */
+#endif
 #elif (LIBCFG_CMP)
 #define AFIO_FUN_CMP        AFIO_MODE_3        /*!< AFIO mode CMP                                           */
 #endif
@@ -201,7 +207,12 @@ typedef enum
 #elif ((LIBCFG_CMP) && (LIBCFG_OPA))
 #define AFIO_FUN_CMP_OPA    AFIO_MODE_8        /*!< AFIO mode CMP/OPA                                       */
 #elif ((LIBCFG_CMP) && (LIBCFG_PGA))
+#if (!LIBCFG_AFIO_CMP_PGA_NO_SHARE)
 #define AFIO_FUN_CMP_PGA    AFIO_MODE_8        /*!< AFIO mode CMP/PGA                                       */
+#else
+#define AFIO_FUN_CMP        AFIO_MODE_8        /*!< AFIO mode CMP                                           */
+#define AFIO_FUN_PGA        AFIO_MODE_11       /*!< AFIO mode PGA                                           */
+#endif
 #endif
 #define AFIO_FUN_EBI        AFIO_MODE_9        /*!< AFIO mode EBI                                           */
 #define AFIO_FUN_I2S        AFIO_MODE_10       /*!< AFIO mode I2S                                           */
@@ -215,6 +226,7 @@ typedef enum
 
 /* Definitions of AFIO_FUN alias                                                                            */
 #define AFIO_FUN_MCTM0      AFIO_FUN_MCTM_GPTM
+#define AFIO_FUN_MCTM1      AFIO_FUN_MCTM_GPTM
 
 #define AFIO_FUN_GPTM0      AFIO_FUN_MCTM_GPTM
 #define AFIO_FUN_GPTM1      AFIO_FUN_MCTM_GPTM
@@ -230,8 +242,6 @@ typedef enum
 #define AFIO_FUN_SCTM1      AFIO_FUN_SCTM
 #define AFIO_FUN_SCTM2      AFIO_FUN_SCTM
 #define AFIO_FUN_SCTM3      AFIO_FUN_SCTM
-
-#define AFIO_FUN_ADC        AFIO_FUN_ADC0
 
 /* Definitions of GPIO_Px                                                                                   */
 #define GPIO_PORT_NUM   (6)

@@ -63,7 +63,7 @@
   //#define ADC_VREF_LEVEL                ADC_VREF_4V5
   //#define VREF_VALUE_mV                 (4500)
 
-#elif (LIBCFG_ADC_IVREF)
+#elif (LIBCFG_ADC_IVREF) && (!LIBCFG_ADC_IVREF_VOLTCONFIG)
 
   #if (LIBCFG_ADC_IVREF_DEFAULT_08V)
   #define ADC_VREF_LEVEL                ADC_VREF_0V8
@@ -82,6 +82,18 @@
   //#define ADC_VREF_LEVEL                ADC_VREF_2V7
   //#define VREF_VALUE_mV                 (2700)
 
+#elif (LIBCFG_ADC_IVREF) && (LIBCFG_ADC_IVREF_VOLTCONFIG)
+  #define ADC_VREF_LEVEL                ADC_VREF_2V0
+  #define VREF_VALUE_mV                 (2000)
+
+  //#define ADC_VREF_LEVEL                ADC_VREF_2V5
+  //#define VREF_VALUE_mV                 (2500)
+
+  //#define ADC_VREF_LEVEL                ADC_VREF_2V7
+  //#define VREF_VALUE_mV                 (2700)
+
+  //#define ADC_VREF_LEVEL                ADC_VREF_3V0
+  //#define VREF_VALUE_mV                 (3000)
 #endif
 
 /* Private function prototypes -----------------------------------------------------------------------------*/
@@ -136,7 +148,9 @@ void ADC_MainRoutine(void)
 
     /* Show VDDA, MVDDA, and ADC input (potentiometer) voltage and ADC result                               */
     printf("VDDA=   %4dmV  \n\r", (VREF_VALUE_mV * 4095) / gADC_Result[1]);
+    #if (LIBCFG_ADC_MVDDA)
     printf("MVDDA=  %4dmV  Value= %4d\n\r", (VREF_VALUE_mV * gADC_Result[0]) / gADC_Result[1], gADC_Result[0]);
+    #endif
     printf("VR=     %4dmV  Value= %4d\n\n\r", (VREF_VALUE_mV * gADC_Result[2]) / gADC_Result[1], gADC_Result[2]);
   }
 }
@@ -188,7 +202,9 @@ void ADC_Configuration(void)
     #endif
 
     /* Set ADC conversion sequence as channel n                                                             */
+    #if (LIBCFG_ADC_MVDDA)
     ADC_RegularChannelConfig(HT_ADC0, ADC_CH_MVDDA, 0, 0);
+    #endif
     ADC_RegularChannelConfig(HT_ADC0, HTCFG_INTERNAL_CH, 1, 0);
     ADC_RegularChannelConfig(HT_ADC0, HTCFG_VR_ADC_CH, 2, 0);
 
@@ -208,8 +224,10 @@ void ADC_Configuration(void)
   */
   ADC_VREFCmd(HT_ADC0, ENABLE);
 
+  #if (LIBCFG_ADC_MVDDA)
   /* Enable MVDDA function                                                                                  */
   ADC_MVDDACmd(HT_ADC0, ENABLE);
+  #endif
 
   /* Enable ADC single/cycle end of conversion interrupt                                                    */
   ADC_IntConfig(HT_ADC0, ADC_INT_SINGLE_EOC | ADC_INT_CYCLE_EOC, ENABLE);

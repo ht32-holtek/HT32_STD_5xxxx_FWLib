@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_usbd.h
- * @version $Rev:: 6559         $
- * @date    $Date:: 2022-12-18 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of the USB Device Driver.
  *************************************************************************************************************
  * @attention
@@ -36,7 +36,9 @@
 /* Includes ------------------------------------------------------------------------------------------------*/
 #include "ht32.h"
 
-#if (LIBCFG_USBD_V2)
+#if (LIBCFG_USBD_V3)
+#include "ht32f5xxxx_03_usbdconf.h"
+#elif (LIBCFG_USBD_V2)
 #include "ht32f5xxxx_02_usbdconf.h"
 #else
 #include "ht32f5xxxx_01_usbdconf.h"
@@ -57,7 +59,9 @@
 /** @defgroup USBDevice_Settings USB Device settings
   * @{
   */
-#if (LIBCFG_USBD_V2)  
+#if (LIBCFG_USBD_V3)
+#define MAX_EP_NUM                  (13)
+#elif (LIBCFG_USBD_V2)
 #define MAX_EP_NUM                  (10)
 #else
 #define MAX_EP_NUM                  (8)
@@ -81,9 +85,14 @@ typedef enum
   USBD_EPT5  = 5,
   USBD_EPT6  = 6,
   USBD_EPT7  = 7,
-  #if (LIBCFG_USBD_V2)
+  #if (LIBCFG_USBD_V2) || (LIBCFG_USBD_V3)
   USBD_EPT8  = 8,
   USBD_EPT9  = 9,
+  #endif
+  #if (LIBCFG_USBD_V3)
+  USBD_EPT10 = 10,
+  USBD_EPT11 = 11,
+  USBD_EPT12 = 12,
   #endif
   USBD_NOEPT = -1,
 } USBD_EPTn_Enum;
@@ -158,6 +167,15 @@ typedef struct
 #define EP5IE                       ((u32)0x00002000)   /*!< Endpoint 5 Interrupt Enable                    */
 #define EP6IE                       ((u32)0x00004000)   /*!< Endpoint 6 Interrupt Enable                    */
 #define EP7IE                       ((u32)0x00008000)   /*!< Endpoint 7 Interrupt Enable                    */
+#if (LIBCFG_USBD_V2) || (LIBCFG_USBD_V3)
+#define EP8IE                       ((u32)0x00010000)   /*!< Endpoint 8 Interrupt Enable                    */
+#define EP9IE                       ((u32)0x00020000)   /*!< Endpoint 9 Interrupt Enable                    */
+#endif
+#if (LIBCFG_USBD_V3)
+#define EP10IE                      ((u32)0x00040000)   /*!< Endpoint 10 Interrupt Enable                   */
+#define EP11IE                      ((u32)0x00080000)   /*!< Endpoint 11 Interrupt Enable                   */
+#define EP12IE                      ((u32)0x00100000)   /*!< Endpoint 12 Interrupt Enable                   */
+#endif
 
 /* USB Interrupt Status Register (USBISR)                                                                   */
 #define SOFIF                       ((u32)0x00000002)   /*!< Start Of Frame Interrupt Flag                  */
@@ -174,10 +192,19 @@ typedef struct
 #define EP5IF                       ((u32)0x00002000)   /*!< Endpoint 5 Interrupt flag                      */
 #define EP6IF                       ((u32)0x00004000)   /*!< Endpoint 6 Interrupt flag                      */
 #define EP7IF                       ((u32)0x00008000)   /*!< Endpoint 7 Interrupt flag                      */
-#if (LIBCFG_USBD_V2)
+#if (LIBCFG_USBD_V2) || (LIBCFG_USBD_V3)
 #define EP8IF                       ((u32)0x00010000)   /*!< Endpoint 8 Interrupt flag                      */
 #define EP9IF                       ((u32)0x00020000)   /*!< Endpoint 9 Interrupt flag                      */
+#endif
+#if (LIBCFG_USBD_V3)
+#define EP10IF                      ((u32)0x00040000)   /*!< Endpoint 10 Interrupt flag                     */
+#define EP11IF                      ((u32)0x00080000)   /*!< Endpoint 11 Interrupt flag                     */
+#define EP12IF                      ((u32)0x00100000)   /*!< Endpoint 12 Interrupt flag                     */
+#endif
+#if (LIBCFG_USBD_V2)
 #define EPnIF                       ((u32)0x0003FF00)   /*!< Endpoint n Interrupt flag                      */
+#elif (LIBCFG_USBD_V3)
+#define EPnIF                       ((u32)0x001FFF00)   /*!< Endpoint n Interrupt flag                      */
 #else
 #define EPnIF                       ((u32)0x0000FF00)   /*!< Endpoint n Interrupt flag                      */
 #endif

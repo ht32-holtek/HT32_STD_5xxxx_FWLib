@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/PDMA/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -374,6 +374,20 @@
   #define HTCFG_PDMA_IRQ                          (PDMACH2_3_IRQn)
   #define HTCFG_PDMA_IRQHandler                   (PDMA_CH2_3_IRQHandler)
   #define HTCFG_PDMA_CURRENT_TRANSFER_SIZE        (HT_PDMA->PDMACH2.CTSR >> 16)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_UART_TX_GPIOX                    A
+  #define _HTCFG_UART_TX_GPION                    3
+  #define _HTCFG_UART_RX_GPIOX                    A
+  #define _HTCFG_UART_RX_GPION                    1
+  #define HTCFG_UART_IPN                          USART0
+  
+  #define HTCFG_TX_PDMA_CH                        (PDMA_USART0_TX)
+  #define HTCFG_RX_PDMA_CH                        (PDMA_USART0_RX)
+  #define HTCFG_PDMA_IRQ                          (PDMACH0_2_IRQn)
+  #define HTCFG_PDMA_IRQHandler                   (PDMA_CH0_2_IRQHandler)
+  #define HTCFG_PDMA_CURRENT_TRANSFER_SIZE        (HT_PDMA->PDMACH0.CTSR >> 16)
 #endif
 
 #define HTCFG_UART_TX_GPIO_ID                     STRCAT2(GPIO_P,         _HTCFG_UART_TX_GPIOX)

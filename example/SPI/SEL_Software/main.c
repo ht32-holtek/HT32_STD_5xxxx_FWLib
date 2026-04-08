@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/SEL_Software/main.c
- * @version $Rev:: 7674         $
- * @date    $Date:: 2024-03-28 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -55,10 +55,10 @@ void SPI_Loopback(void);
 TestResult CmpBuffer(u8* Buffer1, u8* Buffer2, u32 BufferLength);
 
 /* Private variables ---------------------------------------------------------------------------------------*/
-u8 SPI0_Buffer_Tx[BufferSize] = {0x11, 0x22, 0x44, 0x88};
-u8 SPI1_Buffer_Tx[BufferSize] = {0x88, 0x44, 0x22, 0x11};
-u8 SPI0_Buffer_Rx[BufferSize] = {0};
-u8 SPI1_Buffer_Rx[BufferSize] = {0};
+u8 SPI_Master_Buffer_Tx[BufferSize] = {0x11, 0x22, 0x44, 0x88};
+u8 SPI_Slave_Buffer_Tx[BufferSize]  = {0x88, 0x44, 0x22, 0x11};
+u8 SPI_Master_Buffer_Rx[BufferSize] = {0};
+u8 SPI_Slave_Buffer_Rx[BufferSize]  = {0};
 
 vu8 Tx_Index = 0, Rx_Index = 0;
 
@@ -69,9 +69,8 @@ vu8 Tx_Index = 0, Rx_Index = 0;
   ***********************************************************************************************************/
 int main(void)
 {
-  /* Initialize LED1 & LED2 on HT32 board                                                                   */
+  /* Initialize LED1 on HT32 board                                                                          */
   HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
 
   SPI_Configuration();
 
@@ -93,28 +92,28 @@ void SPI_Configuration(void)
   SPI_InitTypeDef SPI_InitStructure;
 
   CKCU_PeripClockConfig_TypeDef CKCUClock = {{0}};
-  /* Enable SEL Pin, Master, Slave & AFIO clock                                                                     */
+  /* Enable SEL Pin, Master, Slave & AFIO clock                                                            */
   HTCFG_SPI_MASTER_SEL_CLOCK(CKCUClock)         = 1;
   HTCFG_SPI_MASTER_CLOCK(CKCUClock)             = 1;
   HTCFG_SPI_SLAVE_CLOCK(CKCUClock)              = 1;
   CKCUClock.Bit.AFIO       = 1;
   CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
-  /* MASTER_SEL idle state is HIGH                                                                            */
+  /* MASTER_SEL idle state is HIGH                                                                         */
   GPIO_PullResistorConfig(HTCFG_SPI_MASTER_SEL_GPIO_ID, HTCFG_SPI_MASTER_SEL_AFIO_PIN, GPIO_PR_UP);
 
-  /* Configure related IO to Master mode                                                                      */
+  /* Configure related IO to Master mode                                                                   */
   AFIO_GPxConfig(HTCFG_SPI_MASTER_SEL_AFIO_PORT, HTCFG_SPI_MASTER_SEL_AFIO_PIN, AFIO_FUN_SPI);
   AFIO_GPxConfig(HTCFG_SPI_MASTER_SCK_AFIO_PORT, HTCFG_SPI_MASTER_SCK_AFIO_PIN, AFIO_FUN_SPI);
   AFIO_GPxConfig(HTCFG_SPI_MASTER_MOSI_AFIO_PORT, HTCFG_SPI_MASTER_MOSI_AFIO_PIN, AFIO_FUN_SPI);
   AFIO_GPxConfig(HTCFG_SPI_MASTER_MISO_AFIO_PORT, HTCFG_SPI_MASTER_MISO_AFIO_PIN, AFIO_FUN_SPI);
-  /* Configure related IO to Slave mode                                                                      */
+  /* Configure related IO to Slave mode                                                                    */
   AFIO_GPxConfig(HTCFG_SPI_SLAVE_SEL_AFIO_PORT, HTCFG_SPI_SLAVE_SEL_AFIO_PIN, AFIO_FUN_SPI);
   AFIO_GPxConfig(HTCFG_SPI_SLAVE_SCK_AFIO_PORT, HTCFG_SPI_SLAVE_SCK_AFIO_PIN, AFIO_FUN_SPI);
   AFIO_GPxConfig(HTCFG_SPI_SLAVE_MOSI_AFIO_PORT, HTCFG_SPI_SLAVE_MOSI_AFIO_PIN, AFIO_FUN_SPI);
   AFIO_GPxConfig(HTCFG_SPI_SLAVE_MISO_AFIO_PORT, HTCFG_SPI_SLAVE_MISO_AFIO_PIN, AFIO_FUN_SPI);
 
-  /* Master configuration                                                                                     */
+  /* Master configuration                                                                                   */
   SPI_InitStructure.SPI_Mode = SPI_MASTER;
   SPI_InitStructure.SPI_FIFO = SPI_FIFO_DISABLE;
   SPI_InitStructure.SPI_DataLength = SPI_DATALENGTH_8;
@@ -128,14 +127,14 @@ void SPI_Configuration(void)
   SPI_InitStructure.SPI_ClockPrescaler = 4;
   SPI_Init(HTCFG_SPI_MASTER, &SPI_InitStructure);
 
-  /* Slave configuration                                                                                     */
+  /* Slave configuration                                                                                    */
   SPI_InitStructure.SPI_Mode = SPI_SLAVE;
   SPI_Init(HTCFG_SPI_SLAVE, &SPI_InitStructure);
 
-  /* Slave SEL as output mode for slave select                                                                */
+  /* Slave SEL as output mode for slave select                                                              */
   SPI_SELOutputCmd(HTCFG_SPI_MASTER, ENABLE);
 
-  /* Enable Master & Slave                                                                                     */
+  /* Enable Master & Slave                                                                                  */
   SPI_Cmd(HTCFG_SPI_MASTER, ENABLE);
   SPI_Cmd(HTCFG_SPI_SLAVE, ENABLE);
 }
@@ -152,47 +151,47 @@ void SPI_Loopback(void)
     /* Set SEL output as active                                                                             */
     SPI_SoftwareSELCmd(HTCFG_SPI_MASTER, SPI_SEL_ACTIVE);
 
-    /* Check on Slave Tx Buffer empty                                                                        */
+    /* Check on Slave Tx Buffer empty                                                                       */
     while (!SPI_GetFlagStatus(HTCFG_SPI_SLAVE, SPI_FLAG_TXBE));
 
-    /* Send Slave data                                                                                       */
-    SPI_SendData(HTCFG_SPI_SLAVE, SPI1_Buffer_Tx[Tx_Index]);
+    /* Send Slave data                                                                                      */
+    SPI_SendData(HTCFG_SPI_SLAVE, SPI_Slave_Buffer_Tx[Tx_Index]);
 
-    /* Check on Master Tx Buffer empty                                                                        */
+    /* Check on Master Tx Buffer empty                                                                      */
     while (!SPI_GetFlagStatus(HTCFG_SPI_MASTER, SPI_FLAG_TXBE));
 
-    /* Send Master data                                                                                       */
-    SPI_SendData(HTCFG_SPI_MASTER, SPI0_Buffer_Tx[Tx_Index ++]);
+    /* Send Master data                                                                                     */
+    SPI_SendData(HTCFG_SPI_MASTER, SPI_Master_Buffer_Tx[Tx_Index ++]);
 
-    /* Check on Slave Rx Buffer data reception                                                               */
+    /* Check on Slave Rx Buffer data reception                                                              */
     while (!SPI_GetFlagStatus(HTCFG_SPI_SLAVE, SPI_FLAG_RXBNE));
 
-    /* Read Slave received data                                                                              */
-    SPI1_Buffer_Rx[Rx_Index] = SPI_ReceiveData(HTCFG_SPI_SLAVE);
+    /* Read Slave received data                                                                             */
+    SPI_Slave_Buffer_Rx[Rx_Index] = SPI_ReceiveData(HTCFG_SPI_SLAVE);
 
-    /* Check on Master Rx Buffer data reception                                                               */
+    /* Check on Master Rx Buffer data reception                                                             */
     while (!SPI_GetFlagStatus(HTCFG_SPI_MASTER, SPI_FLAG_RXBNE));
 
-    /* Read Master received data                                                                              */
-    SPI0_Buffer_Rx[Rx_Index ++] = SPI_ReceiveData(HTCFG_SPI_MASTER);
+    /* Read Master received data                                                                            */
+    SPI_Master_Buffer_Rx[Rx_Index ++] = SPI_ReceiveData(HTCFG_SPI_MASTER);
 
-    /* Wait until Master not busy                                                                             */
+    /* Wait until Master not busy                                                                           */
     while (SPI_GetFlagStatus(HTCFG_SPI_MASTER, SPI_FLAG_BUSY));
 
     /* Set SEL output as inactive                                                                           */
     SPI_SoftwareSELCmd(HTCFG_SPI_MASTER, SPI_SEL_INACTIVE);
   }
 
-  /* Check on validity of received data on Master & Slave                                                      */
-  if (CmpBuffer(SPI0_Buffer_Tx, SPI1_Buffer_Rx, BufferSize) && CmpBuffer(SPI1_Buffer_Tx, SPI0_Buffer_Rx, BufferSize))
+  /* Check on validity of received data on Master & Slave                                                   */
+  if (CmpBuffer(SPI_Master_Buffer_Tx, SPI_Slave_Buffer_Rx, BufferSize) && CmpBuffer(SPI_Slave_Buffer_Tx, SPI_Master_Buffer_Rx, BufferSize))
   {
     /* Turn on LED1 if the transmitted and received data are equal                                          */
     HT32F_DVB_LEDOn(HT_LED1);
   }
   else
   {
-    /* Turn on LED2 if the transmitted and received data are different                                      */
-    HT32F_DVB_LEDOn(HT_LED2);
+    /* Turn off LED1 if the transmitted and received data are different                                      */
+    HT32F_DVB_LEDOff(HT_LED1);
   }
 }
 

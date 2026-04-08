@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/Clock_Configuration/main.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -189,13 +189,13 @@ void SysClockConfig_8MHz(void)
 
     if(ClockStatus != SUCCESS)
     {
-      while(1);
+      while(1){};
     }
   }
   else
   {
     /* HSE is failed. User can handle this situation here. */
-    while(1);
+    while(1){};
   }
 }
 #endif
@@ -257,13 +257,13 @@ void SysClockConfig_24MHz(void)
 
     if(ClockStatus != SUCCESS)
     {
-      while(1);
+      while(1){};
     }
   }
   else
   {
     /* HSE is failed. User can handle this situation here. */
-    while(1);
+    while(1){};
   }
 }
 #endif
@@ -321,13 +321,13 @@ void SysClockConfig_40MHz(void)
 
     if(ClockStatus != SUCCESS)
     {
-      while(1);
+      while(1){};
     }
   }
   else
   {
     /* HSE is failed. User can handle this situation here. */
-    while(1);
+    while(1){};
   }
 }
 #endif
@@ -388,13 +388,13 @@ void SysClockConfig_48MHz(void)
 
     if(ClockStatus != SUCCESS)
     {
-      while(1);
+      while(1){};
     }
   }
   else
   {
     /* HSE is failed. User can handle this situation here. */
-    while(1);
+    while(1){};
   }
 }
 #endif
@@ -452,13 +452,13 @@ void SysClockConfig_60MHz(void)
 
     if(ClockStatus != SUCCESS)
     {
-      while(1);
+      while(1){};
     }
   }
   else
   {
     /* HSE is failed. User can handle this situation here. */
-    while(1);
+    while(1){};
   }
 }
 #endif
@@ -516,13 +516,13 @@ void SysClockConfig_80MHz(void)
 
     if(ClockStatus != SUCCESS)
     {
-      while(1);
+      while(1){};
     }
   }
   else
   {
     /* HSE is failed. User can handle this situation here. */
-    while(1);
+    while(1){};
   }
 }
 #endif

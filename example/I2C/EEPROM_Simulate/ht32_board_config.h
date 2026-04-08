@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/EEPROM_Simulate/ht32_board_config.h
- * @version $Rev:: 7348         $
- * @date    $Date:: 2023-12-05 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -52,6 +52,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F52253_SK)
@@ -70,6 +73,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PA)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_1)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F52341_SK)
@@ -88,6 +94,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F52352_SK)
@@ -106,6 +115,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PA)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_1)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F50241_SK)
@@ -124,6 +136,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F57341_SK)
@@ -142,6 +157,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PA)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_1)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F57352_SK)
@@ -160,6 +178,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PA)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_1)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F52367_SK)
@@ -178,6 +199,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_BM53A367A_DVB)
@@ -196,6 +220,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)               // A4/D18
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_5)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_BM18B367A_DVB)
@@ -214,6 +241,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)               // A4/D18
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_5)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F50343_SK)
@@ -232,6 +262,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F54241_SK)
@@ -250,6 +283,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PA)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_1)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F54253_SK)
@@ -268,6 +304,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F50452_SK)
@@ -286,6 +325,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PA)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_1)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F53252_SK)
@@ -304,6 +346,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PA)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_1)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F50441_SK)
@@ -322,6 +367,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F53241_SK)
@@ -340,6 +388,9 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
 #endif
 
 #if defined(USE_HT32F52244_SK)
@@ -358,6 +409,27 @@
   #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PA)
   #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_1)
   #define HTCFG_I2C_EEPROM_IRQn            (I2C1_IRQn)
+
+  #define HTCFG_I2C_MASTER_IRQHandler      I2C0_IRQHandler
+  #define HTCFG_I2C_EEPROM_IRQHandler      I2C1_IRQHandler
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_I2C_MASTER_CLK(ck)         (ck.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT            (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID     (GPIO_PA)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_3)
+  #define HTCFG_I2C_MASTER_IRQn            (I2C0_1_IRQn)
+
+  #define HTCFG_I2C_EEPROM_CLK(ck)         (ck.Bit.I2C1)
+  #define HTCFG_I2C_EEPROM_PORT            (HT_I2C1)
+  #define HTCFG_I2C_EEPROM_SCL_GPIO_ID     (GPIO_PB)
+  #define HTCFG_I2C_EEPROM_SCL_AFIO_PIN    (AFIO_PIN_15)
+  #define HTCFG_I2C_EEPROM_SDA_GPIO_ID     (GPIO_PC)
+  #define HTCFG_I2C_EEPROM_SDA_AFIO_PIN    (AFIO_PIN_0)
+  #define HTCFG_I2C_EEPROM_IRQn            (I2C0_1_IRQn)
 #endif
 
 #ifdef __cplusplus

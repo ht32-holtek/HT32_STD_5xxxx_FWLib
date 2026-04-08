@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/Interrupt_FIFO/ht32_board_config.h
- * @version $Rev:: 8284         $
- * @date    $Date:: 2024-11-22 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -247,6 +247,14 @@
   #define _HTCFG_UART_TX_GPION                    10
   #define _HTCFG_UART_RX_GPIOX                    B
   #define _HTCFG_UART_RX_GPION                    9
+  #define HTCFG_UART_IPN                          USART0
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_UART_TX_GPIOX                    A
+  #define _HTCFG_UART_TX_GPION                    3
+  #define _HTCFG_UART_RX_GPIOX                    A
+  #define _HTCFG_UART_RX_GPION                    1
   #define HTCFG_UART_IPN                          USART0
 #endif
 

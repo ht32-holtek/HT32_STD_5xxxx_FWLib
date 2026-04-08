@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f66246_libcfg.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The library configuration file.
  *************************************************************************************************************
 * @attention
@@ -101,6 +101,7 @@
 #define LIBCFG_SCTM3                      (1)
 #define LIBCFG_TM_65X_66X_V1              (1)
 #define LIBCFG_TM_BK_FROM_CMP             (1)
+#define LIBCFG_TM_CKDIV_8                 (1)
 #define LIBCFG_TM_RECCDI                  (1)
 #define LIBCFG_TM_TIFN_5BIT               (1)
 #define LIBCFG_USART_LIN                  (1)

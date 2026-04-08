@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/Mass_Storage/ht32_board_config.h
- * @version $Rev:: 7356         $
- * @date    $Date:: 2023-12-06 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -343,6 +343,30 @@
   #define SD_SPI_SEL_AFIO_MODE      (AFIO_FUN_GPIO)
   #define SD_SPI_SEL_CLK(CK)        (CK.Bit.PA)
   #define SD_SPI_SEL_PORT           (HT_GPIOA)
+#endif
+
+#if defined(USE_HT32F61152_DVB)
+  #define SD_SPI_CLK(CK)            (CK.Bit.SPI0)
+  #define SD_SPI                    (HT_SPI0)
+
+  #define SD_SPI_SCK_GPIO_ID        (GPIO_PC)
+  #define SD_SPI_SCK_AFIO_PIN       (AFIO_PIN_2)
+  #define SD_SPI_SCK_AFIO_MODE      (AFIO_FUN_SPI)
+
+  #define SD_SPI_MOSI_GPIO_ID       (GPIO_PB)
+  #define SD_SPI_MOSI_AFIO_PIN      (AFIO_PIN_4)
+  #define SD_SPI_MOSI_AFIO_MODE     (AFIO_FUN_SPI)
+
+  #define SD_SPI_MISO_GPIO_ID       (GPIO_PB)
+  #define SD_SPI_MISO_AFIO_PIN      (AFIO_PIN_5)
+  #define SD_SPI_MISO_AFIO_MODE     (AFIO_FUN_SPI)
+  #define SD_SPI_MISO_CLK(CK)       (CK.Bit.PB)
+
+  #define SD_SPI_SEL_GPIO_ID        (GPIO_PB)
+  #define SD_SPI_SEL_GPIO_PIN       (GPIO_PIN_7)
+  #define SD_SPI_SEL_AFIO_MODE      (AFIO_FUN_GPIO)
+  #define SD_SPI_SEL_CLK(CK)        (CK.Bit.PB)
+  #define SD_SPI_SEL_PORT           (HT_GPIOB)
 #endif
 
 #ifdef __cplusplus

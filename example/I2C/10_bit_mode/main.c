@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/10_bit_mode/main.c
- * @version $Rev:: 4877         $
- * @date    $Date:: 2020-08-06 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -113,6 +113,9 @@ void I2C_Configuration(void)
   I2C_InitStructure.I2C_OwnAddress = I2C_MASTER_ADDRESS;
   I2C_InitStructure.I2C_Speed = ClockSpeed;
   I2C_InitStructure.I2C_SpeedOffset = 0;
+  #if (LIBCFG_I2C_NOSTRETCH)
+  I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+  #endif
   I2C_Init(I2C_MASTER_PORT, &I2C_InitStructure);
 
   /* I2C Slave configuration                                                                                */
@@ -120,6 +123,11 @@ void I2C_Configuration(void)
   I2C_InitStructure.I2C_AddressingMode = I2C_ADDRESSING_10BIT;
   I2C_InitStructure.I2C_Acknowledge = ENABLE;
   I2C_InitStructure.I2C_OwnAddress = I2C_SLAVE_ADDRESS;
+  I2C_InitStructure.I2C_Speed = ClockSpeed;
+  I2C_InitStructure.I2C_SpeedOffset = 0;
+  #if (LIBCFG_I2C_NOSTRETCH)
+  I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+  #endif
   I2C_Init(I2C_SLAVE_PORT, &I2C_InitStructure);
 
   /* Enable I2C0 & I2C1                                                                                     */

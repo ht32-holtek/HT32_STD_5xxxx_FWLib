@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/Interrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 5456         $
- * @date    $Date:: 2021-07-06 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -43,16 +43,16 @@
 
 
 /* Private constants ---------------------------------------------------------------------------------------*/
-#define I2C1_SLAVE_ADDRESS     0x60
+#define I2C_SLAVE_ADDRESS     0x60
 #define BufferSize             4
 
 /* Private variables ---------------------------------------------------------------------------------------*/
-extern u8 I2C0_Master_Buffer_Tx[];
-extern u8 I2C0_Master_Buffer_Rx[];
-extern u8 I2C1_Slave_Buffer_Rx[];
+extern u8 I2C_Master_Buffer_Tx[];
+extern u8 I2C_Master_Buffer_Rx[];
+extern u8 I2C_Slave_Buffer_Rx[];
 
-extern vu8 I2C0_Master_Tx_Index, I2C0_Master_Rx_Index,  \
-           I2C1_Slave_Tx_Index,  I2C1_Slave_Rx_Index;
+extern vu8 I2C_Master_Tx_Index, I2C_Master_Rx_Index,  \
+           I2C_Slave_Tx_Index,  I2C_Slave_Rx_Index;
 
 extern u32 IsMasterRxFinish;
 
@@ -126,56 +126,56 @@ void SysTick_Handler(void)
 }
 
 /*********************************************************************************************************//**
- * @brief   This function handles I2C0 interrupt.
+ * @brief   This function handles common I2C Master interrupt processing.
  * @retval  None
  ************************************************************************************************************/
-void I2C0_IRQHandler(void)
+void I2C_MASTER_Process_Handler(void)
 {
-  switch (I2C_ReadRegister(HT_I2C0, I2C_REGISTER_SR))
+  switch (I2C_ReadRegister(HTCFG_I2C_MASTER_PORT, I2C_REGISTER_SR))
   {
     /*-----------------------------Master Transmitter ------------------------------------------------------*/
     case I2C_MASTER_SEND_START:
       break;
 
     case I2C_MASTER_TRANSMITTER_MODE:
-      /* Send the first data to I2C1                                                                        */
-      I2C_SendData(HT_I2C0, I2C0_Master_Buffer_Tx[I2C0_Master_Tx_Index ++]);
+      /* Send the first data to I2C Slave                                                                   */
+      I2C_SendData(HTCFG_I2C_MASTER_PORT, I2C_Master_Buffer_Tx[I2C_Master_Tx_Index ++]);
       break;
 
     case I2C_MASTER_TX_EMPTY:
-      if (I2C0_Master_Tx_Index < BufferSize)
+      if (I2C_Master_Tx_Index < BufferSize)
       {
-        /* Send the remainder data to I2C1                                                                  */
-        I2C_SendData(HT_I2C0, I2C0_Master_Buffer_Tx[I2C0_Master_Tx_Index ++]);
+        /* Send the remainder data to I2C Slave                                                             */
+        I2C_SendData(HTCFG_I2C_MASTER_PORT, I2C_Master_Buffer_Tx[I2C_Master_Tx_Index ++]);
       }
 
       else
       {
-        /* Send I2C0 re-START & I2C1 slave address for read                                                 */
-        I2C_TargetAddressConfig(HT_I2C0, I2C1_SLAVE_ADDRESS, I2C_MASTER_READ);
+        /* Send I2C Master re-START & I2C Slave address for read                                            */
+        I2C_TargetAddressConfig(HTCFG_I2C_MASTER_PORT, I2C_SLAVE_ADDRESS, I2C_MASTER_READ);
       }
       break;
 
     /*-----------------------------Master Receiver ---------------------------------------------------------*/
     case I2C_MASTER_RECEIVER_MODE:
-      /* Enable I2C0 ACK for receiving data                                                                 */
-      I2C_AckCmd(HT_I2C0, ENABLE);
+      /* Enable I2C Master ACK for receiving data                                                           */
+      I2C_AckCmd(HTCFG_I2C_MASTER_PORT, ENABLE);
       break;
 
     case I2C_MASTER_RX_NOT_EMPTY:
-      /* Receive data sent from I2C1                                                                        */
-      I2C0_Master_Buffer_Rx[I2C0_Master_Rx_Index ++] = I2C_ReceiveData(HT_I2C0);
-      if (I2C0_Master_Rx_Index == BufferSize - 1)
+      /* Receive data sent from I2C Slave                                                                   */
+      I2C_Master_Buffer_Rx[I2C_Master_Rx_Index ++] = I2C_ReceiveData(HTCFG_I2C_MASTER_PORT);
+      if (I2C_Master_Rx_Index == BufferSize - 1)
       {
-        /* Disable I2C0 ACK                                                                                 */
-        I2C_AckCmd(HT_I2C0, DISABLE);
+        /* Disable I2C Master ACK                                                                           */
+        I2C_AckCmd(HTCFG_I2C_MASTER_PORT, DISABLE);
       }
-      if (I2C0_Master_Rx_Index == BufferSize)
+      if (I2C_Master_Rx_Index == BufferSize)
       {
         /* Reset Indexes for next transmission                                                              */
-        I2C0_Master_Tx_Index = I2C0_Master_Rx_Index = 0;
+        I2C_Master_Tx_Index = I2C_Master_Rx_Index = 0;
         /* Generate STOP                                                                                    */
-        I2C_GenerateSTOP(HT_I2C0);
+        I2C_GenerateSTOP(HTCFG_I2C_MASTER_PORT);
         IsMasterRxFinish = TRUE;
       }
       break;
@@ -186,43 +186,43 @@ void I2C0_IRQHandler(void)
 }
 
 /*********************************************************************************************************//**
- * @brief   This function handles I2C1 interrupt.
+ * @brief   This function handles common I2C Slave interrupt processing.
  * @retval  None
  ************************************************************************************************************/
-void I2C1_IRQHandler(void)
+void I2C_SLAVE_Process_Handler(void)
 {
-  switch (I2C_ReadRegister(HT_I2C1, I2C_REGISTER_SR))
+  switch (I2C_ReadRegister(HTCFG_I2C_SLAVE_PORT, I2C_REGISTER_SR))
   {
     /*-----------------------------Slave Receiver ----------------------------------------------------------*/
     case I2C_SLAVE_ACK_RECEIVER_ADDRESS:
       break;
 
     case I2C_SLAVE_RX_NOT_EMPTY:
-      if (I2C1_Slave_Rx_Index < BufferSize)
-      /* Receive data sent from I2C0                                                                        */
-      I2C1_Slave_Buffer_Rx[I2C1_Slave_Rx_Index ++] = I2C_ReceiveData(HT_I2C1);
+      if (I2C_Slave_Rx_Index < BufferSize)
+      /* Receive data sent from I2C Master                                                                  */
+      I2C_Slave_Buffer_Rx[I2C_Slave_Rx_Index ++] = I2C_ReceiveData(HTCFG_I2C_SLAVE_PORT);
       break;
 
     /*-----------------------------Slave Transmitter -------------------------------------------------------*/
     case I2C_SLAVE_ACK_TRANSMITTER_ADDRESS:
-      /* Send the first data to I2C0                                                                        */
-      I2C_SendData(HT_I2C1, I2C1_Slave_Buffer_Rx[I2C1_Slave_Tx_Index ++]);
+      /* Send the first data to I2C Master                                                                  */
+      I2C_SendData(HTCFG_I2C_SLAVE_PORT, I2C_Slave_Buffer_Rx[I2C_Slave_Tx_Index ++]);
       break;
 
     case I2C_SLAVE_TX_EMPTY:
-      if (I2C1_Slave_Tx_Index < BufferSize)
-        /* Send the remainder data to I2C0                                                                  */
-        I2C_SendData(HT_I2C1, I2C1_Slave_Buffer_Rx[I2C1_Slave_Tx_Index ++]);
+      if (I2C_Slave_Tx_Index < BufferSize)
+        /* Send the remainder data to I2C Master                                                            */
+        I2C_SendData(HTCFG_I2C_SLAVE_PORT, I2C_Slave_Buffer_Rx[I2C_Slave_Tx_Index ++]);
       else
-        /* Disable I2C1 TXDE interrupt                                                                      */
-        I2C_IntConfig(HT_I2C1, I2C_INT_TXDE, DISABLE);
+        /* Disable I2C Slave TXDE interrupt                                                                 */
+        I2C_IntConfig(HTCFG_I2C_SLAVE_PORT, I2C_INT_TXDE, DISABLE);
       break;
 
     case I2C_SLAVE_RECEIVED_NACK_STOP:
       /* Clear RXNACK flag                                                                                  */
-      I2C_ClearFlag(HT_I2C1, I2C_FLAG_RXNACK);
+      I2C_ClearFlag(HTCFG_I2C_SLAVE_PORT, I2C_FLAG_RXNACK);
       /* Reset Indexes for next transmission                                                                */
-      I2C1_Slave_Tx_Index = I2C1_Slave_Rx_Index = 0;
+      I2C_Slave_Tx_Index = I2C_Slave_Rx_Index = 0;
       break;
 
     default:
@@ -230,6 +230,36 @@ void I2C1_IRQHandler(void)
   }
 }
 
+#if defined(LIBCFG_I2C_COMBINED_I2C01)
+/*********************************************************************************************************//**
+ * @brief   This function handles I2C0 and I2C1 interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void I2C0_1_IRQHandler(void)
+{
+  I2C_MASTER_Process_Handler();
+
+  I2C_SLAVE_Process_Handler();
+}
+#else
+/*********************************************************************************************************//**
+ * @brief   This function handles I2C Master interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void HTCFG_I2C_MASTER_IRQHandler(void)
+{
+  I2C_MASTER_Process_Handler();
+}
+
+/*********************************************************************************************************//**
+ * @brief   This function handles I2C Slave interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void HTCFG_I2C_SLAVE_IRQHandler(void)
+{
+  I2C_SLAVE_Process_Handler();
+}
+#endif
 
 /**
   * @}

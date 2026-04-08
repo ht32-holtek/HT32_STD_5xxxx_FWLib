@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/GPIO_Interrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -164,11 +164,25 @@ void EXTI4_15_IRQHandler(void)
   }
   #endif
 }
+
 /*********************************************************************************************************//**
  * @brief   This function handles EXTI 10~15 interrupt.
  * @retval  None
  ************************************************************************************************************/
 void EXTI10_15_IRQHandler(void)
+{
+  if (EXTI_GetEdgeFlag(HTCFG_EXTI_CHANNEL))
+  {
+    EXTI_ClearEdgeFlag(HTCFG_EXTI_CHANNEL);
+    guKeyState[0] = TRUE;
+  }
+}
+
+/*********************************************************************************************************//**
+ * @brief   This function handles EXTI 0~1 interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void EXTI8_15_IRQHandler(void)
 {
   if (EXTI_GetEdgeFlag(HTCFG_EXTI_CHANNEL))
   {

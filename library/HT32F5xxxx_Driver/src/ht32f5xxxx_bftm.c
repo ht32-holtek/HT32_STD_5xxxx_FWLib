@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_bftm.c
- * @version $Rev:: 6393         $
- * @date    $Date:: 2022-10-27 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all the BFTM firmware functions.
  *************************************************************************************************************
  * @attention
@@ -62,6 +62,12 @@ void BFTM_DeInit(HT_BFTM_TypeDef* HT_BFTMn)
   else if (HT_BFTMn == HT_BFTM1)
   {
     RSTCUReset.Bit.BFTM1 = 1;
+  }
+  #endif
+  #if (LIBCFG_BFTM2)
+  else if (HT_BFTMn == HT_BFTM2)
+  {
+    RSTCUReset.Bit.BFTM2 = 1;
   }
   #endif
   RSTCU_PeripReset(RSTCUReset, ENABLE);

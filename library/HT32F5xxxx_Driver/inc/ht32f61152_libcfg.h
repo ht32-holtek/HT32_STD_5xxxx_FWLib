@@ -39,7 +39,7 @@
 #define LIBCFG_FLASH_PAGESIZE             (1024)
 
 #ifdef USE_MEM_HT32F61152
-  #define LIBCFG_FLASH_SIZE               (LIBCFG_FLASH_PAGESIZE * 63)
+  #define LIBCFG_FLASH_SIZE               (LIBCFG_FLASH_PAGESIZE * 127)
   #define LIBCFG_RAM_SIZE                 (1024 * 16)
   #define LIBCFG_CHIPNAME                 (0x61152)
 #endif
@@ -50,7 +50,6 @@
 #define LIBCFG_CKCU_REFCLK_EXT_PIN        (1)
 #define LIBCFG_CRC                        (1)
 #define LIBCFG_FMC_PREFETCH               (1)
-#define LIBCFG_FMC_WAIT_STATE_2           (1)
 #define LIBCFG_GPIOC                      (1)
 #define LIBCFG_LSE                        (1)
 #define LIBCFG_PWRCU_NO_PD_MODE           (1)
@@ -65,12 +64,13 @@
 #define LIBCFG_PWRCU_VREG_2V5             (1)
 #define LIBCFG_SCI0                       (1)
 #define LIBCFG_SCI1                       (1)
+#define LIBCFG_SCI_ETU_MINIMUM_8          (1)
 #define LIBCFG_SCTM0                      (1)
 #define LIBCFG_SCTM1                      (1)
 #define LIBCFG_PWRCU_VDD_5V               (1)
 #define LIBCFG_UART1                      (1)
 #define LIBCFG_USBD                       (1)
-#define LIBCFG_USBD_V2                    (1)
+#define LIBCFG_USBD_V3                    (1)
 
 
 #endif

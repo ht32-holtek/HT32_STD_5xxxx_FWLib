@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/InternalTrigger/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -384,6 +384,19 @@
   #define _HTCFG_TM_MASTER_CHN                    0
 
   #define _HTCFG_TM_REDEFINE                      1
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_TM_SLAVE_GPIOX                   C
+  #define _HTCFG_TM_SLAVE_GPION                   9
+  #define  HTCFG_TM_SLAVE_IPN                     GPTM0
+  #define _HTCFG_TM_SLAVE_CHN                     0
+  #define  HTCFG_TM_SLAVE_TRSEL_ITI               TM_TRSEL_ITI1
+
+  #define _HTCFG_TM_MASTER_GPIOX                  C
+  #define _HTCFG_TM_MASTER_GPION                  13
+  #define  HTCFG_TM_MASTER_IPN                    MCTM0
+  #define _HTCFG_TM_MASTER_CHN                    0
 #endif
 
 #define HTCFG_SLAVE_GPIO_ID                       STRCAT2(GPIO_P,    _HTCFG_TM_SLAVE_GPIOX)

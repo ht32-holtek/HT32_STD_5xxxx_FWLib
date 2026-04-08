@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    WDT/Auto_Enable/main.c
- * @version $Rev:: 7609         $
- * @date    $Date:: 2024-02-26 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -56,7 +56,7 @@ int main(void)
   if(AutoWDT_Cmd(ENABLE) == ERROR)
   {
     /*If Flash write to OB_WDT is abnormal, enter while loop.                                               */
-    while(1);
+    while(1){};
   }
 
   HT32F_DVB_LEDInit(HT_LED1);

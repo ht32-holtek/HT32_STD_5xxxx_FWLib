@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SCI/ATR/ht32_board_config.h
- * @version $Rev:: 7355         $
- * @date    $Date:: 2023-12-05 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -216,6 +216,31 @@
 #endif
 
 #if defined(USE_HT32F61141_SK)
+  #define HTCFG_SMARTCARD_SCI                 (HT_SCI1)
+  #define HTCFG_SMARTCARD_CLK(CK)             (CK.Bit.SCI1)
+  #define HTCFG_SMARTCARD_IRQn                (SCI_IRQn)
+
+  #define HTCFG_SMARTCARD_CMD_CLK(CK)         (CK.Bit.PB)
+  #define HTCFG_SMARTCARD_CMD_GPIO_ID         (GPIO_PB)
+  #define HTCFG_SMARTCARD_CMD_GPIO_PIN        (GPIO_PIN_5)
+  #define HTCFG_SMARTCARD_CMD_AFIO_PIN        (AFIO_PIN_5)
+
+  #define HTCFG_SMARTCARD_RSTN_CLK(CK)        (CK.Bit.PB)
+  #define HTCFG_SMARTCARD_RSTN_GPIO_ID        (GPIO_PB)
+  #define HTCFG_SMARTCARD_RSTN_GPIO_PIN       (GPIO_PIN_4)
+  #define HTCFG_SMARTCARD_RSTN_AFIO_PIN       (AFIO_PIN_4)
+
+  #define HTCFG_SMARTCARD_CLK_GPIO_ID         (GPIO_PC)
+  #define HTCFG_SMARTCARD_CLK_AFIO_PIN        (AFIO_PIN_2)
+
+  #define HTCFG_SMARTCARD_DET_GPIO_ID         (GPIO_PB)
+  #define HTCFG_SMARTCARD_DET_AFIO_PIN        (AFIO_PIN_6)
+
+  #define HTCFG_SMARTCARD_DIO_GPIO_ID         (GPIO_PC)
+  #define HTCFG_SMARTCARD_DIO_AFIO_PIN        (AFIO_PIN_3)
+#endif
+
+#if defined(USE_HT32F61152_DVB)
   #define HTCFG_SMARTCARD_SCI                 (HT_SCI1)
   #define HTCFG_SMARTCARD_CLK(CK)             (CK.Bit.SCI1)
   #define HTCFG_SMARTCARD_IRQn                (SCI_IRQn)

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/TriggerCounter/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -160,6 +160,13 @@
   #define _HTCFG_CAP_CHN                          0
 #endif
 
+#if defined(USE_HT32F61152_DVB)
+  #define _HTCFG_CAP_GPIOX                        A
+  #define _HTCFG_CAP_GPION                        7
+  #define  HTCFG_CAP_IPN                          GPTM0
+  #define _HTCFG_CAP_CHN                          0
+#endif
+
 #if defined(USE_HT32F65240_DVB)
   #define _HTCFG_CAP_GPIOX                        A
   #define _HTCFG_CAP_GPION                        7
@@ -275,6 +282,13 @@
 #if defined(USE_HT32F65233_DVB)
   #define _HTCFG_CAP_GPIOX                        A
   #define _HTCFG_CAP_GPION                        3
+  #define  HTCFG_CAP_IPN                          GPTM0
+  #define _HTCFG_CAP_CHN                          0
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_CAP_GPIOX                        C
+  #define _HTCFG_CAP_GPION                        9
   #define  HTCFG_CAP_IPN                          GPTM0
   #define _HTCFG_CAP_CHN                          0
 #endif

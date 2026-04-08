@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_usbdinit.h
- * @version $Rev:: 5656         $
- * @date    $Date:: 2021-11-24 #$
+ * @version $Rev:: 9724         $
+ * @date    $Date:: 2026-03-26 #$
  * @brief   The header file of the USB Device Driver.
  *************************************************************************************************************
  * @attention
@@ -314,6 +314,74 @@
                              (_EP9LEN        << 10) | \
                              (_EP9STADR & EPBUFA_MASK))
 
+/*----------------------------------------------------------------------------------------------------------*/
+/* Endpoint10 Configuration                                                                                  */
+/*----------------------------------------------------------------------------------------------------------*/
+#define _EP10STADR          (_EP9STADR + _EP9LEN)
+
+#if (_EP10_ENABLE == 1)
+  #define _EP10LEN          (_EP10LEN_TMP)
+#else
+  #define _EP10LEN          (0)
+#endif
+
+#if (_EP10_CFG_EPEN_TMP == 1)
+  #define _EP10_CFG_EPEN    (1UL)
+#else
+  #define _EP10_CFG_EPEN    (0UL)
+#endif
+
+#define _EP10_CFG           ((_EP10_CFG_EPEN  << 31) | \
+                             (_EP10_CFG_EPDIR << 28) | \
+                             (_EP10_CFG_EPADR << 24) | \
+                             (_EP10LEN        << 10) | \
+                             (_EP10STADR & EPBUFA_MASK))
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* Endpoint11 Configuration                                                                                  */
+/*----------------------------------------------------------------------------------------------------------*/
+#define _EP11STADR          (_EP10STADR + _EP10LEN)
+
+#if (_EP11_ENABLE == 1)
+  #define _EP11LEN          (_EP11LEN_TMP)
+#else
+  #define _EP11LEN          (0)
+#endif
+
+#if (_EP11_CFG_EPEN_TMP == 1)
+  #define _EP11_CFG_EPEN    (1UL)
+#else
+  #define _EP11_CFG_EPEN    (0UL)
+#endif
+
+#define _EP11_CFG           ((_EP11_CFG_EPEN  << 31) | \
+                             (_EP11_CFG_EPDIR << 28) | \
+                             (_EP11_CFG_EPADR << 24) | \
+                             (_EP11LEN        << 10) | \
+                             (_EP11STADR & EPBUFA_MASK))
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* Endpoint12 Configuration                                                                                  */
+/*----------------------------------------------------------------------------------------------------------*/
+#define _EP12STADR          (_EP10STADR + _EP10LEN)
+
+#if (_EP12_ENABLE == 1)
+  #define _EP12LEN          (_EP12LEN_TMP)
+#else
+  #define _EP12LEN          (0)
+#endif
+
+#if (_EP12_CFG_EPEN_TMP == 1)
+  #define _EP12_CFG_EPEN    (1UL)
+#else
+  #define _EP12_CFG_EPEN    (0UL)
+#endif
+
+#define _EP12_CFG           ((_EP12_CFG_EPEN  << 31) | \
+                             (_EP12_CFG_EPDIR << 28) | \
+                             (_EP12_CFG_EPADR << 24) | \
+                             (_EP12LEN        << 10) | \
+                             (_EP12STADR & EPBUFA_MASK))
 
 /**
   * @}

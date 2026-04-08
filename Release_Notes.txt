@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Release_Notes.txt
- * @version V1.19.2
- * @date    2026-02-10
+ * @version V1.20.1
+ * @date    2026-04-07
  * @brief   The Release notes of HT32 Firmware Library.
  *************************************************************************************************************
  * @attention
@@ -57,7 +57,7 @@
 //   HT32F61030, HT32F61041
 //   HT32F61049
 //   HT32F61052
-//   HT32F61141
+//   HT32F61141, HT32F61152
 //   HT32F61244, HT32F61245
 //   HT32F61352
 //   HT32F61355, HT32F61356, HT32F61357
@@ -70,7 +70,7 @@
 //   HT32F65230, HT32F65240
 //   HT32F65232
 //   HT32F65233
-//   HT32F66242, HT32F66246
+//   HT32F66242, HT32F66246, HT32F66256
 //   HT32F67041, HT32F67051
 //   HT32F67232
 //   HT32F67233
@@ -86,6 +86,47 @@
 //   HT32F62143, HT50F32023
 //   HT32F59740, HT32F59750
 //   MXTX5030
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* HT32_STD_5xxxx_FWLib_V1.20.1_9758                                                                        */
+/*----------------------------------------------------------------------------------------------------------*/
+  Release Date: 2026-04-07
+  Main Changes
+  + Add new device and example support.
+    - HT32F66256, HT32F61152
+  + Add new examples.
+    - ADC/OneShot_TempSensor_Interrupt
+    - ADC/OneShot_TempSensor_Polling
+    - ADC/VREFP_Powered_by_Internal_VREF
+    - I2C/I2C_NoStretch_Slave
+    - I2C/I2C_NoStretch_Tester
+    - I2C/I2C_Support_I3C_Slave
+  + Update I2C Driver.
+    - Support No-Stretch mode when "LIBCFG_I2C_NOSTRETCH" is defined.
+    - Update sequential filter debounce width from 3 PCLK to 7 PCLK when "LIBCFG_I2C_SEQ3_7" is defined.
+    - Add "I2C_TXDRReset()" API to clear TXDR (effective only when "LIBCFG_I2C_NOSTRETCH" is defined).
+  + Updated Mono_LCD/LCD_module" example to adjust the sequence of resetting "isUpdateDisplayFinish" before
+    "LCD_SetUpdateDisplayRequest()" to ensure reliable synchronization for display updates.
+  + Update USBD driver.
+    - Add "LIBCFG_USBD_V3" support and increase maximum endpoint number to 13.
+    - Add ht32f5xxxx_03_usbdconf.h to support HT32F61152 (EPT0–EPT12).
+  + Update "ht32f65xxx_66xxx_adc.c"
+    - Add "ADC_TempSensorParam_TypeDef" and associated APIs for temperature measurement and calibration.
+    - Add "VREF" buffer/voltage configuration and "MVDDA" control logic.
+    - Add MCTM1/GPTM1 trigger sources and implement "LIBCFG_ADC_CH/TRIG_CHECK_CHOOSE" validation mechanism.
+  + Update SPI examples by renaming "SPI0/SPI1" variables to "Master/Slave" and simplifying LED verification.
+  + Update SCI driver by modifying "SCI_ETUConfig()" to support the maximum ETU value of 2048.
+
+  Others
+  + Update comment, format, typing error, and coding style.
+  + Update Timer and System drivers (MCTM, TM, PDMA, RSTCU) to support MCTM1 instance, BFTM2 reset control,
+    and specific peripheral channel mappings.
+  + Update SCI driver to add "LIBCFG_SCI_ETU_MINIMUM_8" to allow ETU range from 8 to 2048.
+  + Update CMP driver to add CMP3 instance, expand trigger sources, and implement "LIBCFG_CMP_TRIG_CHECK_CHOOSE" validation.
+  + Update PGA driver to support PGA4 and PGA5 instances with offset initialization and calibration logic.
+  + Update PID driver to support independent output limit registers via "LIBCFG_PID_OUTPUTLIMIT_INDEPENDENT"
+    and refactor "PID_Init()" for expanded modes.
+  + Update GPIO driver to add alternate AFIO mode mappings for ADC1, CMP, and PGA.
 
 /*----------------------------------------------------------------------------------------------------------*/
 /* HT32_STD_5xxxx_FWLib_V1.19.2_9665                                                                        */

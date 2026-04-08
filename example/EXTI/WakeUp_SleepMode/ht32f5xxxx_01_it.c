@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/WakeUp_SleepMode/ht32f5xxxx_01_it.c
- * @version $Rev:: 9299         $
- * @date    $Date:: 2025-07-15 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -168,6 +168,22 @@ void EXTI4_9_IRQHandler(void)
  * @retval  None
  ************************************************************************************************************/
 void EXTI2_3_IRQHandler(void)
+{
+  /*Get weak-up button status                                                                               */
+  EXTI_ClearEdgeFlag(GPIO2EXTI(WAKEUP_BUTTON_EXTI_CHANNEL));
+
+  /* Toggle LED1                                                                                            */
+  HT32F_DVB_LEDToggle(HT_LED1);
+}
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+#define SPECIFIC_EXTI_IRQ_CH
+/*********************************************************************************************************//**
+ * @brief   This function handles EXIT line 0~1 interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void EXTI8_15_IRQHandler(void)
 {
   /*Get weak-up button status                                                                               */
   EXTI_ClearEdgeFlag(GPIO2EXTI(WAKEUP_BUTTON_EXTI_CHANNEL));

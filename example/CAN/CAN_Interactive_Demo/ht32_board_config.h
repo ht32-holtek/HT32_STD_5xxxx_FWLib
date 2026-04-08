@@ -49,7 +49,6 @@
   #define _HTCFG_CAN_RX_GPION                     5
 #endif
 
-
 #if defined(USE_HT32F66246_DVB)
   #define HTCFG_CAN_IPN                           CAN0
   #define _HTCFG_CAN_TX_GPIOX                     B
@@ -60,6 +59,18 @@
   #define HTCFG_CAN_STB_CONTROL                   1
   #define _HTCFG_CAN_STB_GPIOX                    C
   #define _HTCFG_CAN_STB_GPION                    1
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_CAN_IPN                           CAN0
+  #define _HTCFG_CAN_TX_GPIOX                     D
+  #define _HTCFG_CAN_TX_GPION                     0
+  #define _HTCFG_CAN_RX_GPIOX                     B
+  #define _HTCFG_CAN_RX_GPION                     12
+
+  #define HTCFG_CAN_STB_CONTROL                   1
+  #define _HTCFG_CAN_STB_GPIOX                    B
+  #define _HTCFG_CAN_STB_GPION                    9
 #endif
 
 #define HTCFG_CAN_TX_GPIO_ID                      STRCAT2(GPIO_P,         _HTCFG_CAN_TX_GPIOX)

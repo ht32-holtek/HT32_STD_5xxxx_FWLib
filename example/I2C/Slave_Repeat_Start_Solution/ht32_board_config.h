@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/Slave_Repeat_Start_Solution/ht32_board_config.h
- * @version $Rev:: 9539         $
- * @date    $Date:: 2025-11-10 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -44,6 +44,19 @@
   #define _HTCFG_AFIO_TOGGLE_IO_GPIOX       A
   #define  HTCFG_AFIO_TOGGLE_SCL_GPION      14
   #define  HTCFG_AFIO_TOGGLE_SDA_GPION      15
+#endif
+
+#if defined(USE_HT32F61152_DVB)
+  #define _HTCFG_SLAVE_I2CX                 I2C0
+
+  #define _HTCFG_I2C_SLAVE_SCL_GPIOX        B
+  #define  HTCFG_I2C_SLAVE_SCL_GPION        15
+  #define _HTCFG_I2C_SLAVE_SDA_GPIOX        C
+  #define  HTCFG_I2C_SLAVE_SDA_GPION        0
+
+  #define _HTCFG_AFIO_TOGGLE_IO_GPIOX       A
+  #define  HTCFG_AFIO_TOGGLE_SCL_GPION      6
+  #define  HTCFG_AFIO_TOGGLE_SDA_GPION      7
 #endif
 
 #define HTCFG_AFIO_TOGGLE_IO_CK             STRCAT2(P,               _HTCFG_AFIO_TOGGLE_IO_GPIOX)

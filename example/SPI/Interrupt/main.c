@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Interrupt/main.c
- * @version $Rev:: 4832         $
- * @date    $Date:: 2020-07-27 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -56,11 +56,11 @@ void SPI_Loopback(void);
 TestResult CmpBuffer(u8* Buffer1, u8* Buffer2, u32 BufferLength);
 
 /* Private variables ---------------------------------------------------------------------------------------*/
-u8 SPI0_Buffer_Tx[BufferSize] = {0x11, 0x22, 0x44, 0x88};
-u8 SPI1_Buffer_Tx[BufferSize] = {0x88, 0x44, 0x22, 0x11};
-u8 SPI0_Buffer_Rx[BufferSize] = {0};
-u8 SPI1_Buffer_Rx[BufferSize] = {0};
-vu8 SPI0_Tx_Index = 0, SPI1_Tx_Index = 0, SPI0_Rx_Index = 0, SPI1_Rx_Index = 0;
+u8 SPI_Master_Buffer_Tx[BufferSize] = {0x11, 0x22, 0x44, 0x88};
+u8 SPI_Slave_Buffer_Tx[BufferSize]  = {0x88, 0x44, 0x22, 0x11};
+u8 SPI_Master_Buffer_Rx[BufferSize] = {0};
+u8 SPI_Slave_Buffer_Rx[BufferSize]  = {0};
+vu8 SPI_Master_Tx_Index = 0, SPI_Slave_Tx_Index = 0, SPI_Master_Rx_Index = 0, SPI_Slave_Rx_Index = 0;
 
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
@@ -69,9 +69,8 @@ vu8 SPI0_Tx_Index = 0, SPI1_Tx_Index = 0, SPI0_Rx_Index = 0, SPI1_Rx_Index = 0;
   ***********************************************************************************************************/
 int main(void)
 {
-  /* Initialize LED1 & LED2 on HT32 board                                                                   */
+  /* Initialize LED1 on HT32 board                                                                          */
   HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
 
   SPI_Configuration();
 
@@ -162,18 +161,18 @@ void SPI_Configuration(void)
 void SPI_Loopback(void)
 {
   /* Wait for transmission finished                                                                         */
-  while (SPI0_Rx_Index < BufferSize);
+  while (SPI_Master_Rx_Index < BufferSize);
 
   /* Check on validity of received data on SPI0 & SPI1                                                      */
-  if (CmpBuffer(SPI0_Buffer_Tx, SPI1_Buffer_Rx, BufferSize) && CmpBuffer(SPI1_Buffer_Tx, SPI0_Buffer_Rx, BufferSize))
+  if (CmpBuffer(SPI_Master_Buffer_Tx, SPI_Slave_Buffer_Rx, BufferSize) && CmpBuffer(SPI_Slave_Buffer_Tx, SPI_Master_Buffer_Rx, BufferSize))
   {
     /* Turn on LED1 if the transmitted and received data are equal                                          */
     HT32F_DVB_LEDOn(HT_LED1);
   }
   else
   {
-    /* Turn on LED2 if the transmitted and received data are different                                      */
-    HT32F_DVB_LEDOn(HT_LED2);
+    /* Turn off LED1 if the transmitted and received data are different                                     */
+    HT32F_DVB_LEDOff(HT_LED1);
   }
 }
 

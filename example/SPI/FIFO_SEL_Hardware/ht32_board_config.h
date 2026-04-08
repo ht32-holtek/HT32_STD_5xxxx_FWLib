@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/FIFO_SEL_Hardware/ht32_board_config.h
- * @version $Rev:: 7384         $
- * @date    $Date:: 2023-12-11 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -713,6 +713,35 @@
   #define HTCFG_SPI_SLAVE_MOSI_AFIO_PIN            (AFIO_PIN_0)
   #define HTCFG_SPI_SLAVE_MISO_AFIO_PIN            (AFIO_PIN_1)
   #define HTCFG_SPI_SLAVE_IRQHandler               (SPI1_IRQHandler)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_SPI_MASTER_SEL_GPIO_ID             (HT_GPIOA)
+  #define HTCFG_SPI_MASTER_SEL_CLOCK(CK)           (CK.Bit.PA)
+
+  #define HTCFG_SPI_MASTER_CLOCK(CK)               (CK.Bit.SPI0)
+  #define HTCFG_SPI_MASTER                         (HT_SPI0)
+  #define HTCFG_SPI_MASTER_IRQn                    (SPI0_1_IRQn)
+  #define HTCFG_SPI_MASTER_SEL_AFIO_PORT           (GPIO_PA)
+  #define HTCFG_SPI_MASTER_SCK_AFIO_PORT           (GPIO_PA)
+  #define HTCFG_SPI_MASTER_MOSI_AFIO_PORT          (GPIO_PA)
+  #define HTCFG_SPI_MASTER_MISO_AFIO_PORT          (GPIO_PA)
+  #define HTCFG_SPI_MASTER_SEL_AFIO_PIN            (AFIO_PIN_10)
+  #define HTCFG_SPI_MASTER_SCK_AFIO_PIN            (AFIO_PIN_11)
+  #define HTCFG_SPI_MASTER_MOSI_AFIO_PIN           (AFIO_PIN_8)
+  #define HTCFG_SPI_MASTER_MISO_AFIO_PIN           (AFIO_PIN_7)
+
+  #define HTCFG_SPI_SLAVE_CLOCK(CK)                (CK.Bit.SPI1)
+  #define HTCFG_SPI_SLAVE                          (HT_SPI1)
+  #define HTCFG_SPI_SLAVE_IRQn                     (SPI0_1_IRQn)
+  #define HTCFG_SPI_SLAVE_SEL_AFIO_PORT            (GPIO_PB)
+  #define HTCFG_SPI_SLAVE_SCK_AFIO_PORT            (GPIO_PB)
+  #define HTCFG_SPI_SLAVE_MOSI_AFIO_PORT           (GPIO_PA)
+  #define HTCFG_SPI_SLAVE_MISO_AFIO_PORT           (GPIO_PB)
+  #define HTCFG_SPI_SLAVE_SEL_AFIO_PIN             (AFIO_PIN_1)
+  #define HTCFG_SPI_SLAVE_SCK_AFIO_PIN             (AFIO_PIN_14)
+  #define HTCFG_SPI_SLAVE_MOSI_AFIO_PIN            (AFIO_PIN_15)
+  #define HTCFG_SPI_SLAVE_MISO_AFIO_PIN            (AFIO_PIN_0)
 #endif
 
 #ifdef __cplusplus

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/RS485_NMM_Slave/ht32_board_config.h
- * @version $Rev:: 8284         $
- * @date    $Date:: 2024-11-22 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -301,6 +301,16 @@
   #define _HTCFG_UART_RX_GPION                    9
   #define _HTCFG_UART_RTS_GPIOX                   C
   #define _HTCFG_UART_RTS_GPION                   9
+  #define HTCFG_UART_IPN                          USART0
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_UART_TX_GPIOX                    A
+  #define _HTCFG_UART_TX_GPION                    3
+  #define _HTCFG_UART_RX_GPIOX                    A
+  #define _HTCFG_UART_RX_GPION                    1
+  #define _HTCFG_UART_RTS_GPIOX                   A
+  #define _HTCFG_UART_RTS_GPION                   0
   #define HTCFG_UART_IPN                          USART0
 #endif
 

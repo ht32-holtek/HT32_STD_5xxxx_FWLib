@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f66xxx_pid.c
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all the PID firmware functions.
  *************************************************************************************************************
  * @attention
@@ -66,12 +66,18 @@ void PID_DeInit(HT_PID_TypeDef* HT_PIDn)
  * @param HT_PIDn: where HT_PIDn is the selected PID from the PID peripherals.
  * @param PID_Mode: where PID_Mode is the selected PID mode.
  *   This parameter can be one of the following values:
- *     @arg PID_SPD_MODE
- *     @arg PID_IQ_MODE
- *     @arg PID_ID_MODE
- *     @arg PID_FWNK_MODE
- *     @arg PID_PLL_MODE
- *     @arg PID_USR_MODE
+ *     @arg PID_SPD0_MODE
+ *     @arg PID_IQ0_MODE
+ *     @arg PID_ID0_MODE
+ *     @arg PID_FWNK0_MODE
+ *     @arg PID_PLL0_MODE
+ *     @arg PID_USR0_MODE
+ *     @arg PID_SPD1_MODE
+ *     @arg PID_IQ1_MODE
+ *     @arg PID_ID1_MODE
+ *     @arg PID_FWNK1_MODE
+ *     @arg PID_PLL1_MODE
+ *     @arg PID_USR1_MODE
  * @param PID_Para: where PID_Para is PID paramater structure.
  * @retval None
  ************************************************************************************************************/
@@ -83,14 +89,21 @@ void PID_Init(HT_PID_TypeDef* HT_PIDn, PID_Mode_Enum PID_Mode, PID_InitTypeDef* 
   Assert_Param(IS_PID(HT_PIDn));
   Assert_Param(IS_PID_MODE(PID_Mode));
 
-  (gPID_ModePara + PID_Mode)->KPIR     = PID_Para->KP;
-  (gPID_ModePara + PID_Mode)->KIIR     = PID_Para->KI;
-  (gPID_ModePara + PID_Mode)->KDIR     = PID_Para->KD;
-  (gPID_ModePara + PID_Mode)->IFVMAXLR = PID_Para->UI_MAX;
-  (gPID_ModePara + PID_Mode)->IFVMINLR = PID_Para->UI_MIN;
-  (gPID_ModePara + PID_Mode)->PIDORLR  = (u32)((PID_Para->OUT_MAX << 16) | ((u16)PID_Para->OUT_MIN));
-  (gPID_ModePara + PID_Mode)->LEIR     = PID_Para->ERRn_1;
-  (gPID_ModePara + PID_Mode)->LIFVR    = PID_Para->UIn_1;
+  gPID_ModePara = gPID_ModePara + PID_Mode;
+
+  gPID_ModePara->KPIR     = PID_Para->KP;
+  gPID_ModePara->KIIR     = PID_Para->KI;
+  gPID_ModePara->KDIR     = PID_Para->KD;
+  gPID_ModePara->IFVMAXLR = PID_Para->UI_MAX;
+  gPID_ModePara->IFVMINLR = PID_Para->UI_MIN;
+  #if (LIBCFG_PID_OUTPUTLIMIT_INDEPENDENT)
+  gPID_ModePara->PIDMAXLR = PID_Para->OUT_MAX;
+  gPID_ModePara->PIDMINLR = PID_Para->OUT_MIN;
+  #else
+  gPID_ModePara->PIDORLR  = (u32)((PID_Para->OUT_MAX << 16) | ((u16)PID_Para->OUT_MIN));
+  #endif
+  gPID_ModePara->LEIR     = PID_Para->ERRn_1;
+  gPID_ModePara->LIFVR    = PID_Para->UIn_1;
 }
 
 /*********************************************************************************************************//**
@@ -200,12 +213,18 @@ void PID_SetComPara_UI_Input(HT_PID_TypeDef* HT_PIDn, s32 UI_Input)
  * @param HT_PIDn: where HT_PIDn is the selected PID from the PID peripherals.
  * @param PID_Mode: where PID_Mode is the selected PID mode.
  *   This parameter can be one of the following values:
- *     @arg PID_SPD_MODE
- *     @arg PID_IQ_MODE
- *     @arg PID_ID_MODE
- *     @arg PID_FWNK_MODE
- *     @arg PID_PLL_MODE
- *     @arg PID_USR_MODE
+ *     @arg PID_SPD0_MODE
+ *     @arg PID_IQ0_MODE
+ *     @arg PID_ID0_MODE
+ *     @arg PID_FWNK0_MODE
+ *     @arg PID_PLL0_MODE
+ *     @arg PID_USR0_MODE
+ *     @arg PID_SPD1_MODE
+ *     @arg PID_IQ1_MODE
+ *     @arg PID_ID1_MODE
+ *     @arg PID_FWNK1_MODE
+ *     @arg PID_PLL1_MODE
+ *     @arg PID_USR1_MODE
  * @retval None
  ************************************************************************************************************/
 void PID_Compute(HT_PID_TypeDef* HT_PIDn, PID_Mode_Enum PID_Mode)
@@ -287,12 +306,18 @@ void PID_UI_InputCmd(HT_PID_TypeDef* HT_PIDn, ControlStatus NewState)
  * @param HT_PIDn: where HT_PIDn is the selected PID from the PID peripherals.
  * @param PID_Mode: where PID_Mode is the selected PID mode.
  *   This parameter can be one of the following values:
- *     @arg PID_SPD_MODE
- *     @arg PID_IQ_MODE
- *     @arg PID_ID_MODE
- *     @arg PID_FWNK_MODE
- *     @arg PID_PLL_MODE
- *     @arg PID_USR_MODE
+ *     @arg PID_SPD0_MODE
+ *     @arg PID_IQ0_MODE
+ *     @arg PID_ID0_MODE
+ *     @arg PID_FWNK0_MODE
+ *     @arg PID_PLL0_MODE
+ *     @arg PID_USR0_MODE
+ *     @arg PID_SPD1_MODE
+ *     @arg PID_IQ1_MODE
+ *     @arg PID_ID1_MODE
+ *     @arg PID_FWNK1_MODE
+ *     @arg PID_PLL1_MODE
+ *     @arg PID_USR1_MODE
  * @retval The Value of ERRn_1 for the selected PID mode.
  ************************************************************************************************************/
 s32  PID_GetERRn_1(HT_PID_TypeDef* HT_PIDn, PID_Mode_Enum PID_Mode)
@@ -311,12 +336,18 @@ s32  PID_GetERRn_1(HT_PID_TypeDef* HT_PIDn, PID_Mode_Enum PID_Mode)
  * @param HT_PIDn: where HT_PIDn is the selected PID from the PID peripherals.
  * @param PID_Mode: where PID_Mode is the selected PID mode.
  *   This parameter can be one of the following values:
- *     @arg PID_SPD_MODE
- *     @arg PID_IQ_MODE
- *     @arg PID_ID_MODE
- *     @arg PID_FWNK_MODE
- *     @arg PID_PLL_MODE
- *     @arg PID_USR_MODE
+ *     @arg PID_SPD0_MODE
+ *     @arg PID_IQ0_MODE
+ *     @arg PID_ID0_MODE
+ *     @arg PID_FWNK0_MODE
+ *     @arg PID_PLL0_MODE
+ *     @arg PID_USR0_MODE
+ *     @arg PID_SPD1_MODE
+ *     @arg PID_IQ1_MODE
+ *     @arg PID_ID1_MODE
+ *     @arg PID_FWNK1_MODE
+ *     @arg PID_PLL1_MODE
+ *     @arg PID_USR1_MODE
  * @retval The Value of UIn_1 for the selected PID mode.
  ************************************************************************************************************/
 s32  PID_GetUIn_1(HT_PID_TypeDef* HT_PIDn, PID_Mode_Enum PID_Mode)
@@ -326,7 +357,8 @@ s32  PID_GetUIn_1(HT_PID_TypeDef* HT_PIDn, PID_Mode_Enum PID_Mode)
   /* Check the parameters                                                                                   */
   Assert_Param(IS_PID(HT_PIDn));
   Assert_Param(IS_PID_MODE(PID_Mode));
-  return   (gPID_ModePara + PID_Mode)->LIFVR;
+
+  return (gPID_ModePara + PID_Mode)->LIFVR;
 }
 
 /**

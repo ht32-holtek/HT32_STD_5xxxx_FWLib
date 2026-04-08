@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_tm.c
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all the TM firmware functions.
  *************************************************************************************************************
  * @attention
@@ -127,6 +127,12 @@ void TM_DeInit(HT_TM_TypeDef* TMx)
     RSTCUReset.Bit.MCTM0 = 1;
   }
   #endif
+  #if (LIBCFG_MCTM1)
+  else if (TMx == HT_MCTM1)
+  {
+    RSTCUReset.Bit.MCTM1 = 1;
+  }
+  #endif
   #if (LIBCFG_SCTM0)
   if (TMx == HT_SCTM0)
   {
@@ -200,11 +206,19 @@ void TM_TimeBaseInit(HT_TM_TypeDef* TMx, TM_TimeBaseInitTypeDef* TimeBaseInit)
   TMx->CNTCFR |= TimeBaseInit->CounterMode;
 
   #if (LIBCFG_MCTM0)
+  #if (LIBCFG_MCTM1)
+  if ((TMx == HT_MCTM0) || (TMx == HT_MCTM1))
+  {
+    /* Set the Repetition value                                                                             */
+    TMx->REPR = TimeBaseInit->RepetitionCounter;
+  }
+  #else
   if (TMx == HT_MCTM0)
   {
     /* Set the Repetition value                                                                             */
     TMx->REPR = TimeBaseInit->RepetitionCounter;
   }
+  #endif
   #endif
 
   /* To reload the Prescaler value immediatly or next update event                                          */
@@ -228,11 +242,19 @@ void TM_OutputInit(HT_TM_TypeDef* TMx, TM_OutputInitTypeDef* OutInit)
   u32 wTmpReg;
 
   #if (LIBCFG_MCTM0)
+  #if (LIBCFG_MCTM1)
+  if ((TMx == HT_MCTM0) || (TMx == HT_MCTM1))
+  {
+    wTmpMask = ~(0x3ul << bChPos);
+  }
+  else
+  #else
   if (TMx == HT_MCTM0)
   {
     wTmpMask = ~(0x3ul << bChPos);
   }
   else
+  #endif
   #endif
   {
     wTmpMask = ~(0x1ul << bChPos);
@@ -260,6 +282,15 @@ void TM_OutputInit(HT_TM_TypeDef* TMx, TM_OutputInitTypeDef* OutInit)
   Assert_Param(IS_TM_CHCTL(OutInit->Control));
   Assert_Param(IS_TM_CHP(OutInit->Polarity));
   #if (LIBCFG_MCTM0)
+  #if (LIBCFG_MCTM1)
+  if ((TMx == HT_MCTM0) || (TMx == HT_MCTM1))
+  {
+    Assert_Param(IS_TM_CHCTL(OutInit->ControlN));
+    Assert_Param(IS_TM_CHP(OutInit->PolarityN));
+    Assert_Param(IS_MCTM_OIS(OutInit->IdleState));
+    Assert_Param(IS_MCTM_OIS(OutInit->IdleStateN));
+  }
+  #else
   if (TMx == HT_MCTM0)
   {
     Assert_Param(IS_TM_CHCTL(OutInit->ControlN));
@@ -268,6 +299,7 @@ void TM_OutputInit(HT_TM_TypeDef* TMx, TM_OutputInitTypeDef* OutInit)
     Assert_Param(IS_MCTM_OIS(OutInit->IdleStateN));
   }
   #endif
+  #endif
 
   /* Disable the Channel                                                                                    */
   TMx->CHCTR &= wTmpMask;
@@ -275,11 +307,19 @@ void TM_OutputInit(HT_TM_TypeDef* TMx, TM_OutputInitTypeDef* OutInit)
   /* Set the Output Compare Polarity                                                                        */
   wTmpReg = TMx->CHPOLR & wTmpMask;
   #if (LIBCFG_MCTM0)
+  #if (LIBCFG_MCTM1)
+  if ((TMx == HT_MCTM0) || (TMx == HT_MCTM1))
+  {
+    wTmpReg |= (u32)(OutInit->Polarity | (OutInit->PolarityN << 1)) << bChPos;
+  }
+  else
+  #else
   if (TMx == HT_MCTM0)
   {
     wTmpReg |= (u32)(OutInit->Polarity | (OutInit->PolarityN << 1)) << bChPos;
   }
   else
+  #endif
   #endif
   {
     wTmpReg |= (u32)(OutInit->Polarity) << bChPos;
@@ -289,12 +329,21 @@ void TM_OutputInit(HT_TM_TypeDef* TMx, TM_OutputInitTypeDef* OutInit)
 
   /* Set the Output Idle State                                                                              */
   #if (LIBCFG_MCTM0)
+  #if (LIBCFG_MCTM1)
+  if ((TMx == HT_MCTM0) || (TMx == HT_MCTM1))
+  {
+    wTmpReg = TMx->CHBRKCFR & wTmpMask;
+    wTmpReg |= (u32)(OutInit->IdleState | (OutInit->IdleStateN << 1)) << bChPos;
+    TMx->CHBRKCFR = wTmpReg;
+  }
+  #else
   if (TMx == HT_MCTM0)
   {
     wTmpReg = TMx->CHBRKCFR & wTmpMask;
     wTmpReg |= (u32)(OutInit->IdleState | (OutInit->IdleStateN << 1)) << bChPos;
     TMx->CHBRKCFR = wTmpReg;
   }
+  #endif
   #endif
 
   /* Select the Output Compare Mode                                                                         */
@@ -309,11 +358,19 @@ void TM_OutputInit(HT_TM_TypeDef* TMx, TM_OutputInitTypeDef* OutInit)
 
   /* Set the channel state                                                                                  */
   #if (LIBCFG_MCTM0)
+  #if (LIBCFG_MCTM1)
+  if ((TMx == HT_MCTM0) || (TMx == HT_MCTM1))
+  {
+    TMx->CHCTR |= (u32)(OutInit->Control | (OutInit->ControlN << 1)) << bChPos;
+  }
+  else
+  #else
   if (TMx == HT_MCTM0)
   {
     TMx->CHCTR |= (u32)(OutInit->Control | (OutInit->ControlN << 1)) << bChPos;
   }
   else
+  #endif
   #endif
   {
     TMx->CHCTR |= (u32)(OutInit->Control) << bChPos;
@@ -441,7 +498,7 @@ void TM_TimeBaseStructInit(TM_TimeBaseInitTypeDef* TimeBaseInit)
   TimeBaseInit->CounterReload = 0xFFFF;
   TimeBaseInit->Prescaler = 0x0000;
   TimeBaseInit->PSCReloadTime = TM_PSC_RLD_IMMEDIATE;
-  #if (LIBCFG_MCTM0)
+  #if (LIBCFG_MCTM0) || (LIBCFG_MCTM1)
   TimeBaseInit->RepetitionCounter = 0;
   #endif
 }
@@ -458,7 +515,7 @@ void TM_OutputStructInit(TM_OutputInitTypeDef* OutInit)
   OutInit->OutputMode = TM_OM_MATCH_NOCHANGE;
   OutInit->Control = TM_CHCTL_DISABLE;
   OutInit->Polarity = TM_CHP_NONINVERTED;
-  #if (LIBCFG_MCTM0)
+  #if (LIBCFG_MCTM0) || (LIBCFG_MCTM1)
   OutInit->ControlN = TM_CHCTL_DISABLE;
   OutInit->PolarityN = TM_CHP_NONINVERTED;
   OutInit->IdleState = MCTM_OIS_LOW;

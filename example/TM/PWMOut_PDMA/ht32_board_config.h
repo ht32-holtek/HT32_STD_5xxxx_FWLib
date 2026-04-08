@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/PWMOut_PDMA/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -276,6 +276,16 @@
   #define _HTCFG_PWM0_CHN                         0
 
   #define HTCFG_PDMA_CH                           (PDMA_GPTM0_UEV)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define  HTCFG_PWM_IPN                          MCTM0
+
+  #define _HTCFG_PWM0_GPIOX                       C
+  #define _HTCFG_PWM0_GPION                       13
+  #define _HTCFG_PWM0_CHN                         0
+
+  #define HTCFG_PDMA_CH                           (PDMA_MCTM0_UEV1)
 #endif
 
 #define HTCFG_PWM_PORT                            STRCAT2(HT_,             HTCFG_PWM_IPN)

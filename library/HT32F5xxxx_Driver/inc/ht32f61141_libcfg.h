@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f61141_libcfg.h
- * @version $Rev:: 6386         $
- * @date    $Date:: 2022-10-27 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The library configuration file.
  *************************************************************************************************************
 * @attention
@@ -50,7 +50,6 @@
 #define LIBCFG_CKCU_REFCLK_EXT_PIN        (1)
 #define LIBCFG_CRC                        (1)
 #define LIBCFG_FMC_PREFETCH               (1)
-#define LIBCFG_FMC_WAIT_STATE_2           (1)
 #define LIBCFG_GPIOC                      (1)
 #define LIBCFG_LSE                        (1)
 #define LIBCFG_PWRCU_NO_PD_MODE           (1)

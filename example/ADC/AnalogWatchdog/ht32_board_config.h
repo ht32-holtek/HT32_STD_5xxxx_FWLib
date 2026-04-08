@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/AnalogWatchdog/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -251,9 +251,21 @@
   #define _HTCFG_VR_ADC_CHN                       0
 #endif
 
-#define HTCFG_VR_GPIO_ID                          STRCAT2(GPIO_P,         _HTCFG_VR_GPIOX)
-#define HTCFG_VR_AFIO_PIN                         STRCAT2(AFIO_PIN_,      _HTCFG_VR_GPION)
-#define HTCFG_VR_ADC_CH                           STRCAT2(ADC_CH_,        _HTCFG_VR_ADC_CHN)
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_VR_GPIOX                         C
+  #define _HTCFG_VR_GPION                         14
+  #define _HTCFG_VR_ADC_CHN                       6
+
+  #undef  HTCFG_ADC_IPN
+  #define HTCFG_ADC_IPN                           ADC0
+
+  #undef  HTCFG_ADC_IRQHandler
+  #define HTCFG_ADC_IRQHandler                    STRCAT2(HTCFG_ADC_IPN, _IRQHandler)
+#endif
+
+#define HTCFG_VR_GPIO_ID                          STRCAT2(GPIO_P,        _HTCFG_VR_GPIOX)
+#define HTCFG_VR_AFIO_PIN                         STRCAT2(AFIO_PIN_,     _HTCFG_VR_GPION)
+#define HTCFG_VR_ADC_CH                           STRCAT2(ADC_CH_,       _HTCFG_VR_ADC_CHN)
 
 #define HTCFG_ADC_PORT                            STRCAT2(HT_,            HTCFG_ADC_IPN)
 #define HTCFG_ADC_AFIO_MODE                       STRCAT2(AFIO_FUN_,      HTCFG_ADC_IPN)

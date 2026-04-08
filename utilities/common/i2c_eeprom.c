@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    i2c_eeprom.c
- * @version $Rev:: 5106         $
- * @date    $Date:: 2020-12-11 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The source file of i2c_eeprom.
  *************************************************************************************************************
  * @attention
@@ -80,6 +80,9 @@ void I2C_EEPROM_Init(void)
   I2C_InitStructure.I2C_OwnAddress = 0x00;
   I2C_InitStructure.I2C_Speed = I2C_EEPROM_SPEED;
   I2C_InitStructure.I2C_SpeedOffset = 0;
+  #if (LIBCFG_I2C_NOSTRETCH)
+  I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+  #endif
   I2C_Init(EEPROM_I2C, &I2C_InitStructure);
 
   I2C_Cmd(EEPROM_I2C, ENABLE);

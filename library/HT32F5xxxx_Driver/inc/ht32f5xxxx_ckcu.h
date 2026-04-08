@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_ckcu.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the Clock Control Unit library.
  *************************************************************************************************************
  * @attention
@@ -484,7 +484,7 @@ typedef union
 
     /* Definitions of APB1 clock control                                                                    */
     unsigned long MCTM0      :1;    // Bit 0
-    unsigned long            :1;    // Bit 1
+    unsigned long MCTM1      :1;    // Bit 1
     unsigned long            :1;    // Bit 2
     unsigned long            :1;    // Bit 3
     unsigned long WDT        :1;    // Bit 4
@@ -496,7 +496,11 @@ typedef union
     unsigned long GPTM1      :1;    // Bit 9
     unsigned long            :1;    // Bit 10
     unsigned long            :1;    // Bit 11
+#if defined(USE_HT32F66256)
+    unsigned long BFTM2      :1;    // Bit 12
+#else
     unsigned long PWM0       :1;    // Bit 12
+#endif
     unsigned long PWM1       :1;    // Bit 13
     unsigned long PWM2       :1;    // Bit 14
     unsigned long            :1;    // Bit 15
@@ -508,7 +512,7 @@ typedef union
     unsigned long LCDC       :1;    // Bit 20
     unsigned long DAC0       :1;    // Bit 21
     unsigned long CMP        :1;    // Bit 22
-#if defined(USE_HT32F66242) || defined(USE_HT32F66246)
+#if defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
     unsigned long PGA        :1;    // Bit 23
 #elif defined(USE_HT32F65233)
     unsigned long OPA_PGA    :1;    // Bit 23
@@ -651,7 +655,6 @@ typedef enum
   #endif
 } CKCU_PeripPrescaler_TypeDef;
 
-#define CKCU_PCLK_ADC CKCU_PCLK_ADC0
 /**
   * @}
   */
@@ -740,6 +743,10 @@ typedef enum
 
 #if (LIBCFG_MCTM0)
 #define CKCU_DBG_MCTM0_HALT     (1UL << 4)
+#endif
+
+#if (LIBCFG_MCTM1)
+#define CKCU_DBG_MCTM1_HALT     (1UL << 5)
 #endif
 
 #if (!LIBCFG_NO_GPTM0)
@@ -838,6 +845,10 @@ typedef enum
 #define CKCU_DBG_QSPI_HALT      (1UL << 29)
 #endif
 
+#if (LIBCFG_BFTM2)
+#define CKCU_DBG_BFTM2_HALT     (1UL << 30)
+#endif
+
 #if (LIBCFG_PWM0)
 #define CKCU_DBG_PWM0_HALT      (1UL << 30)
 #endif
@@ -846,7 +857,7 @@ typedef enum
 #define CKCU_DBG_PWM1_HALT      (1UL << 31)
 #endif
 
-#define IS_CKCU_DBG(MODE)       (((MODE & ~(0xFFEFFFDF)) == 0) && (MODE != 0))
+#define IS_CKCU_DBG(MODE)       (((MODE & ~(0xFFEFFFFF)) == 0) && (MODE != 0))
 
 /* Definitions of AHB clock control                                                                         */
 #define CKCU_AHBEN_SLEEP_FMC    (1UL)

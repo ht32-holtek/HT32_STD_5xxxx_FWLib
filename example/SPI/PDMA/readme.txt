@@ -17,11 +17,11 @@ Transmission behavior implies as following:
 This example configures SPI0 as master and SPI1 as slave, remember to set SEL as output mode 
 for slave select. Both SPIs are configured with 8 bits mode, non-FIFO mode, (PCLK_SPI/4) transmission speed.
 
-PDMA channel 1 is configured to transmit data from SPI0_Buffer_Tx to HT_SPI0->DR for SPI0 transmitter,
-PDMA channel 0 is configured to transmit data from HT_SPI0->DR to SPI0_Buffer_Rx for SPI0 receiver.
+PDMA channel 1 is configured to transmit data from SPI_Master_Buffer_Tx to HT_SPI0->DR for SPI0 transmitter,
+PDMA channel 0 is configured to transmit data from HT_SPI0->DR to SPI_Master_Buffer_Rx for SPI0 receiver.
 
-PDMA channel 5 is configured to transmit data from SPI1_Buffer_Tx to HT_SPI1->DR for SPI1 transmitter,
-PDMA channel 4 is configured to transmit data from HT_SPI1->DR to SPI1_Buffer_Rx for SPI1 receiver.
+PDMA channel 5 is configured to transmit data from SPI_Slave_Buffer_Tx to HT_SPI1->DR for SPI1 transmitter,
+PDMA channel 4 is configured to transmit data from HT_SPI1->DR to SPI_Slave_Buffer_Rx for SPI1 receiver.
 
 After the related configuration are done, the transmission will start once the PDMA Rx and Tx request
 in SPI0 & SPI1 are enabled, SPI0 transmits and receives data by PDMA channel 1 & channel 0, the same
@@ -37,7 +37,7 @@ for each SPI, program will compare the received data to the transferred data to 
 
 - This example can be run on the HT32 series development kit.
 - Refer "ht32_board_config.h" for pin assignment.
-- This example shows the result by LED1 and LED2.
+- This example shows the result by LED1.
 
 @par Firmware Disclaimer Information
 

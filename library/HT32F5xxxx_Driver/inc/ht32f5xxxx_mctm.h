@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_mctm.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the MCTM library.
  *************************************************************************************************************
  * @attention
@@ -121,6 +121,9 @@ typedef union
     #if (LIBCFG_TM_65X_66X_V1_NO_BK1)
     unsigned long                  :1;
     unsigned long                  :1;
+    #elif (LIBCFG_CMP2) && (LIBCFG_CMP3)
+    unsigned long Break1FromCMP2   :1; // BK1CMP2
+    unsigned long Break1FromCMP3   :1; // BK1CMP3
     #else
     unsigned long Break1FromCMP0   :1; // BK1CMP0
     unsigned long Break1FromCMP1   :1; // BK1CMP1
@@ -215,12 +218,18 @@ typedef union
 /**
  * @brief Used to check parameter of the MCTMx.
  */
-#define IS_MCTM(x)          (IS_MCTM0(x))
+#define IS_MCTM(x)          (IS_MCTM0(x) || IS_MCTM1(x))
 
 #if (LIBCFG_MCTM0)
 #define IS_MCTM0(x)         (x == HT_MCTM0)
 #else
 #define IS_MCTM0(x)         (0)
+#endif
+
+#if (LIBCFG_MCTM1)
+#define IS_MCTM1(x)         (x == HT_MCTM1)
+#else
+#define IS_MCTM1(x)         (0)
 #endif
 
 /**

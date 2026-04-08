@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_pdma.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the PDMA library.
  *************************************************************************************************************
  * @attention
@@ -134,7 +134,7 @@ typedef struct
 #define PDMA_DAC1_CH1             PDMA_CH5                      /*!< DAC1 CH1 PDMA channel number           */
 #endif
 
-#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F0006) || defined(USE_HT32F61244_45) || defined(USE_HT32F66242) || defined (USE_HT32F66246)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F0006) || defined(USE_HT32F61244_45) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
 #define PDMA_SPI0_RX              PDMA_CH4                      /*!< SPI0_RX PDMA channel number            */
 #define PDMA_SPI0_TX              PDMA_CH5                      /*!< SPI0_TX PDMA channel number            */
 #elif defined(USE_HT32F57342_52) || defined(USE_HT32F52357_67) || defined(USE_HT32F67041_51) || defined(USE_HT32F52234_44)
@@ -148,8 +148,13 @@ typedef struct
 #endif
 
 #if (LIBCFG_SPI1)
+#if defined(USE_HT32F66256)
+#define PDMA_SPI1_RX              PDMA_CH2                      /*!< SPI1_RX PDMA channel number            */
+#define PDMA_SPI1_TX              PDMA_CH3                      /*!< SPI1_TX PDMA channel number            */
+#else
 #define PDMA_SPI1_RX              PDMA_CH4                      /*!< SPI1_RX PDMA channel number            */
 #define PDMA_SPI1_TX              PDMA_CH5                      /*!< SPI1_TX PDMA channel number            */
+#endif
 #endif
 
 #if (LIBCFG_QSPI)
@@ -181,7 +186,7 @@ typedef struct
 #define PDMA_UART1_TX             PDMA_CH5                      /*!< UART1_TX PDMA channel number           */
 #endif
 
-#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
 #define PDMA_I2C0_RX              PDMA_CH2                      /*!< I2C0_RX PDMA channel number            */
 #define PDMA_I2C0_TX              PDMA_CH3                      /*!< I2C0_TX PDMA channel number            */
 #elif defined(USE_HT32F52234_44)
@@ -196,6 +201,9 @@ typedef struct
 #if (LIBCFG_I2C1)
 #if defined(USE_HT32F52234_44)
 #define PDMA_I2C1_RX              PDMA_CH3                      /*!< I2C1_RX PDMA channel number            */
+#define PDMA_I2C1_TX              PDMA_CH1                      /*!< I2C1_TX PDMA channel number            */
+#elif defined(USE_HT32F66256)
+#define PDMA_I2C1_RX              PDMA_CH0                      /*!< I2C1_RX PDMA channel number            */
 #define PDMA_I2C1_TX              PDMA_CH1                      /*!< I2C1_TX PDMA channel number            */
 #else
 #define PDMA_I2C1_RX              PDMA_CH3                      /*!< I2C1_RX PDMA channel number            */
@@ -239,9 +247,19 @@ typedef struct
 #endif
 #endif
 
+#if (LIBCFG_MCTM1)
+#define PDMA_MCTM1_CH0            PDMA_CH0                      /*!< MCTM1_CH0 PDMA channel number          */
+#define PDMA_MCTM1_TRIG           PDMA_CH1                      /*!< MCTM1_TRIG PDMA channel number         */
+#define PDMA_MCTM1_CH1            PDMA_CH2                      /*!< MCTM1_CH1 PDMA channel number          */
+#define PDMA_MCTM1_CH2            PDMA_CH3                      /*!< MCTM1_CH2 PDMA channel number          */
+#define PDMA_MCTM1_CH3            PDMA_CH4                      /*!< MCTM1_CH3 PDMA channel number          */
+#define PDMA_MCTM1_UEV2           PDMA_CH4                      /*!< MCTM1_UEV2 PDMA channel number         */
+#define PDMA_MCTM1_UEV1           PDMA_CH5                      /*!< MCTM1_UEV1 PDMA channel number         */
+#endif
+
 #if (LIBCFG_NO_GPTM0)
 #else
-#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined (USE_HT32F65233) || defined(USE_HT32F66242) || defined (USE_HT32F66246)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined (USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
 #define PDMA_GPTM0_CH1            PDMA_CH0                      /*!< GPTM0_CH1 PDMA channel number          */
 #define PDMA_GPTM0_CH2            PDMA_CH1                      /*!< GPTM0_CH2 PDMA channel number          */
 #define PDMA_GPTM0_CH0            PDMA_CH2                      /*!< GPTM0_CH0 PDMA channel number          */
@@ -259,6 +277,14 @@ typedef struct
 #endif
 
 #if (LIBCFG_GPTM1)
+#if defined(USE_HT32F66256)
+#define PDMA_GPTM1_CH0            PDMA_CH2                      /*!< GPTM1_CH0 PDMA channel number          */
+#define PDMA_GPTM1_CH3            PDMA_CH3                      /*!< GPTM1_CH3 PDMA channel number          */
+#define PDMA_GPTM1_CH1            PDMA_CH0                      /*!< GPTM1_CH1 PDMA channel number          */
+#define PDMA_GPTM1_UEV            PDMA_CH4                      /*!< GPTM1_UEV PDMA channel number          */
+#define PDMA_GPTM1_CH2            PDMA_CH1                      /*!< GPTM1_CH2 PDMA channel number          */
+#define PDMA_GPTM1_TRIG           PDMA_CH5                      /*!< GPTM1_TRIG PDMA channel number         */
+#else
 #define PDMA_GPTM1_CH0            PDMA_CH3                      /*!< GPTM1_CH0 PDMA channel number          */
 #define PDMA_GPTM1_CH3            PDMA_CH3                      /*!< GPTM1_CH3 PDMA channel number          */
 #define PDMA_GPTM1_CH1            PDMA_CH4                      /*!< GPTM1_CH1 PDMA channel number          */
@@ -266,8 +292,9 @@ typedef struct
 #define PDMA_GPTM1_CH2            PDMA_CH5                      /*!< GPTM1_CH2 PDMA channel number          */
 #define PDMA_GPTM1_TRIG           PDMA_CH5                      /*!< GPTM1_TRIG PDMA channel number         */
 #endif
+#endif
 
-#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined (USE_HT32F66246) || defined(USE_HT32F65233)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
 #define PDMA_SCTM0_CH0            PDMA_CH0                      /*!< SCTM0_CH0 PDMA channel number          */
 #define PDMA_SCTM0_CH1            PDMA_CH1                      /*!< SCTM0_CH1 PDMA channel number          */
 #define PDMA_SCTM1_CH0            PDMA_CH2                      /*!< SCTM1_CH0 PDMA channel number          */

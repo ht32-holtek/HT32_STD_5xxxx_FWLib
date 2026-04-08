@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/DeepSleepMode1/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -40,8 +40,8 @@
   #define EXAMPLE_RTC_LSE                         (1)
 #endif
 
-#if defined(USE_HT32F65240_DVB) || defined(USE_HT32F61245_SK) || defined(USE_HT32F65232_DVB) || defined(USE_HT32F65233_DVB) || defined(USE_HT32F66242_DVB) || defined(USE_HT32F66246_DVB)
-  // 62540, 61245, 65232, 65233, 66242, 66246 SK/DVB did not have LSE.
+#if defined(USE_HT32F65240_DVB) || defined(USE_HT32F61245_SK) || defined(USE_HT32F65232_DVB) || defined(USE_HT32F65233_DVB) || defined(USE_HT32F66242_DVB) || defined(USE_HT32F66246_DVB) || defined(USE_HT32F66256_DVB)
+  // 62540, 61245, 65232, 65233, 66242, 66246, 66256 SK/DVB did not have LSE.
   #undef EXAMPLE_RTC_LSE
   #define EXAMPLE_RTC_LSE                         (0)
 #else

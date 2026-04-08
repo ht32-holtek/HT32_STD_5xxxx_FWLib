@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_lcd.c
- * @version $Rev:: 8333         $
- * @date    $Date:: 2025-01-17 #$
+ * @version $Rev:: 9753         $
+ * @date    $Date:: 2026-04-02 #$
  * @brief   This file provides all the LCD firmware functions.
  *************************************************************************************************************
  * @attention
@@ -140,7 +140,7 @@ void LCD_StaticSwitchConfig(LCD_StaticSwitch_Enum Sel)
  * @param Sel: Specify the MuxSEG.
  *   This parameter can be one of the following values:
  *     @arg LCD_MUXCOM7_IS_COM7  :
- *     @arg LCD_MUXCOM7_IS_SEGx  :(52341: SEG28, 57352: SEG36)
+ *     @arg LCD_MUXCOM7_IS_SEGx  :(57341: SEG28, 57352: SEG36)
  * @retval None
  ************************************************************************************************************/
 void LCD_MuxCOM7Config(LCD_MUXCOM7_Enum Sel)
@@ -159,8 +159,8 @@ void LCD_MuxCOM7Config(LCD_MUXCOM7_Enum Sel)
  * @brief Configure MuxCOM6 to be COM6 or SEGx.
  * @param Sel: Specify the MuxSEG.
  *   This parameter can be one of the following values:
- *     @arg LCD_MUXCOM7_IS_COM6  :
- *     @arg LCD_MUXCOM7_IS_SEGx  :(52341: SEG27, 57352: SEG35)
+ *     @arg LCD_MUXCOM6_IS_COM6  :
+ *     @arg LCD_MUXCOM6_IS_SEGx  :(57341: SEG27, 57352: SEG35)
  * @retval None
  ************************************************************************************************************/
 void LCD_MuxCOM6Config(LCD_MUXCOM6_Enum Sel)
@@ -179,8 +179,8 @@ void LCD_MuxCOM6Config(LCD_MUXCOM6_Enum Sel)
  * @brief Configure MuxCOM5 to be COM5 or SEGx.
  * @param Sel: Specify the MuxSEG.
  *   This parameter can be one of the following values:
- *     @arg LCD_MUXCOM7_IS_COM5  :
- *     @arg LCD_MUXCOM7_IS_SEGx  :(52341: SEG26, 57352: SEG34)
+ *     @arg LCD_MUXCOM5_IS_COM5  :
+ *     @arg LCD_MUXCOM5_IS_SEGx  :(57341: SEG26, 57352: SEG34)
  * @retval None
  ************************************************************************************************************/
 void LCD_MuxCOM5Config(LCD_MUXCOM5_Enum Sel)
@@ -199,8 +199,8 @@ void LCD_MuxCOM5Config(LCD_MUXCOM5_Enum Sel)
  * @brief Configure MuxCOM4 to be COM4 or SEGx.
  * @param Sel: Specify the MuxSEG.
  *   This parameter can be one of the following values:
- *     @arg LCD_MUXCOM7_IS_COM4  :
- *     @arg LCD_MUXCOM7_IS_SEGx  :(52341: SEG25, 57352: SEG33)
+ *     @arg LCD_MUXCOM4_IS_COM4  :
+ *     @arg LCD_MUXCOM4_IS_SEGx  :(57341: SEG25, 57352: SEG33)
  * @retval None
  ************************************************************************************************************/
 void LCD_MuxCOM4Config(LCD_MUXCOM4_Enum Sel)

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/EXTI_Key_LED/ht32f5xxxx_01_it.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -339,6 +339,10 @@ void EXTI4_15_IRQHandler(void)
   #if defined(USE_HT32F52244_SK)
   KEY1_Button_Process();
   #endif
+
+  #if defined(USE_HT32F61152_DVB)
+  KEY1_Button_Process();
+  #endif
 }
 
 /*********************************************************************************************************//**
@@ -371,6 +375,28 @@ void EXTI10_15_IRQHandler(void)
   #endif
 
   #if defined(USE_HT32F65232_DVB)
+  WAKEUP_Button_Process();
+  #endif
+}
+
+/*********************************************************************************************************//**
+ * @brief   This function handles EXTI interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void EXTI0_7_IRQHandler(void)
+{
+  #if defined(USE_HT32F66256_DVB)
+  KEY1_Button_Process();
+  #endif
+}
+
+/*********************************************************************************************************//**
+ * @brief   This function handles EXTI interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void EXTI8_15_IRQHandler(void)
+{
+  #if defined(USE_HT32F66256_DVB)
   WAKEUP_Button_Process();
   #endif
 }

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CMP/ComparatorInterrupt/main.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -112,12 +112,12 @@ void CMP_Configuration(void)
 
     #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232)
     CMP_IniStruct.CMP_InputSelection    = CMP_INPUT_CMPnP;
-    #elif defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233)
+    #elif defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233) || defined(USE_HT32F66256)
     CMP_IniStruct.CMP_InputSelection    = CMP_INPUT_CMP0P;
     #endif
 
-    #if defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233)
-    CMP_IniStruct.CMP_InvInputSelection = CMP_CVREF0_CN_IN;
+    #if defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233) || defined(USE_HT32F66256)
+    CMP_IniStruct.CMP_InvInputSelection = CMP0_CVREF0_CN_IN;
     #else
     CMP_IniStruct.CMP_InvInputSelection = CMP_SCALER_CN_IN;
     #endif

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_TMTrigger_PDMA/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -310,6 +310,18 @@
   #define  HTCFG_LED_TM_CHN                       2
 #endif
 
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_VR_GPIOX                         C
+  #define _HTCFG_VR_GPION                         14
+  #define _HTCFG_VR_ADC_CHN                       6
+
+  #define _HTCFG_LED_GPIOX                        D
+  #define _HTCFG_LED_GPION                        1
+  #define  HTCFG_LED_TM_IPN                       MCTM1
+  #define  HTCFG_LED_TM_CHN                       0
+  #define _HTCFG_LED_TM_AFIO_FUM                  MCTM_MOD1
+#endif
+
 #define HTCFG_VR_GPIO_ID                          STRCAT2(GPIO_P,         _HTCFG_VR_GPIOX)
 #define HTCFG_VR_AFIO_PIN                         STRCAT2(AFIO_PIN_,      _HTCFG_VR_GPION)
 #define HTCFG_VR_AFIO_MODE                        STRCAT2(AFIO_FUN_,       HTCFG_ADC_IPN)
@@ -319,7 +331,11 @@
 
 #define HTCFG_LED_GPIO_ID                         STRCAT2(GPIO_P,         _HTCFG_LED_GPIOX)
 #define HTCFG_LED_AFIO_PIN                        STRCAT2(AFIO_PIN_,      _HTCFG_LED_GPION)
+#if defined(_HTCFG_LED_TM_AFIO_FUM)
+#define HTCFG_LED_AFIO_FUN                        STRCAT2(AFIO_FUN_,      _HTCFG_LED_TM_AFIO_FUM)
+#else
 #define HTCFG_LED_AFIO_FUN                        STRCAT2(AFIO_FUN_,       HTCFG_LED_TM_IPN)
+#endif
 #define HTCFG_LED_TM_PORT                         STRCAT2(HT_,             HTCFG_LED_TM_IPN)
 #define HTCFG_LED_TM_CH                           STRCAT2(TM_CH_,          HTCFG_LED_TM_CHN)
 #define HTCFG_ADC_TRIG_TM                         STRCAT3(ADC_TRIG_,       HTCFG_LED_TM_IPN, _MTO)

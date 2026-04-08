@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/EEPROM_Simulate/ht32f5xxxx_01_it.c
- * @version $Rev:: 2970         $
- * @date    $Date:: 2018-08-03 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -155,10 +155,10 @@ void SysTick_Handler(void)
 }
 
 /*********************************************************************************************************//**
- * @brief   This function handles I2C0 interrupt. (I2C Master to access EEPROM)
+ * @brief   This function handles common I2C Master interrupt processing.
  * @retval  None
  ************************************************************************************************************/
-void I2C0_IRQHandler(void)
+void I2C_MASTER_Process_Handler(void)
 {
   vu32 state;
   u32 i;
@@ -211,8 +211,12 @@ void I2C0_IRQHandler(void)
         break;
 
       case I2C_MASTER_TRANSMITTER_MODE:
-        /* Send the register address to I2C                                                                 */
-        HTCFG_I2C_MASTER_PORT->DR = I2CM_Transfer.RegAddr;
+          /* Send the register address to I2C                                                                 */
+          #if (!LIBCFG_I2C_NOSTRETCH)
+          HTCFG_I2C_MASTER_PORT->DR = I2CM_Transfer.RegAddr;
+          #else
+          HTCFG_I2C_MASTER_PORT->TXDR = I2CM_Transfer.RegAddr;
+          #endif
         break;
 
       case I2C_MASTER_TX_EMPTY:
@@ -220,7 +224,11 @@ void I2C0_IRQHandler(void)
         {
           if (I2CM_Transfer.Counter < I2CM_Transfer.Length)
           {
+            #if (!LIBCFG_I2C_NOSTRETCH)
             HTCFG_I2C_MASTER_PORT->DR = I2CM_Transfer.Buffer[I2CM_Transfer.Counter++];
+            #else
+            HTCFG_I2C_MASTER_PORT->TXDR = I2CM_Transfer.Buffer[I2CM_Transfer.Counter++];
+            #endif
           }
           else
           {
@@ -249,7 +257,11 @@ void I2C0_IRQHandler(void)
       case I2C_MASTER_RX_NOT_EMPTY:
         /* Receive data sent from I2C                                                                       */
         i = I2CM_Transfer.Counter; 
+        #if (!LIBCFG_I2C_NOSTRETCH)
         I2CM_Transfer.Buffer[i] = HTCFG_I2C_MASTER_PORT->DR;
+        #else
+        I2CM_Transfer.Buffer[i] = HTCFG_I2C_MASTER_PORT->RXDR;
+        #endif
         I2CM_Transfer.Counter++;
         if (I2CM_Transfer.Counter == I2CM_Transfer.Length - 1)
         {
@@ -284,10 +296,10 @@ i2c_master_transfer_error:
 }
 
 /*********************************************************************************************************//**
- * @brief   This function handles I2C1 interrupt. (Simulate EEPROM slave)
+ * @brief   This function handles common I2C EEPROM interrupt processing.
  * @retval  None
  ************************************************************************************************************/
-void I2C1_IRQHandler(void)
+void I2C_EEPROM_Process_Handler(void)
 {
   static u8 MemAddr = 0;
   static s32 WriteIndex;
@@ -348,6 +360,36 @@ void I2C1_IRQHandler(void)
   }
 }
 
+#if defined(LIBCFG_I2C_COMBINED_I2C01)
+/*********************************************************************************************************//**
+ * @brief   This function handles I2C0 and I2C1 interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void I2C0_1_IRQHandler(void)
+{
+  I2C_MASTER_Process_Handler();
+
+  I2C_EEPROM_Process_Handler();
+}
+#else
+/*********************************************************************************************************//**
+ * @brief   This function handles I2C Master interrupt. (I2C Master to access EEPROM)
+ * @retval  None
+ ************************************************************************************************************/
+void HTCFG_I2C_MASTER_IRQHandler(void)
+{
+  I2C_MASTER_Process_Handler();
+}
+
+/*********************************************************************************************************//**
+ * @brief   This function handles I2C EEPROM interrupt. (Simulate EEPROM slave)
+ * @retval  None
+ ************************************************************************************************************/
+void HTCFG_I2C_EEPROM_IRQHandler(void)
+{
+  I2C_EEPROM_Process_Handler();
+}
+#endif
 
 /**
   * @}

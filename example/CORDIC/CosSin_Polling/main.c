@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CORDIC/CosSin_Polling/main.c
- * @version $Rev:: 8712         $
- * @date    $Date:: 2025-05-05 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -90,7 +90,7 @@ int main(void)
   {
     printf("Result: Unexpected result.\r\n");
     printf("RRDY should reset when the CORDICRDATA register is read (NRES + 1) times.\r\n");
-    while(1);
+    while(1){};
   }
 
   /* Check residual error on cosine and sine results                                                        */
@@ -101,7 +101,7 @@ int main(void)
 
     printf("Result: Unexpected result.\r\n");
     printf("Check residual error on cosine and sine fail.\r\n");
-    while(1);
+    while(1){};
   }
   else
   {

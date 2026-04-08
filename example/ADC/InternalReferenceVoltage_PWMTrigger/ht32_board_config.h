@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/InternalReferenceVoltage_PWMTrigger/ht32_board_config.h
- * @version $Rev:: 7348         $
- * @date    $Date:: 2023-12-05 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -163,9 +163,24 @@
   #define HTCFG_ADC_TRIG_TM_CH3O                  ADC_TRIG_PWM0_CH3O
 #endif
 
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_VR_GPIOX                         C
+  #define _HTCFG_VR_GPION                         14
+  #define  HTCFG_VR_ADC_CH                        (ADC_CH_6)
+
+  #define _HTCFG_VREF_GPIOX                       A
+  #define _HTCFG_VREF_GPION                       6
+
+  #define HTCFG_INTERNAL_CH                       ADC_CH_BANDGAP
+#endif
+
 #if !defined(HTCFG_PWM_IPN)
   #define HTCFG_PWM_IPN                           GPTM0
   #define HTCFG_ADC_TRIG_TM_CH3O                  ADC_TRIG_GPTM0_CH3O
+#endif
+
+#if !defined(HTCFG_INTERNAL_CH)
+  #define HTCFG_INTERNAL_CH                       ADC_CH_IVREF
 #endif
 
 #define HTCFG_PWM_TM_PORT                         STRCAT2(HT_,            HTCFG_PWM_IPN)

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_tm_type.h
- * @version $Rev:: 7319         $
- * @date    $Date:: 2023-10-28 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the TM library.
  *************************************************************************************************************
  * @attention
@@ -101,7 +101,7 @@ typedef enum
 } MCTM_COMUS_Enum;
 #if (LIBCFG_MCTM_UEV1DIS)
 /**
- * @brief Enumeration of MCTM update event1 disasble.
+ * @brief Enumeration of MCTM update event1 disable.
  */
 typedef enum
 {

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/7_bit_mode/ht32_board_config.h
- * @version $Rev:: 8156         $
- * @date    $Date:: 2024-09-20 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -284,6 +284,20 @@
   #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_0)
   #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
   #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_1)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define I2C_MASTER_PORT            (HT_I2C0)
+  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PA)
+  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_1)
+  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
+  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_3)
+
+  #define I2C_SLAVE_PORT             (HT_I2C1)
+  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
+  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
+  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
+  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
 #endif
 
 #ifdef __cplusplus

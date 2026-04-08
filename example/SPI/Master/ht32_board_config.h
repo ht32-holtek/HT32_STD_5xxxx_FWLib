@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Master/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -33,6 +33,9 @@
 #endif
 
 /* Settings ------------------------------------------------------------------------------------------------*/
+
+  #define HTCFG_EXTI_INT_IRQHandler            EXTI0_1_IRQHandler
+
 #if defined(USE_HT32F52230_SK)
   #define _HTCFG_INT_GPIOX                     A
   #define HTCFG_INT_GPION                      0
@@ -338,6 +341,25 @@
 #endif
 
 #if defined(USE_HT32F61141_SK)  //PRELIMINARY_NOT_TEST
+  #define _HTCFG_INT_GPIOX                     B
+  #define HTCFG_INT_GPION                      0
+
+  #define HTCFG_SPI_IPN                        SPI0
+
+  #define HTCFG_MASTER_SPI_SCK_GPIO_ID         (GPIO_PC)
+  #define HTCFG_MASTER_SPI_SCK_AFIO_PIN        (AFIO_PIN_2)
+
+  #define HTCFG_MASTER_SPI_MOSI_GPIO_ID        (GPIO_PB)
+  #define HTCFG_MASTER_SPI_MOSI_AFIO_PIN       (AFIO_PIN_4)
+
+  #define HTCFG_MASTER_SPI_MISO_GPIO_ID        (GPIO_PB)
+  #define HTCFG_MASTER_SPI_MISO_AFIO_PIN       (AFIO_PIN_5)
+
+  #define HTCFG_MASTER_SPI_SEL_GPIO_ID         (GPIO_PC)
+  #define HTCFG_MASTER_SPI_SEL_AFIO_PIN        (GPIO_PIN_1)
+#endif
+
+#if defined(USE_HT32F61152_DVB)
   #define _HTCFG_INT_GPIOX                     B
   #define HTCFG_INT_GPION                      0
 
@@ -696,6 +718,28 @@
 
   #define HTCFG_MASTER_SPI_SEL_GPIO_ID         (GPIO_PA)
   #define HTCFG_MASTER_SPI_SEL_AFIO_PIN        (GPIO_PIN_3)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_INT_GPIOX                     B
+  #define HTCFG_INT_GPION                      0
+
+  #define HTCFG_SPI_IPN                        SPI0
+
+  #define HTCFG_MASTER_SPI_SCK_GPIO_ID         (GPIO_PA)
+  #define HTCFG_MASTER_SPI_SCK_AFIO_PIN        (AFIO_PIN_11)
+
+  #define HTCFG_MASTER_SPI_MOSI_GPIO_ID        (GPIO_PA)
+  #define HTCFG_MASTER_SPI_MOSI_AFIO_PIN       (AFIO_PIN_8)
+
+  #define HTCFG_MASTER_SPI_MISO_GPIO_ID        (GPIO_PA)
+  #define HTCFG_MASTER_SPI_MISO_AFIO_PIN       (AFIO_PIN_7)
+
+  #define HTCFG_MASTER_SPI_SEL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_MASTER_SPI_SEL_AFIO_PIN        (GPIO_PIN_10)
+
+  #undef  HTCFG_EXTI_INT_IRQHandler
+  #define HTCFG_EXTI_INT_IRQHandler            EXTI0_7_IRQHandler
 #endif
 
 #define HTCFG_INT_GPIO_ID                    STRCAT2(GPIO_P,        _HTCFG_INT_GPIOX)

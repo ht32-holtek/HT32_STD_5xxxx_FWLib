@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/7_bit_mode_slave/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -205,6 +205,15 @@
   #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_7)
 #endif
 
+#if defined(USE_HT32F61152_DVB) //PRELIMINARY_NOT_TEST
+  #define HTCFG_I2C_SLAVE_CLK(ck)          (ck.Bit.I2C0)
+  #define HTCFG_I2C_SLAVE_PORT             (HT_I2C0)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_6)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_7)
+#endif
+
 #if defined(USE_HT32F65240_DVB)
   #define HTCFG_I2C_SLAVE_CLK(ck)          (ck.Bit.I2C0)
   #define HTCFG_I2C_SLAVE_PORT             (HT_I2C0)
@@ -347,6 +356,15 @@
   #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
   #define HTCFG_I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
   #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_5)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_I2C_SLAVE_CLK(ck)          (ck.Bit.I2C0)
+  #define HTCFG_I2C_SLAVE_PORT             (HT_I2C0)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_1)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_3)
 #endif
 
 #ifdef __cplusplus

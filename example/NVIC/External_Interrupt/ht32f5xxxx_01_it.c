@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    NVIC/External_Interrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 4434         $
- * @date    $Date:: 2019-12-20 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -146,6 +146,19 @@ void LVD_BOD_IRQHandler(void)
  * @retval  None
  ************************************************************************************************************/
 void EXTI0_1_IRQHandler(void)
+{
+  /*Generate BOD Interrupt                                                                                  */
+  NVIC_SetPendingIRQ(LVD_BOD_IRQn);
+  Delay(DELAY_TIME);
+  /* Turn on LED3                                                                                           */
+  HT32F_DVB_LEDOn(HT_LED3);
+}
+
+/*********************************************************************************************************//**
+ * @brief   This function handles EXIT line 0~7 interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void EXTI0_7_IRQHandler(void)
 {
   /*Generate BOD Interrupt                                                                                  */
   NVIC_SetPendingIRQ(LVD_BOD_IRQn);

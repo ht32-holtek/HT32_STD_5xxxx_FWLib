@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/PDMA/ht32_board_config.h
- * @version $Rev:: 7355         $
- * @date    $Date:: 2023-12-05 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -449,6 +449,32 @@
   #define HTCFG_SPIS_MOSI_GPION                   0
   #define HTCFG_SPIS_MISO_GPIOX                   B
   #define HTCFG_SPIS_MISO_GPION                   1
+  #define HTCFG_SPIS_IPN                          SPI1
+  #define HTCFG_SPIS_PDMA_TX                      PDMA_SPI1_TX
+  #define HTCFG_SPIS_PDMA_RX                      PDMA_SPI1_RX
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_SPIM_SEL_GPIOX                    A
+  #define HTCFG_SPIM_SEL_GPION                    10
+  #define HTCFG_SPIM_SCK_GPIOX                    A
+  #define HTCFG_SPIM_SCK_GPION                    11
+  #define HTCFG_SPIM_MOSI_GPIOX                   A
+  #define HTCFG_SPIM_MOSI_GPION                   8
+  #define HTCFG_SPIM_MISO_GPIOX                   A
+  #define HTCFG_SPIM_MISO_GPION                   7
+  #define HTCFG_SPIM_IPN                          SPI0
+  #define HTCFG_SPIM_PDMA_TX                      PDMA_SPI0_TX
+  #define HTCFG_SPIM_PDMA_RX                      PDMA_SPI0_RX
+
+  #define HTCFG_SPIS_SEL_GPIOX                    B
+  #define HTCFG_SPIS_SEL_GPION                    1
+  #define HTCFG_SPIS_SCK_GPIOX                    B
+  #define HTCFG_SPIS_SCK_GPION                    14
+  #define HTCFG_SPIS_MOSI_GPIOX                   A
+  #define HTCFG_SPIS_MOSI_GPION                   15
+  #define HTCFG_SPIS_MISO_GPIOX                   B
+  #define HTCFG_SPIS_MISO_GPION                   0
   #define HTCFG_SPIS_IPN                          SPI1
   #define HTCFG_SPIS_PDMA_TX                      PDMA_SPI1_TX
   #define HTCFG_SPIS_PDMA_RX                      PDMA_SPI1_RX

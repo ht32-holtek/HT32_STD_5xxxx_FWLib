@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/BandgapVoltage/main.c
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -99,7 +99,9 @@ void ADC_MainRoutine(void)
 
     /* Show VDDA, MVDDA, and ADC input (potentiometer) voltage and ADC result                               */
     printf("VDDA=   %4dmV  \n\r", (VBG_VALUE_mV * 4095) / gADC_Result[1]);
+    #if (LIBCFG_ADC_MVDDA)
     printf("MVDDA=  %4dmV  Value= %4d\n\r", (VBG_VALUE_mV * gADC_Result[0]) / gADC_Result[1], gADC_Result[0]);
+    #endif
     printf("VR=     %4dmV  Value= %4d\n\n\r", (VBG_VALUE_mV * gADC_Result[2]) / gADC_Result[1], gADC_Result[2]);
   }
 }
@@ -151,7 +153,9 @@ void ADC_Configuration(void)
     #endif
 
     /* Set ADC conversion sequence as channel n                                                             */
+    #if (LIBCFG_ADC_MVDDA)
     ADC_RegularChannelConfig(HT_ADC0, ADC_CH_MVDDA, 0, 0);
+    #endif
     ADC_RegularChannelConfig(HT_ADC0, ADC_CH_BANDGAP, 1, 0);
     ADC_RegularChannelConfig(HT_ADC0, HTCFG_VR_ADC_CH, 2, 0);
 
@@ -165,8 +169,10 @@ void ADC_Configuration(void)
   */
   ADC_VREFCmd(HT_ADC0, ENABLE);
 
+  #if (LIBCFG_ADC_MVDDA)
   /* Enable MVDDA function                                                                                  */
   ADC_MVDDACmd(HT_ADC0, ENABLE);
+  #endif
 
   /* Enable ADC single/cycle end of conversion interrupt                                                    */
   ADC_IntConfig(HT_ADC0, ADC_INT_SINGLE_EOC | ADC_INT_CYCLE_EOC, ENABLE);

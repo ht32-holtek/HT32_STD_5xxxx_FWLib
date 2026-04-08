@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/Singlewire_Slave/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -79,6 +79,12 @@
   #define _HTCFG_UART_RTX_GPIOX                   A
   #define _HTCFG_UART_RTX_GPION                   2
   #define HTCFG_UART_IPN                          UART0
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_UART_RTX_GPIOX                   A
+  #define _HTCFG_UART_RTX_GPION                   1
+  #define HTCFG_UART_IPN                          USART0
 #endif
 
 #define HTCFG_UART_RTX_GPIO_ID                    STRCAT2(GPIO_P,         _HTCFG_UART_RTX_GPIOX)

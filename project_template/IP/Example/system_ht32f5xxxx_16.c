@@ -2,8 +2,8 @@
  * @file    library/Device/Holtek/HT32F5xxxx/Source/system_ht32f5xxxx_16.c
  * @brief   CMSIS Cortex-M0+ Device Peripheral Access Layer Source File
  *          for the Holtek HT32F5xxxx Device Series
- * @version $Rev:: 7090         $
- * @date    $Date:: 2023-08-02 #$
+ * @version $Rev:: 9461         $
+ * @date    $Date:: 2025-10-17 #$
  *
  * @note
  * Copyright (C) Holtek Semiconductor Inc. All rights reserved.
@@ -26,8 +26,10 @@
 // ========================================
 //   HT32F66242
 //   HT32F66246
+//   HT32F66256
 
 //#define USE_HT32F66246
+//#define USE_HT32F66256
 
 /** @addtogroup CMSIS
   * @{

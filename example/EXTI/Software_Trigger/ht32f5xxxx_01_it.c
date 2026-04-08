@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/Software_Trigger/ht32f5xxxx_01_it.c
- * @version $Rev:: 8754         $
- * @date    $Date:: 2025-05-12 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -117,6 +117,26 @@ void SysTick_Handler(void)
  * @retval  None
  ************************************************************************************************************/
 void EXTI0_1_IRQHandler(void)
+{
+  if (EXTI_GetEdgeFlag(EXTI_CHANNEL_0) || EXTI_GetSWCmdStatus(EXTI_CHANNEL_0))
+  {
+    #if 1
+    /* Deactivate the corresponding EXTI interrupt                                                          */
+    EXTI_SWIntCmd(EXTI_CHANNEL_0, DISABLE);
+    #endif
+
+    EXTI_ClearEdgeFlag(EXTI_CHANNEL_0);
+
+    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32F_DVB_LEDToggle(HT_LED2);
+  }
+}
+
+/*********************************************************************************************************//**
+ * @brief   This function handles EXTI1 interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void EXTI0_7_IRQHandler(void)
 {
   if (EXTI_GetEdgeFlag(EXTI_CHANNEL_0) || EXTI_GetSWCmdStatus(EXTI_CHANNEL_0))
   {

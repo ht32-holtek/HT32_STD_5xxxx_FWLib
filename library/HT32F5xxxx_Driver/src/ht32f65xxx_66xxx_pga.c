@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f65xxx_66xxx_pga.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all the PGA firmware functions.
  *************************************************************************************************************
  * @attention
@@ -78,6 +78,8 @@
 #define PGA1_OF_WITH_CALIBRATION                 0x2
 #define PGA2_OF_WITH_CALIBRATION                 0x4
 #define PGA3_OF_WITH_CALIBRATION                 0x8
+#define PGA4_OF_WITH_CALIBRATION                 0x10
+#define PGA5_OF_WITH_CALIBRATION                 0x11
 /**
   * @}
   */
@@ -101,10 +103,22 @@
 #else
 #define IS_PGA3(x)                               (0)
 #endif
+#if (LIBCFG_PGA4)
+#define IS_PGA4(x)                               (x == HT_PGA4)
+#else
+#define IS_PGA4(x)                               (0)
+#endif
+#if (LIBCFG_PGA5)
+#define IS_PGA5(x)                               (x == HT_PGA5)
+#else
+#define IS_PGA5(x)                               (0)
+#endif
 #define IS_PGA(x)                                (IS_PGA0(x) || \
                                                   IS_PGA1(x) || \
                                                   IS_PGA2(x) || \
-                                                  IS_PGA3(x))
+                                                  IS_PGA3(x) || \
+                                                  IS_PGA4(x) || \
+                                                  IS_PGA5(x))
 
 #define IS_PGA_HVDDA_OPTION(x)                   ((x == PGA_HVDDA_DISABLE)  || \
                                                   (x == PGA_HVDDA_RESISTOR) || \
@@ -252,6 +266,20 @@ void PGA_Init(HT_PGA0_X_TypeDef* HT_PGAn, PGA_InitTypeDef* PGA_InitStruct)
     HT_PGA3->VOS &= 0xFFFFFF7F;
   }
   #endif
+  #if (LIBCFG_PGA4)
+  else if((HT_PGAn == HT_PGA4) && !(gPGACaliValInit & PGA4_OF_WITH_CALIBRATION))
+  {
+    HT_PGA4->VOS = 0x00000090;
+    HT_PGA4->VOS &= 0xFFFFFF7F;
+  }
+  #endif
+  #if (LIBCFG_PGA5)
+  else if((HT_PGAn == HT_PGA5) && !(gPGACaliValInit & PGA5_OF_WITH_CALIBRATION))
+  {
+    HT_PGA5->VOS = 0x00000090;
+    HT_PGA5->VOS &= 0xFFFFFF7F;
+  }
+  #endif
 
   HT_PGAn->CR = gPGAUnProtectKey;
 
@@ -370,6 +398,18 @@ void PGA_CalibrationCmd(HT_PGA0_X_TypeDef* HT_PGAn, ControlStatus NewState)
     else if(HT_PGAn == HT_PGA3)
     {
       gPGACaliValInit |= PGA3_OF_WITH_CALIBRATION;
+    }
+    #endif
+    #if (LIBCFG_PGA4)
+    else if(HT_PGAn == HT_PGA4)
+    {
+      gPGACaliValInit |= PGA4_OF_WITH_CALIBRATION;
+    }
+    #endif
+    #if (LIBCFG_PGA5)
+    else if(HT_PGAn == HT_PGA5)
+    {
+      gPGACaliValInit |= PGA5_OF_WITH_CALIBRATION;
     }
     #endif
   }

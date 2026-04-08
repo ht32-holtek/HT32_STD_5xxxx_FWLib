@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/Retarget/main.c
- * @version $Rev:: 7438         $
- * @date    $Date:: 2023-12-21 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -68,7 +68,7 @@ int main(void)
   {
     #if 1
     // Wait for LSE clock Ready timeout, do the error handling here
-    while(1);
+    while(1){};
     #endif
   }
 
@@ -76,7 +76,7 @@ int main(void)
   {
     #if 1
     // Wait for HSI Auto Trim Ready timeout, do the error handling here
-    while(1);
+    while(1){};
     #endif
   }
   #endif

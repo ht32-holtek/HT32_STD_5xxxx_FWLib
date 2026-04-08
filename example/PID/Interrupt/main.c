@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PID/Interrupt/main.c
- * @version $Rev:: 8269         $
- * @date    $Date:: 2024-11-08 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -65,7 +65,7 @@ int main(void)
   gERRn = 0x2710;
 
   // Start PID Compute by PID SPD Mode.
-  PID_StartFun(gERRn, PID_SPD_MODE);
+  PID_StartFun(gERRn, PID_SPD0_MODE);
 
   while(1)
   {
@@ -122,7 +122,7 @@ void PID_Configuration(void)
     SPD_InitStructure.UI_MIN = 0x000F8001;
     SPD_InitStructure.OUT_MAX = 0x7EB7;
     SPD_InitStructure.OUT_MIN = 0x8149;
-    PID_Init(HT_PID0, PID_SPD_MODE, &SPD_InitStructure);
+    PID_Init(HT_PID0, PID_SPD0_MODE, &SPD_InitStructure);
   }
 
   /* Enable PID complete calculation interrupt                                                              */

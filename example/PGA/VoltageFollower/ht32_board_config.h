@@ -63,6 +63,16 @@
   #define _HTCFG_PGA_OUT_GPION                    3
 #endif
 
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_PGA_PORT                          HT_PGA2
+  #define _HTCFG_PGA_POS_GPIOX                    A
+  #define _HTCFG_PGA_POS_GPION                    5
+  #define _HTCFG_PGA_NEG_GPIOX                    A
+  #define _HTCFG_PGA_NEG_GPION                    4
+  #define _HTCFG_PGA_OUT_GPIOX                    A
+  #define _HTCFG_PGA_OUT_GPION                    3
+#endif
+
 #define HTCFG_PGA_POS_GPIO_ID                     STRCAT2(GPIO_P,         _HTCFG_PGA_POS_GPIOX)
 #define HTCFG_PGA_POS_AFIO_PIN                    STRCAT2(AFIO_PIN_,      _HTCFG_PGA_POS_GPION)
 

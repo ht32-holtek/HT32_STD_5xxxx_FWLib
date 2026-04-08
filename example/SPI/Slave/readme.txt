@@ -33,7 +33,7 @@ Note: Ensure the Host and Slave have the same SPI FIFO depth to allow proper dat
   - No parity
   - BaudRate = 115200 baud
   - flow control: None
-  
+
 @par Firmware Disclaimer Information
 
 1. The customer hereby acknowledges and agrees that the program technical documentation, including the

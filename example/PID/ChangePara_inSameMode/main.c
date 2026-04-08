@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PID/ChangePara_inSameMode/main.c
- * @version $Rev:: 8231         $
- * @date    $Date:: 2024-10-28 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -71,14 +71,14 @@ int main(void)
     gERRn = 0x2710;
 
     // Start PID Compute by PID SPD Mode.
-    gPIDout = PID_StartFun(gERRn, PID_SPD_MODE);
+    gPIDout = PID_StartFun(gERRn, PID_SPD0_MODE);
 
     // ERRn_1=0x0, ERRn=0x2710, PIDout=0x766
     printf("Para1, ERRn_1=0x%X, ERRn=0x%X, PIDout=0x%X\r\n", gPara1_ERRn_1, gERRn, gPIDout);
   }
 
   // Retain the ERRn_1 value of Para1 in PID SPD Mode.
-  gPara1_ERRn_1 = PID_GetERRn_1(HT_PID0, PID_SPD_MODE);
+  gPara1_ERRn_1 = PID_GetERRn_1(HT_PID0, PID_SPD0_MODE);
 
   {
     // Switch to Para2.
@@ -88,14 +88,14 @@ int main(void)
     gERRn = 0x2712;
 
     // Start PID Compute by PID SPD Mode.
-    gPIDout = PID_StartFun(gERRn, PID_SPD_MODE);
+    gPIDout = PID_StartFun(gERRn, PID_SPD0_MODE);
 
     // ERRn_1=0x0, ERRn=0x2712, PIDout=0x17F
     printf("Para2, ERRn_1=0x%X, ERRn=0x%X, PIDout=0x%X\r\n", gPara2_ERRn_1, gERRn, gPIDout);
   }
 
   // Retain the ERRn_1 value of Para2 in PID SPD Mode.
-  gPara2_ERRn_1 = PID_GetERRn_1(HT_PID0, PID_SPD_MODE);
+  gPara2_ERRn_1 = PID_GetERRn_1(HT_PID0, PID_SPD0_MODE);
 
   {
     // Switch to Para1.
@@ -105,7 +105,7 @@ int main(void)
     gERRn = 0x2714;
 
     // Start PID Compute by PID SPD Mode.
-    gPIDout = PID_StartFun(gERRn, PID_SPD_MODE);
+    gPIDout = PID_StartFun(gERRn, PID_SPD0_MODE);
 
     // ERRn_1=0x2710, ERRn=0x2714, PIDout=0x172
     printf("Para1, ERRn_1=0x%X, ERRn=0x%X, PIDout=0x%X\r\n", gPara1_ERRn_1, gERRn, gPIDout);
@@ -163,7 +163,7 @@ void PID_SPD_Para1_Configuration(void)
   SPD_InitStructure.UI_MIN = 0x000F8001;
   SPD_InitStructure.OUT_MAX = 0x7EB7;
   SPD_InitStructure.OUT_MIN = 0x8149;
-  PID_Init(HT_PID0, PID_SPD_MODE, &SPD_InitStructure);
+  PID_Init(HT_PID0, PID_SPD0_MODE, &SPD_InitStructure);
 }
 
 /*********************************************************************************************************//**
@@ -187,7 +187,7 @@ void PID_SPD_Para2_Configuration(void)
   SPD_InitStructure.UI_MIN = 0x000F8001;
   SPD_InitStructure.OUT_MAX = 0x7EB7;
   SPD_InitStructure.OUT_MIN = 0x8149;
-  PID_Init(HT_PID0, PID_SPD_MODE, &SPD_InitStructure);
+  PID_Init(HT_PID0, PID_SPD0_MODE, &SPD_InitStructure);
 }
 
 /*********************************************************************************************************//**

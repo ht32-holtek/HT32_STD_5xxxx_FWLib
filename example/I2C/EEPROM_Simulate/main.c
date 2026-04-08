@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/EEPROM_Simulate/main.c
- * @version $Rev:: 7265         $
- * @date    $Date:: 2023-10-02 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -135,6 +135,9 @@ void I2CS_EEPROMsim_Init(void)
     I2C_InitStructure.I2C_OwnAddress = EEPROM_ADDRESS;
     I2C_InitStructure.I2C_Speed = 400000;
     I2C_InitStructure.I2C_SpeedOffset = 0;
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+    #endif
     I2C_Init(HTCFG_I2C_EEPROM_PORT, &I2C_InitStructure);
   }
 
@@ -179,6 +182,9 @@ void I2CM_Init(void)
     I2C_InitStructure.I2C_OwnAddress      = 0x7F;
     I2C_InitStructure.I2C_Speed           = 400000;
     I2C_InitStructure.I2C_SpeedOffset     = 0;
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode     = I2C_STRETCH_YES;
+    #endif
     I2C_Init(HTCFG_I2C_MASTER_PORT, &I2C_InitStructure);
   }
 

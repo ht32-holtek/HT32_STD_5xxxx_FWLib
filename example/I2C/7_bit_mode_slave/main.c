@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/7_bit_mode_slave/main.c
- * @version $Rev:: 4935         $
- * @date    $Date:: 2020-08-26 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -115,6 +115,11 @@ void I2C_Configuration(void)
     I2C_InitStructure.I2C_AddressingMode = I2C_ADDRESSING_7BIT;
     I2C_InitStructure.I2C_Acknowledge = ENABLE;
     I2C_InitStructure.I2C_OwnAddress = I2C_SLAVE_ADDRESS;
+    I2C_InitStructure.I2C_Speed = ClockSpeed;
+    I2C_InitStructure.I2C_SpeedOffset = 0;
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+    #endif
     I2C_Init(HTCFG_I2C_SLAVE_PORT, &I2C_InitStructure);
   }
 

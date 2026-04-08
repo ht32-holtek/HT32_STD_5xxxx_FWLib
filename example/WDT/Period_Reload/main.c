@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    WDT/Period_Reload/main.c
- * @version $Rev:: 5905         $
- * @date    $Date:: 2022-05-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -91,8 +91,8 @@ void SysTick_Configuration(void)
   SYSTICK_SetReloadValue(SystemCoreClock / 8 / 10);     // 1/10 Hz = 100ms
   SYSTICK_IntConfig(ENABLE);                            // Enable SysTick Interrupt
   /* Enable SYSTICK Counter                                                                                 */
-  SYSTICK_CounterCmd(SYSTICK_COUNTER_CLEAR);          // Clear Initial Counter
-  SYSTICK_CounterCmd(SYSTICK_COUNTER_ENABLE);         // Enable Systick Counter
+  SYSTICK_CounterCmd(SYSTICK_COUNTER_CLEAR);            // Clear Initial Counter
+  SYSTICK_CounterCmd(SYSTICK_COUNTER_ENABLE);           // Enable Systick Counter
 }
 
 /*********************************************************************************************************//**

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SCI/ATR/ht32f5xxxx_01_it.c
- * @version $Rev:: 7534         $
- * @date    $Date:: 2024-01-22 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -124,7 +124,7 @@ void SCI_IRQHandler(void)
 
   if(tmpvalue & SCI_FLAG_PAR)
   {
-    while(1);
+    while(1){};
   }
 
   if(tmpvalue & SCI_FLAG_CARD)

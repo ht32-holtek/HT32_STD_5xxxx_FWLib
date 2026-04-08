@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/PDMA/main.c
- * @version $Rev:: 6679         $
- * @date    $Date:: 2023-01-17 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -55,23 +55,23 @@ void SPI_Loopback_Test(void);
 ErrStatus CmpBuffer(u8* Buffer1, u8* Buffer2, u32 BufferLength);
 
 /* Private variables ---------------------------------------------------------------------------------------*/
-u8 SPI0_Buffer_Tx[BUF_SIZE] = {
+u8 SPI_Master_Buffer_Tx[BUF_SIZE] = {
   0x00, 0x11, 0x22, 0x33,
   0x44, 0x55, 0x66, 0x77,
   0x88, 0x99, 0xAA, 0xBB,
   0xCC, 0xDD, 0xEE, 0xFF
 };
 
-u8 SPI0_Buffer_Rx[BUF_SIZE] = {0};
+u8 SPI_Master_Buffer_Rx[BUF_SIZE] = {0};
 
-u8 SPI1_Buffer_Tx[BUF_SIZE] = {
+u8 SPI_Slave_Buffer_Tx[BUF_SIZE] = {
   0xFF, 0xEE, 0xDD, 0xCC,
   0xBB, 0xAA, 0x99, 0x88,
   0x77, 0x66, 0x55, 0x44,
   0x33, 0x22, 0x11, 0x00
 };
 
-u8 SPI1_Buffer_Rx[BUF_SIZE] = {0};
+u8 SPI_Slave_Buffer_Rx[BUF_SIZE] = {0};
 
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
@@ -81,7 +81,6 @@ u8 SPI1_Buffer_Rx[BUF_SIZE] = {0};
 int main(void)
 {
   HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
 
   SPI_Slave_Configuration();
   SPI_Master_Configuration();
@@ -115,7 +114,7 @@ void SPI_Slave_Configuration(void)
     PDMACH_InitTypeDef PDMACH_InitStructure;
 
     /* Slave Slave Tx PDMA channel configuration                                                            */
-    PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &SPI1_Buffer_Tx;
+    PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &SPI_Slave_Buffer_Tx;
     PDMACH_InitStructure.PDMACH_DstAddr = (u32) &HTCFG_SPIS_PORT->DR;
     PDMACH_InitStructure.PDMACH_BlkCnt = BUF_SIZE;
     PDMACH_InitStructure.PDMACH_BlkLen = 1;
@@ -126,7 +125,7 @@ void SPI_Slave_Configuration(void)
 
     /* Slave Slave Rx PDMA channel configuration                                                            */
     PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &HTCFG_SPIS_PORT->DR;
-    PDMACH_InitStructure.PDMACH_DstAddr = (u32) &SPI1_Buffer_Rx;
+    PDMACH_InitStructure.PDMACH_DstAddr = (u32) &SPI_Slave_Buffer_Rx;
     PDMACH_InitStructure.PDMACH_Priority = VH_PRIO;
     PDMACH_InitStructure.PDMACH_AdrMod = SRC_ADR_FIX | DST_ADR_LIN_INC;
     PDMA_Config(HTCFG_SPIS_PDMA_RX, &PDMACH_InitStructure);
@@ -198,7 +197,7 @@ void SPI_Master_Configuration(void)
     PDMACH_InitTypeDef PDMACH_InitStructure;
 
     /* Master Master Tx PDMA channel configuration                                                          */
-    PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &SPI0_Buffer_Tx;
+    PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &SPI_Master_Buffer_Tx;
     PDMACH_InitStructure.PDMACH_DstAddr = (u32) &HTCFG_SPIM_PORT->DR;
     PDMACH_InitStructure.PDMACH_BlkCnt = BUF_SIZE;
     PDMACH_InitStructure.PDMACH_BlkLen = 1;
@@ -209,7 +208,7 @@ void SPI_Master_Configuration(void)
 
     /* Master Master Rx PDMA channel configuration                                                          */
     PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &HTCFG_SPIM_PORT->DR;
-    PDMACH_InitStructure.PDMACH_DstAddr = (u32) &SPI0_Buffer_Rx;
+    PDMACH_InitStructure.PDMACH_DstAddr = (u32) &SPI_Master_Buffer_Rx;
     PDMACH_InitStructure.PDMACH_Priority = VH_PRIO;
     PDMACH_InitStructure.PDMACH_AdrMod = SRC_ADR_FIX | DST_ADR_LIN_INC;
     PDMA_Config(HTCFG_SPIM_PDMA_RX, &PDMACH_InitStructure);
@@ -266,21 +265,21 @@ void SPI_Loopback_Test(void)
   /* Wait for transmission finished                                                                         */
   while (!PDMA_GetFlagStatus(HTCFG_SPIS_PDMA_RX, PDMA_FLAG_TC))
   {
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32F_DVB_LEDToggle(HT_LED1);
   }
-  HT32F_DVB_LEDOff(HT_LED2);
+  HT32F_DVB_LEDOff(HT_LED1);
 
   /* Check on validity of received data on Master & Slave                                                   */
-  if (CmpBuffer(SPI0_Buffer_Tx, SPI1_Buffer_Rx, BUF_SIZE) == SUCCESS &&
-      CmpBuffer(SPI1_Buffer_Tx, SPI0_Buffer_Rx, BUF_SIZE) == SUCCESS)
+  if (CmpBuffer(SPI_Master_Buffer_Tx, SPI_Slave_Buffer_Rx, BUF_SIZE) == SUCCESS &&
+      CmpBuffer(SPI_Slave_Buffer_Tx, SPI_Master_Buffer_Rx, BUF_SIZE) == SUCCESS)
   {
     /* Turn on LED1 if the transmitted and received data are equal                                          */
     HT32F_DVB_LEDOn(HT_LED1);
   }
   else
   {
-    /* Turn on LED2 if the transmitted and received data are different                                      */
-    HT32F_DVB_LEDOn(HT_LED2);
+    /* Turn off LED1 if the transmitted and received data are different                                     */
+    HT32F_DVB_LEDOff(HT_LED1);
   }
 }
 

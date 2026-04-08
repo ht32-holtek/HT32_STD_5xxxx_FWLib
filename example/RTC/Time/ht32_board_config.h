@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    RTC/Time/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -33,7 +33,7 @@
 #endif
 
 /* Settings ------------------------------------------------------------------------------------------------*/
-#if defined(USE_HT32F65240_DVB) || defined(USE_HT32F61245_SK) || defined(USE_HT32F65232_DVB) || defined(USE_HT32F66242_DVB) || defined(USE_HT32F66246_DVB) || defined(USE_HT32F65233_DVB)
+#if defined(USE_HT32F65240_DVB) || defined(USE_HT32F61245_SK) || defined(USE_HT32F65232_DVB) || defined(USE_HT32F66242_DVB) || defined(USE_HT32F66246_DVB) || defined(USE_HT32F65233_DVB) || defined(USE_HT32F66256_DVB)
   #define EXAMPLE_NO_LSE                          (1)
 #else
 #endif

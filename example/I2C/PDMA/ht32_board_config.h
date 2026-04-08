@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/PDMA/ht32_board_config.h
- * @version $Rev:: 7379         $
- * @date    $Date:: 2023-12-08 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -250,6 +250,23 @@
   #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_0)
   #define HTCFG_I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
   #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_1)
+
+  #define HTCFG_I2C_MASTER_RX_DMA          (PDMA_I2C0_RX)
+  #define HTCFG_I2C_SLAVE_TX_DMA           (PDMA_I2C1_TX)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_I2C_MASTER_PORT            (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID     (GPIO_PA)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_3)
+
+  #define HTCFG_I2C_SLAVE_PORT             (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
 
   #define HTCFG_I2C_MASTER_RX_DMA          (PDMA_I2C0_RX)
   #define HTCFG_I2C_SLAVE_TX_DMA           (PDMA_I2C1_TX)

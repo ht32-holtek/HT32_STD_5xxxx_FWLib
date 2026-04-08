@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CMP/ComparatorInterrupt/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -141,6 +141,14 @@
   #define HTCFG_CP_PORT                           HT_CMP0
   #define _HTCFG_CP_GPIOX                         C
   #define _HTCFG_CP_GPION                         11
+  #define HTCFG_CMP_IRQn                          CMP0_IRQn
+  #define HTCFG_CMP_IRQHandler                    CMP0_IRQHandler
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_CP_PORT                           HT_CMP0
+  #define _HTCFG_CP_GPIOX                         D
+  #define _HTCFG_CP_GPION                         4
   #define HTCFG_CMP_IRQn                          CMP0_IRQn
   #define HTCFG_CMP_IRQHandler                    CMP0_IRQHandler
 #endif

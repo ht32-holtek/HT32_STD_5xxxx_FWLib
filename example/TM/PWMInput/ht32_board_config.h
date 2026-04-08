@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/PWMInput/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -220,6 +220,17 @@
   #define _HTCFG_PWM_CHN                          0
 #endif
 
+#if defined(USE_HT32F61152_DVB)
+  #define _HTCFG_CAP_GPIOX                        A
+  #define _HTCFG_CAP_GPION                        6
+  #define  HTCFG_CAP_IPN                          GPTM0
+
+  #define _HTCFG_PWM_GPIOX                        A
+  #define _HTCFG_PWM_GPION                        7
+  #define  HTCFG_PWM_IPN                          SCTM1
+  #define _HTCFG_PWM_CHN                          0
+#endif
+
 #if defined(USE_HT32F65240_DVB)
   #define _HTCFG_CAP_GPIOX                        C
   #define _HTCFG_CAP_GPION                        4
@@ -382,6 +393,17 @@
   #define _HTCFG_PWM_GPIOX                        A
   #define _HTCFG_PWM_GPION                        3
   #define  HTCFG_PWM_IPN                          SCTM1
+  #define _HTCFG_PWM_CHN                          0
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_CAP_GPIOX                        C
+  #define _HTCFG_CAP_GPION                        6
+  #define  HTCFG_CAP_IPN                          GPTM0
+
+  #define _HTCFG_PWM_GPIOX                        D
+  #define _HTCFG_PWM_GPION                        5
+  #define  HTCFG_PWM_IPN                          SCTM2
   #define _HTCFG_PWM_CHN                          0
 #endif
 

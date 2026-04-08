@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/Discontinuous_EXTITrigger/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -590,6 +590,29 @@
   #define _HTCFG_AD3_GPIOX                        C
   #define _HTCFG_AD3_GPION                        4
   #define _HTCFG_AD3_ADC_CHN                      1
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_KEY1_GPIOX                       C
+  #define _HTCFG_KEY1_GPION                       5
+
+  #define _HTCFG_VR_GPIOX                         C
+  #define _HTCFG_VR_GPION                         14
+  #define _HTCFG_VR_ADC_CHN                       6
+
+  #define _HTCFG_AD2_GPIOX                        B
+  #define _HTCFG_AD2_GPION                        2
+  #define _HTCFG_AD2_ADC_CHN                      2
+
+  #define _HTCFG_AD3_GPIOX                        B
+  #define _HTCFG_AD3_GPION                        3
+  #define _HTCFG_AD3_ADC_CHN                      3
+
+  #undef  HTCFG_ADC_IPN
+  #define HTCFG_ADC_IPN                           ADC0
+
+  #undef  HTCFG_ADC_IRQHandler
+  #define HTCFG_ADC_IRQHandler                    STRCAT2(HTCFG_ADC_IPN, _IRQHandler)
 #endif
 
 #define HTCFG_VR_GPIO_ID                          STRCAT2(GPIO_P,         _HTCFG_VR_GPIOX)

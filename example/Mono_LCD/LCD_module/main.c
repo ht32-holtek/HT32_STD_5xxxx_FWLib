@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Mono_LCD/LCD_module/main.c
- * @version $Rev:: 4866         $
- * @date    $Date:: 2020-08-05 #$
+ * @version $Rev:: 9666         $
+ * @date    $Date:: 2026-02-23 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -102,11 +102,13 @@ int main(void)
         for(x=0;x<20;x++)
         {
           LCD_show_Matrix(x, y, LCD_PIXEL_ON);
+
+          isUpdateDisplayFinish = FALSE;
+
           /* Send upadate display request.                                                                  */
           LCD_SetUpdateDisplayRequest();
 
           /* Waiting for the update to finish.                                                              */
-          isUpdateDisplayFinish = FALSE;
           while(isUpdateDisplayFinish == FALSE){}
         }
       }

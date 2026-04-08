@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/Interrupt/ht32_board_config.h
- * @version $Rev:: 7436         $
- * @date    $Date:: 2023-12-21 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -35,309 +35,400 @@
 /* Settings ------------------------------------------------------------------------------------------------*/
 
 #if defined(USE_HT32F52241_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F52253_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_0)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_1)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_1)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F52341_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F52352_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_0)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_1)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_1)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F50241_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F57341_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_0)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_1)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_1)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F57352_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_0)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_1)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_1)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F52367_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_BM53A367A_DVB)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PC)               // D21
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_12)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)               // D20
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_13)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PC)               // D21
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_12)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)               // D20
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_13)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PC)               // A5/D19
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_4)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)               // A4/D18
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_5)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PC)               // A5/D19
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_4)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)               // A4/D18
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_5)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_BM18B367A_DVB)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)               // D5
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PB)               // D6
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)               // D5
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PB)               // D6
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PC)               // A5/D19
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_4)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)               // A4/D18
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_5)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PC)               // A5/D19
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_4)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)               // A4/D18
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_5)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F50343_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PA)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_0)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PA)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PA)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PA)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_1)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F54241_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_6)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_7)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_6)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_7)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_0)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_1)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_1)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F54253_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_6)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_7)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_6)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_7)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F50452_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_12)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_13)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_12)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_13)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_14)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_14)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_15)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F53252_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_12)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_13)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_12)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_13)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_14)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_14)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_15)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F50441_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_6)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_7)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_6)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_7)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F53241_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_6)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_7)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_6)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_7)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PB)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_15)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PC)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #if defined(USE_HT32F52244_SK)
-  #define I2C_MASTER_PORT            (HT_I2C0)
-  #define I2C_MASTER_SCL_GPIO_ID     (GPIO_PB)
-  #define I2C_MASTER_SCL_AFIO_PIN    (AFIO_PIN_15)
-  #define I2C_MASTER_SDA_GPIO_ID     (GPIO_PC)
-  #define I2C_MASTER_SDA_AFIO_PIN    (AFIO_PIN_0)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PB)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_15)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_0)
 
-  #define I2C_SLAVE_PORT             (HT_I2C1)
-  #define I2C_SLAVE_SCL_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SCL_AFIO_PIN     (AFIO_PIN_0)
-  #define I2C_SLAVE_SDA_GPIO_ID      (GPIO_PA)
-  #define I2C_SLAVE_SDA_AFIO_PIN     (AFIO_PIN_1)
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_0)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PA)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_1)
 
-  #define I2C_Master_IRQHandler      I2C0_IRQHandler
-  #define I2C_Slave_IRQHandler       I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQHandler         I2C0_IRQHandler
+  #define HTCFG_I2C_SLAVE_IRQHandler          I2C1_IRQHandler
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_I2C_MASTER_CLOCK(CK)          (CK.Bit.I2C0)
+  #define HTCFG_I2C_MASTER_PORT               (HT_I2C0)
+  #define HTCFG_I2C_MASTER_SCL_GPIO_ID        (GPIO_PA)
+  #define HTCFG_I2C_MASTER_SCL_AFIO_PIN       (AFIO_PIN_1)
+  #define HTCFG_I2C_MASTER_SDA_GPIO_ID        (GPIO_PC)
+  #define HTCFG_I2C_MASTER_SDA_AFIO_PIN       (AFIO_PIN_3)
+
+  #define HTCFG_I2C_SLAVE_CLOCK(CK)           (CK.Bit.I2C1)
+  #define HTCFG_I2C_SLAVE_PORT                (HT_I2C1)
+  #define HTCFG_I2C_SLAVE_SCL_GPIO_ID         (GPIO_PB)
+  #define HTCFG_I2C_SLAVE_SCL_AFIO_PIN        (AFIO_PIN_15)
+  #define HTCFG_I2C_SLAVE_SDA_GPIO_ID         (GPIO_PC)
+  #define HTCFG_I2C_SLAVE_SDA_AFIO_PIN        (AFIO_PIN_0)
+
+  #define HTCFG_I2C_MASTER_IRQn               I2C0_IRQn
+  #define HTCFG_I2C_SLAVE_IRQn                I2C1_IRQn
 #endif
 
 #ifdef __cplusplus

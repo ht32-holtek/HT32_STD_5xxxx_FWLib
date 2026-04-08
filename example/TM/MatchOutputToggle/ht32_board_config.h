@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/MatchOutputToggle/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -272,6 +272,19 @@
   #define HTCFG_COMP_IPN                          GPTM0
 #endif
 
+#if defined(USE_HT32F61152_DVB)
+  #define _HTCFG_COMP_CH0_GPIOX                   B
+  #define _HTCFG_COMP_CH1_GPIOX                   B
+  #define _HTCFG_COMP_CH2_GPIOX                   A
+  #define _HTCFG_COMP_CH3_GPIOX                   A
+  #define _HTCFG_COMP_CH0_GPION                   1
+  #define _HTCFG_COMP_CH1_GPION                   0
+  #define _HTCFG_COMP_CH2_GPION                   15
+  #define _HTCFG_COMP_CH3_GPION                   14
+
+  #define HTCFG_COMP_IPN                          GPTM0
+#endif
+
 #if defined(USE_HT32F65240_DVB)
   #define _HTCFG_COMP_CH0_GPIOX                   A
   #define _HTCFG_COMP_CH1_GPIOX                   C
@@ -489,6 +502,19 @@
   #define _HTCFG_COMP_CH1_GPION                   4
   #define _HTCFG_COMP_CH2_GPION                   5
   #define _HTCFG_COMP_CH3_GPION                   6
+
+  #define HTCFG_COMP_IPN                          GPTM0
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_COMP_CH0_GPIOX                   C
+  #define _HTCFG_COMP_CH1_GPIOX                   C
+  #define _HTCFG_COMP_CH2_GPIOX                   C
+  #define _HTCFG_COMP_CH3_GPIOX                   C
+  #define _HTCFG_COMP_CH0_GPION                   9
+  #define _HTCFG_COMP_CH1_GPION                   6
+  #define _HTCFG_COMP_CH2_GPION                   7
+  #define _HTCFG_COMP_CH3_GPION                   8
 
   #define HTCFG_COMP_IPN                          GPTM0
 #endif

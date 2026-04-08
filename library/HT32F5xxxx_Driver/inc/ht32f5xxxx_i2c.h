@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_i2c.h
- * @version $Rev:: 9436         $
- * @date    $Date:: 2025-09-12 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the I2C library.
  *************************************************************************************************************
  * @attention
@@ -65,6 +65,9 @@ typedef struct
                         /* which based on 4.7K Pull up                                                      */
   u32 I2C_Speed;
   u16 I2C_OwnAddress;
+  #if (LIBCFG_I2C_NOSTRETCH)
+  u8 I2C_StretchMode;
+  #endif
 } I2C_InitTypeDef;
 
 #if (LIBCFG_I2C_TWO_DEV_ADDR)
@@ -124,6 +127,9 @@ typedef enum
 #define I2C_INT_STO                                 ((u32)0x00000002)
 #define I2C_INT_ADRS                                ((u32)0x00000004)
 #define I2C_INT_GCS                                 ((u32)0x00000008)
+#if (LIBCFG_I2C_NOSTRETCH)
+#define I2C_INT_OVR                                 ((u32)0x00000020)
+#endif
 #if (LIBCFG_I2C_NO_ARBLOS == 0)
 #define I2C_INT_ARBLOS                              ((u32)0x00000100)
 #endif
@@ -135,12 +141,16 @@ typedef enum
 #define I2C_INT_RXBF                                ((u32)0x00040000)
 #if (LIBCFG_I2C_NO_ARBLOS)
 #define I2C_INT_ALL                                 ((u32)0x00070E0F)
+#elif (LIBCFG_I2C_NOSTRETCH)
+#define I2C_INT_ALL                                 ((u32)0x00070F2F)
 #else
 #define I2C_INT_ALL                                 ((u32)0x00070F0F)
 #endif
 
 #if (LIBCFG_I2C_NO_ARBLOS)
 #define IS_I2C_INT(int)                             (((int & 0xFFF8F1F0) == 0x0) && (int != 0x0))
+#elif (LIBCFG_I2C_NOSTRETCH)
+#define IS_I2C_INT(int)                             (((int & 0xFFF8F0D0) == 0x0) && (int != 0x0))
 #else
 #define IS_I2C_INT(int)                             (((int & 0xFFF8F0F0) == 0x0) && (int != 0x0))
 #endif
@@ -158,9 +168,16 @@ typedef enum
 #define I2C_REGISTER_SR                             ((u8)0x0C)
 #define I2C_REGISTER_SHPGR                          ((u8)0x10)
 #define I2C_REGISTER_SLPGR                          ((u8)0x14)
+#if (LIBCFG_I2C_NOSTRETCH)
+#define I2C_REGISTER_DR                             I2C_REGISTER_RXDR
+#else
 #define I2C_REGISTER_DR                             ((u8)0x18)
+#endif
 #define I2C_REGISTER_BFCLR                          ((u8)0x1C)
 #define I2C_REGISTER_TAR                            ((u8)0x20)
+#if (LIBCFG_I2C_NOSTRETCH)
+#define I2C_REGISTER_RXDR                           ((u8)0x2C)
+#endif
 
 #define IS_I2C_REGISTER(REGISTER)                   ((REGISTER == I2C_REGISTER_CR) || \
                                                      (REGISTER == I2C_REGISTER_IER) || \
@@ -177,11 +194,12 @@ typedef enum
 #define I2C_FLAG_STO                                ((u32)0x00000002)
 #define I2C_FLAG_ADRS                               ((u32)0x00000004)
 #define I2C_FLAG_GCS                                ((u32)0x00000008)
+#if (LIBCFG_I2C_NOSTRETCH)
+#define I2C_FLAG_OVR                                ((u32)0x00000020)
+#endif
 #if (LIBCFG_I2C_NO_ARBLOS)
-#define IS_FLAG_ARBLOS(x)                           (0)
 #else
 #define I2C_FLAG_ARBLOS                             ((u32)0x00000100)
-#define IS_FLAG_ARBLOS(x)                           (x == I2C_FLAG_ARBLOS)
 #endif
 #define I2C_FLAG_RXNACK                             ((u32)0x00000200)
 #define I2C_FLAG_BUSERR                             ((u32)0x00000400)
@@ -193,10 +211,22 @@ typedef enum
 #define I2C_FLAG_MASTER                             ((u32)0x00100000)
 #define I2C_FLAG_TXNRX                              ((u32)0x00200000)
 
+#if (LIBCFG_I2C_NOSTRETCH)
+#define IS_FLAG_OVR(x)                              (x == I2C_FLAG_OVR)
+#else
+#define IS_FLAG_OVR(x)                              (0)
+#endif
+#if (LIBCFG_I2C_NO_ARBLOS)
+#define IS_FLAG_ARBLOS(x)                           (0)
+#else
+#define IS_FLAG_ARBLOS(x)                           (x == I2C_FLAG_ARBLOS)
+#endif
+
 #define IS_I2C_FLAG(FLAG)                           ((FLAG == I2C_FLAG_STA)    || \
                                                      (FLAG == I2C_FLAG_STO)    || \
                                                      (FLAG == I2C_FLAG_ADRS)   || \
                                                      (FLAG == I2C_FLAG_GCS)    || \
+                                                     IS_FLAG_OVR(FLAG)         || \
                                                      IS_FLAG_ARBLOS(FLAG)      || \
                                                      (FLAG == I2C_FLAG_RXNACK) || \
                                                      (FLAG == I2C_FLAG_BUSERR) || \
@@ -345,10 +375,46 @@ typedef enum
 #define SEQ_FILTER_DISABLE                          ((u32)0x00000000)
 #define SEQ_FILTER_1_PCLK                           ((u32)0x00004000)
 #define SEQ_FILTER_2_PCLK                           ((u32)0x00008000)
+#if (LIBCFG_I2C_SEQ3_7)
+#define SEQ_FILTER_3_PCLK                           ((u32)0x0000C000)
+#define SEQ_FILTER_4_PCLK                           ((u32)0x00010000)
+#define SEQ_FILTER_5_PCLK                           ((u32)0x00014000)
+#define SEQ_FILTER_6_PCLK                           ((u32)0x00018000)
+#define SEQ_FILTER_7_PCLK                           ((u32)0x0001C000)
+#endif
+
+#if (LIBCFG_I2C_SEQ3_7)
+#define IS_SEQ_FILTER_3_PCLK(x)                     (x == SEQ_FILTER_3_PCLK)
+#define IS_SEQ_FILTER_4_PCLK(x)                     (x == SEQ_FILTER_4_PCLK)
+#define IS_SEQ_FILTER_5_PCLK(x)                     (x == SEQ_FILTER_5_PCLK)
+#define IS_SEQ_FILTER_6_PCLK(x)                     (x == SEQ_FILTER_6_PCLK)
+#define IS_SEQ_FILTER_7_PCLK(x)                     (x == SEQ_FILTER_7_PCLK)
+#else
+#define IS_SEQ_FILTER_3_PCLK(x)                     (0)
+#define IS_SEQ_FILTER_4_PCLK(x)                     (0)
+#define IS_SEQ_FILTER_5_PCLK(x)                     (0)
+#define IS_SEQ_FILTER_6_PCLK(x)                     (0)
+#define IS_SEQ_FILTER_7_PCLK(x)                     (0)
+#endif
 
 #define IS_I2C_SEQ_FILTER_MASK(CONFIG)              ((CONFIG == SEQ_FILTER_DISABLE) || \
                                                      (CONFIG == SEQ_FILTER_1_PCLK)  || \
-                                                     (CONFIG == SEQ_FILTER_2_PCLK))
+                                                     (CONFIG == SEQ_FILTER_2_PCLK)  || \
+                                                     IS_SEQ_FILTER_3_PCLK(CONFIG)  || \
+                                                     IS_SEQ_FILTER_4_PCLK(CONFIG)  || \
+                                                     IS_SEQ_FILTER_5_PCLK(CONFIG)  || \
+                                                     IS_SEQ_FILTER_6_PCLK(CONFIG)  || \
+                                                     IS_SEQ_FILTER_7_PCLK(CONFIG))
+
+#if (LIBCFG_I2C_NOSTRETCH)
+#define I2C_STRETCH_YES                             (0x00)
+#define I2C_STRETCH_BYPASSADRS                      (0x20)
+#define I2C_STRETCH_NO                              (0x40)
+
+#define IS_I2C_STRETCH(x)                           ((x == I2C_STRETCH_YES)        || \
+                                                     (x == I2C_STRETCH_BYPASSADRS) || \
+                                                     (x == I2C_STRETCH_NO))
+#endif
 /**
   * @}
   */
@@ -392,6 +458,9 @@ void I2C_AddressMaskConfig(HT_I2C_TypeDef* I2Cx, u32 I2C_Mask);
 u16 I2C_GetAddressBuffer(HT_I2C_TypeDef* I2Cx);
 void I2C_CombFilterCmd(HT_I2C_TypeDef* I2Cx, ControlStatus NewState);
 void I2C_SequentialFilterConfig(HT_I2C_TypeDef* I2Cx, u32 Seq_Filter_Select);
+#if (LIBCFG_I2C_NOSTRETCH)
+void I2C_TXDRReset(HT_I2C_TypeDef* I2Cx);
+#endif
 /**
   * @}
   */

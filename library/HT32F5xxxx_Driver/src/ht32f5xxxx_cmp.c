@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_cmp.c
- * @version $Rev:: 8725         $
- * @date    $Date:: 2025-05-07 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all the CMP firmware functions.
  *************************************************************************************************************
  * @attention
@@ -96,6 +96,16 @@ void CMP_Init(HT_CMP_TypeDef* HT_CMPn, CMP_InitTypeDef* CMP_InitStruct)
   Assert_Param(IS_CMP_InvInputSelection(CMP_InitStruct->CMP_InvInputSelection));
   Assert_Param(IS_CMP_Hysteresis_Set(CMP_InitStruct->CMP_Hysteresis));
   Assert_Param(IS_CMP_Speed_Set(CMP_InitStruct->CMP_Speed));
+
+  #if (HT32_LIB_LITE == 0)
+  #if (LIBCFG_CMP_TRIG_CHECK_CHOOSE)
+  if (IS_CMP_TRIG_CHOOSE(HT_CMPn, CMP_InitStruct->CMP_OutputSelection) == FALSE)
+  {
+    while(1){}; // The Output Selection does not belong to the specified CMPn
+  }
+  CMP_InitStruct->CMP_OutputSelection = CMP_TRIG_REMOVE_MARK(CMP_InitStruct->CMP_OutputSelection);
+  #endif
+  #endif
 
   HT_CMPn->CR |= CMP_InitStruct->CMP_Wakeup | CMP_InitStruct->CMP_OutputSelection | CMP_InitStruct->CMP_ScalerSource | \
                  CMP_InitStruct->CMP_ScalerOutputBuf | CMP_InitStruct->CMP_ScalerEnable | CMP_InitStruct->CMP_CoutSync | \
@@ -337,6 +347,13 @@ void CMP_SetScalerValue(HT_CMP_TypeDef* HT_CMPn, u8 Scaler_Value)
  ************************************************************************************************************/
 void CMP_Output_SyncSource_Select(HT_CMP_TypeDef* HT_CMPn, CMP_SYNCOUT_Enum CMP_SYNCOUT_x)
 {
+  #if (LIBCFG_MCTM1)
+  /* !!! NOTICE !!!
+     For the CMP0~CMP3 synchronization output configuration to MCTM0/MCTM1,
+     please refer to the device User Manual.
+  */
+  #endif
+
   /* Check the parameters                                                                                   */
   Assert_Param(IS_CMP(HT_CMPn));
   Assert_Param(IS_CMP_SYNC_SOURCE(CMP_SYNCOUT_x));

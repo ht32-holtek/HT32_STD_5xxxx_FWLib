@@ -19,9 +19,9 @@ for slave select. Both SPIs are configured with 8 bits mode, FIFO mode with Tx &
 4, (PCLK_SPI/4) MHz transmission speed, TimeOut (PCLK_SPI * maximum).
 
 Transmission by polling, Receiving by interrupt.
-Transmission starts from SPI1 that data comes from SPI1_Buffer_Tx and the SPI0 FIFO receives the data.
+Transmission starts from SPI1 that data comes from SPI_Slave_Buffer_Tx and the SPI0 FIFO receives the data.
 When the RX FIFO trigger level (RXFTLS) reached 4 data, the SPI0_IRQHandler will be triggered interrupt
-to move the data from RX FIFO to SPI0_Buffer_Rx.
+to move the data from RX FIFO to SPI_Master_Buffer_Rx.
 
 In addition, the TimeOut(TOUT) interrupt is enabled after the SPI is initialized. The TOUT interrupt will be
 triggered when the Rx FIFO level is not empty and the trigger level 4 is not reached within the timeout period.
@@ -37,7 +37,7 @@ the program will compare the received data to the transferred data to check on d
 @par Hardware and Software Environment:
 
 - Remember to connect SPI0 to SPI1 respectively. Refer "ht32_board_config.h" for pin assignment.
-- This example shows the result by LED1 and LED2.
+- This example shows the result by LED1.
 - This example can be run on HT32 Series development board.
 
 @par Firmware Disclaimer Information

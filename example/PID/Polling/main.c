@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PID/Polling/main.c
- * @version $Rev:: 8269         $
- * @date    $Date:: 2024-11-08 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -64,7 +64,7 @@ int main(void)
   gERRn = 0x2710;
 
   // Start PID Compute by PID SPD Mode.
-  gPIDout = PID_StartFun(gERRn, PID_SPD_MODE);
+  gPIDout = PID_StartFun(gERRn, PID_SPD0_MODE);
 
   // ERRn=0x2710, PIDout=0x766
   printf("SPD Mode, ERRn=0x%X, PIDout=0x%X\r\n", gERRn, gPIDout);
@@ -116,7 +116,7 @@ void PID_Configuration(void)
     SPD_InitStructure.UI_MIN = 0x000F8001;
     SPD_InitStructure.OUT_MAX = 0x7EB7;
     SPD_InitStructure.OUT_MIN = 0x8149;
-    PID_Init(HT_PID0, PID_SPD_MODE, &SPD_InitStructure);
+    PID_Init(HT_PID0, PID_SPD0_MODE, &SPD_InitStructure);
   }
 }
 

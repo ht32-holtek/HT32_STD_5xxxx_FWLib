@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Slave/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -402,6 +402,29 @@
 #endif
 
 #if defined(USE_HT32F61141_SK)  //PRELIMINARY_NOT_TEST
+  #define HTCFG_INT_GPIO_ID                    (GPIO_PB)
+  #define HTCFG_INT_GPIO_PIN                   (GPIO_PIN_6)
+  #define HTCFG_INT_CLK(CK)                    (CK.Bit.PB)
+
+  #define HTCFG_SPI_IPN                        SPI0
+
+  #define HTCFG_SLAVE_SPI_SCK_GPIO_ID          (GPIO_PC)
+  #define HTCFG_SLAVE_SPI_SCK_AFIO_PIN         (AFIO_PIN_2)
+
+  #define HTCFG_SLAVE_SPI_MOSI_GPIO_ID         (GPIO_PB)
+  #define HTCFG_SLAVE_SPI_MOSI_AFIO_PIN        (AFIO_PIN_4)
+
+  #define HTCFG_SLAVE_SPI_MISO_GPIO_ID         (GPIO_PB)
+  #define HTCFG_SLAVE_SPI_MISO_AFIO_PIN        (AFIO_PIN_5)
+
+  #define HTCFG_SLAVE_SPI_SEL_GPIO_ID          (GPIO_PC)
+  #define HTCFG_SLAVE_SPI_SEL_AFIO_PIN         (GPIO_PIN_1)
+  #define HTCFG_SLAVE_CLK(CK)                  (CK.Bit.PC)
+
+  #define HTCFG_EXTI_KEY1_IRQHandler           (EXTI4_15_IRQHandler)
+#endif
+
+#if defined(USE_HT32F61152_DVB)
   #define HTCFG_INT_GPIO_ID                    (GPIO_PB)
   #define HTCFG_INT_GPIO_PIN                   (GPIO_PIN_6)
   #define HTCFG_INT_CLK(CK)                    (CK.Bit.PB)
@@ -836,6 +859,29 @@
   #define HTCFG_SLAVE_CLK(CK)                  (CK.Bit.PA)
 
   #define HTCFG_EXTI_KEY1_IRQHandler           (EXTI0_1_IRQHandler)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define HTCFG_INT_GPIO_ID                    (GPIO_PB)
+  #define HTCFG_INT_GPIO_PIN                   (GPIO_PIN_0)
+  #define HTCFG_INT_CLK(CK)                    (CK.Bit.PB)
+
+  #define HTCFG_SPI_IPN                        SPI0
+
+  #define HTCFG_SLAVE_SPI_SCK_GPIO_ID          (GPIO_PA)
+  #define HTCFG_SLAVE_SPI_SCK_AFIO_PIN         (AFIO_PIN_11)
+
+  #define HTCFG_SLAVE_SPI_MOSI_GPIO_ID         (GPIO_PA)
+  #define HTCFG_SLAVE_SPI_MOSI_AFIO_PIN        (AFIO_PIN_8)
+
+  #define HTCFG_SLAVE_SPI_MISO_GPIO_ID         (GPIO_PA)
+  #define HTCFG_SLAVE_SPI_MISO_AFIO_PIN        (AFIO_PIN_7)
+
+  #define HTCFG_SLAVE_SPI_SEL_GPIO_ID          (GPIO_PA)
+  #define HTCFG_SLAVE_SPI_SEL_AFIO_PIN         (GPIO_PIN_10)
+  #define HTCFG_SLAVE_CLK(CK)                  (CK.Bit.PA)
+
+  #define HTCFG_EXTI_KEY1_IRQHandler           (EXTI0_7_IRQHandler)
 #endif
 
 #define HTCFG_SLAVE_SPI                     STRCAT2(HT_,              HTCFG_SPI_IPN)

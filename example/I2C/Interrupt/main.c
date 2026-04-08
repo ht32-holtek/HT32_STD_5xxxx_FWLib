@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/Interrupt/main.c
- * @version $Rev:: 5456         $
- * @date    $Date:: 2021-07-06 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -56,13 +56,13 @@ void I2C_Loopback(void);
 ErrStatus CmpBuffer(u8* Buffer1, u8* Buffer2, u32 BufferLength);
 
 /* Private variables ---------------------------------------------------------------------------------------*/
-u8 I2C0_Master_Buffer_Tx[BufferSize] = {0x1, 0x2, 0x3, 0x4};
-u8 I2C0_Master_Buffer_Rx[BufferSize];
-u8 I2C1_Slave_Buffer_Rx[BufferSize];
-vu8 I2C0_Master_Tx_Index = 0;
-vu8 I2C0_Master_Rx_Index = 0;
-vu8 I2C1_Slave_Tx_Index = 0;
-vu8 I2C1_Slave_Rx_Index = 0;
+u8 I2C_Master_Buffer_Tx[BufferSize] = {0x1, 0x2, 0x3, 0x4};
+u8 I2C_Master_Buffer_Rx[BufferSize];
+u8 I2C_Slave_Buffer_Rx[BufferSize];
+vu8 I2C_Master_Tx_Index = 0;
+vu8 I2C_Master_Rx_Index = 0;
+vu8 I2C_Slave_Tx_Index = 0;
+vu8 I2C_Slave_Rx_Index = 0;
 
 vu32 IsMasterRxFinish = FALSE;
 
@@ -93,14 +93,14 @@ void I2CMaster_Configuration(void)
 {
   { /* Enable peripheral clock                                                                              */
     CKCU_PeripClockConfig_TypeDef CKCUClock = {{0}};
-    CKCUClock.Bit.I2C0 = 1;
-    CKCUClock.Bit.AFIO = 1;
+    HTCFG_I2C_MASTER_CLOCK(CKCUClock)       = 1;
+    CKCUClock.Bit.AFIO                      = 1;
     CKCU_PeripClockConfig(CKCUClock, ENABLE);
   }
 
   /* Configure AFIO as I2C function                                                                         */
-  AFIO_GPxConfig(I2C_MASTER_SCL_GPIO_ID, I2C_MASTER_SCL_AFIO_PIN, AFIO_FUN_I2C);
-  AFIO_GPxConfig(I2C_MASTER_SDA_GPIO_ID, I2C_MASTER_SDA_AFIO_PIN, AFIO_FUN_I2C);
+  AFIO_GPxConfig(HTCFG_I2C_MASTER_SCL_GPIO_ID, HTCFG_I2C_MASTER_SCL_AFIO_PIN, AFIO_FUN_I2C);
+  AFIO_GPxConfig(HTCFG_I2C_MASTER_SDA_GPIO_ID, HTCFG_I2C_MASTER_SDA_AFIO_PIN, AFIO_FUN_I2C);
 
   { /* I2C Master configuration                                                                             */
 
@@ -116,14 +116,17 @@ void I2CMaster_Configuration(void)
     I2C_InitStructure.I2C_OwnAddress = I2C_MASTER_ADDRESS;
     I2C_InitStructure.I2C_Speed = ClockSpeed;
     I2C_InitStructure.I2C_SpeedOffset = 0;
-    I2C_Init(I2C_MASTER_PORT, &I2C_InitStructure);
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+    #endif
+    I2C_Init(HTCFG_I2C_MASTER_PORT, &I2C_InitStructure);
   }
 
   /* Enable I2C Matser interrupts                                                                           */
-  I2C_IntConfig(I2C_MASTER_PORT, I2C_INT_STA | I2C_INT_ADRS | I2C_INT_RXDNE | I2C_INT_TXDE, ENABLE);
-  NVIC_EnableIRQ(I2C0_IRQn);
+  I2C_IntConfig(HTCFG_I2C_MASTER_PORT, I2C_INT_STA | I2C_INT_ADRS | I2C_INT_RXDNE | I2C_INT_TXDE, ENABLE);
+  NVIC_EnableIRQ(HTCFG_I2C_MASTER_IRQn);
 
-  I2C_Cmd(I2C_MASTER_PORT, ENABLE);
+  I2C_Cmd(HTCFG_I2C_MASTER_PORT, ENABLE);
 }
 
 /*********************************************************************************************************//**
@@ -134,14 +137,14 @@ void I2CSlave_Configuration(void)
 {
   { /* Enable peripheral clock                                                                              */
     CKCU_PeripClockConfig_TypeDef CKCUClock = {{0}};
-    CKCUClock.Bit.I2C1 = 1;
-    CKCUClock.Bit.AFIO = 1;
+    HTCFG_I2C_SLAVE_CLOCK(CKCUClock)        = 1;
+    CKCUClock.Bit.AFIO                      = 1;
     CKCU_PeripClockConfig(CKCUClock, ENABLE);
   }
 
   /* Configure AFIO as I2C function                                                                         */
-  AFIO_GPxConfig(I2C_SLAVE_SCL_GPIO_ID, I2C_SLAVE_SCL_AFIO_PIN, AFIO_FUN_I2C);
-  AFIO_GPxConfig(I2C_SLAVE_SDA_GPIO_ID, I2C_SLAVE_SDA_AFIO_PIN, AFIO_FUN_I2C);
+  AFIO_GPxConfig(HTCFG_I2C_SLAVE_SCL_GPIO_ID, HTCFG_I2C_SLAVE_SCL_AFIO_PIN, AFIO_FUN_I2C);
+  AFIO_GPxConfig(HTCFG_I2C_SLAVE_SDA_GPIO_ID, HTCFG_I2C_SLAVE_SDA_AFIO_PIN, AFIO_FUN_I2C);
 
   { /* I2C Slave configuration                                                                              */
 
@@ -157,14 +160,17 @@ void I2CSlave_Configuration(void)
     I2C_InitStructure.I2C_OwnAddress = I2C_SLAVE_ADDRESS;
     I2C_InitStructure.I2C_Speed = 0;
     I2C_InitStructure.I2C_SpeedOffset = 0;
-    I2C_Init(I2C_SLAVE_PORT, &I2C_InitStructure);
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+    #endif
+    I2C_Init(HTCFG_I2C_SLAVE_PORT, &I2C_InitStructure);
   }
 
   /* Enable I2C Slave interrupts                                                                            */
-  I2C_IntConfig(I2C_SLAVE_PORT, I2C_INT_ADRS | I2C_INT_RXDNE | I2C_INT_TXDE | I2C_INT_RXNACK, ENABLE);
-  NVIC_EnableIRQ(I2C1_IRQn);
+  I2C_IntConfig(HTCFG_I2C_SLAVE_PORT, I2C_INT_ADRS | I2C_INT_RXDNE | I2C_INT_TXDE | I2C_INT_RXNACK, ENABLE);
+  NVIC_EnableIRQ(HTCFG_I2C_SLAVE_IRQn);
 
-  I2C_Cmd(I2C_SLAVE_PORT, ENABLE);
+  I2C_Cmd(HTCFG_I2C_SLAVE_PORT, ENABLE);
 }
 
 /*********************************************************************************************************//**
@@ -174,13 +180,13 @@ void I2CSlave_Configuration(void)
 void I2C_Loopback(void)
 {
   /* Send I2C START & I2C slave address for write                                                           */
-  I2C_TargetAddressConfig(I2C_MASTER_PORT, I2C_SLAVE_ADDRESS, I2C_MASTER_WRITE);
+  I2C_TargetAddressConfig(HTCFG_I2C_MASTER_PORT, I2C_SLAVE_ADDRESS, I2C_MASTER_WRITE);
 
   /* Wait until all data transmission is complete                                                           */
   while (!IsMasterRxFinish);
 
   /* Check on validity of received data on I2C Master & I2C Slave                                           */
-  if (CmpBuffer(I2C0_Master_Buffer_Rx, I2C1_Slave_Buffer_Rx, BufferSize) == SUCCESS)
+  if (CmpBuffer(I2C_Master_Buffer_Rx, I2C_Slave_Buffer_Rx, BufferSize) == SUCCESS)
   {
     HT32F_DVB_LEDOn(HT_LED1);
   }

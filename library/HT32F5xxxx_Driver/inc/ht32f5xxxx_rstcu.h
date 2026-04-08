@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_rstcu.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the Reset Control Unit library.
  *************************************************************************************************************
  * @attention
@@ -144,7 +144,7 @@ typedef union
 
     /* Definitions of APB peripheral 1 reset                                                                */
     unsigned long MCTM0      :1;    // Bit 0
-    unsigned long            :1;    // Bit 1
+    unsigned long MCTM1      :1;    // Bit 1
     unsigned long            :1;    // Bit 2
     unsigned long            :1;    // Bit 3
     unsigned long WDT        :1;    // Bit 4
@@ -156,7 +156,11 @@ typedef union
     unsigned long GPTM1      :1;    // Bit 9
     unsigned long            :1;    // Bit 10
     unsigned long            :1;    // Bit 11
+    #if defined(USE_HT32F66256)
+    unsigned long BFTM2      :1;    // Bit 12
+    #else
     unsigned long PWM0       :1;    // Bit 12
+    #endif
     unsigned long PWM1       :1;    // Bit 13
     unsigned long PWM2       :1;    // Bit 14
     unsigned long            :1;    // Bit 15
@@ -172,7 +176,7 @@ typedef union
     unsigned long DAC0       :1;    // Bit 21
     #endif
     unsigned long CMP        :1;    // Bit 22
-    #if defined(USE_HT32F66242) || defined(USE_HT32F66246)
+    #if defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
     unsigned long PGA        :1;    // Bit 23
     #else
     unsigned long OPA        :1;    // Bit 23

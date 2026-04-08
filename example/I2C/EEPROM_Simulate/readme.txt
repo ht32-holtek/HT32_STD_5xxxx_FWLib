@@ -46,7 +46,7 @@ function is re-enabled.
 
 - Refer "ht32_board_config.h" for pin assignment.
 - For the default software configuration, the loop back mode is enabled. Only one
-  development board is needed. But remember to connect I2C0 to I2C1
+  development board is needed. But remember to connect I2C Master to I2C EEPROM
   respectively(I2C0 Master, I2C1 EEPROM).
 - If the LOOP_BACK defined in ht32_board_config.h file is commented, the loop back mode is disabled.
   User must prepare two development boards to run the example code.

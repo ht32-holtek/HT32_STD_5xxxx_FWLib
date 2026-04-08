@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/Clock_Configuration/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -144,6 +144,15 @@
   //#define HTCFG_SYSCLK_48MHz
 #endif
 
+#if defined(USE_HT32F61152_DVB)
+  //#define HTCFG_SYSCLK_8MHz
+  #define HTCFG_SYSCLK_24MHz
+  //#define HTCFG_SYSCLK_40MHz
+  //#define HTCFG_SYSCLK_48MHz
+
+  #define HTCFG_CLOCK_SOURSE_HSI 1
+#endif
+
 #if defined(USE_HT32F65240_DVB)
   //#define HTCFG_SYSCLK_8MHz
   #define HTCFG_SYSCLK_24MHz
@@ -264,6 +273,17 @@
   //#define HTCFG_SYSCLK_80MHz
 
   #define DISABLE_BOOTPIN_OUTPUT (1)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  //#define HTCFG_SYSCLK_8MHz
+  #define HTCFG_SYSCLK_24MHz
+  //#define HTCFG_SYSCLK_40MHz
+  //#define HTCFG_SYSCLK_48MHz
+  //#define HTCFG_SYSCLK_60MHz
+  //#define HTCFG_SYSCLK_80MHz
+
+  #define HTCFG_CLOCK_SOURSE_HSI 1
 #endif
 
 #if defined(USE_HT32F65233_DVB)

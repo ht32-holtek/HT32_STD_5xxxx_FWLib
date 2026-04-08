@@ -6,8 +6,8 @@
 ;/*                                                                                                         */
 ;/*-----------------------------------------------------------------------------------------------------------
 ;  File Name        : startup_ht32f5xxxx_iar_16.s
-;  Version          : $Rev:: 8260         $
-;  Date             : $Date:: 2024-11-05 #$
+;  Version          : $Rev:: 9671         $
+;  Date             : $Date:: 2026-03-04 #$
 ;  Description      : Startup code.
 ;-----------------------------------------------------------------------------------------------------------*/
 
@@ -15,20 +15,24 @@
 ;  ========================================
 ;   HT32F66242
 ;   HT32F66246
+;   HT32F66256
 
 ;/* <<< Use Configuration Wizard in Context Menu >>>                                                        */
 
-
-
-
-
+;// <o>  HT32 Device
+;//      <0=> By Project Asm Define
+;//      <31=> HT32F66246
+;//      <33=> HT32F66242
+;//      <43=> HT32F66256
 USE_HT32_CHIP_SET   EQU     0
 
 ;_HT32FWID           EQU     0xFFFFFFFF
 ;_HT32FWID           EQU     0x00066246
+;_HT32FWID           EQU     0x00066256
 
 HT32F66246          EQU     31
 HT32F66242          EQU     33
+HT32F66256          EQU     43
 
   IF USE_HT32_CHIP_SET=0
   ELSE
@@ -44,6 +48,9 @@ _HT32FWID           EQU     0x00066246
   ENDIF
   IF (USE_HT32_CHIP=HT32F66242)
 _HT32FWID           EQU     0x00066242
+  ENDIF
+  IF (USE_HT32_CHIP=HT32F66256)
+_HT32FWID           EQU     0x00066256
   ENDIF
 
         MODULE  ?cstartup
@@ -85,34 +92,80 @@ __vector_table
                     DCD  RTC_IRQHandler                     ;  01, 17, 0x044,
                     DCD  FLASH_IRQHandler                   ;  02, 18, 0x048,
                     DCD  EVWUP_IRQHandler                   ;  03, 19, 0x04C,
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  EXTI0_7_IRQHandler                 ;  04, 20, 0x050,
+                    DCD  EXTI8_15_IRQHandler                ;  05, 21, 0x054,
+                    DCD  CORDIC_IRQHandler                  ;  06, 22, 0x058,
+                  ELSE
                     DCD  EXTI0_1_IRQHandler                 ;  04, 20, 0x050,
                     DCD  EXTI2_3_IRQHandler                 ;  05, 21, 0x054,
                     DCD  EXTI4_15_IRQHandler                ;  06, 22, 0x058,
-                  IF (USE_HT32_CHIP=HT32F66246)
+                  ENDIF
+                  IF (USE_HT32_CHIP=HT32F66246 || USE_HT32_CHIP=HT32F66256)
                     DCD  CAN0_IRQHandler                    ;  07, 23, 0x05C,
                   ELSE
                     DCD  _RESERVED                          ;  07, 23, 0x05C,
                   ENDIF
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  ADC0_IRQHandler                    ;  08, 24, 0x060,
+                    DCD  ADC1_IRQHandler                    ;  09, 25, 0x064,
+                  ELSE
                     DCD  ADC_IRQHandler                     ;  08, 24, 0x060,
                     DCD  CORDIC_IRQHandler                  ;  09, 25, 0x064,
+                  ENDIF
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  MCTM0_1_BRK_IRQHandler             ;  10, 26, 0x068,
+                    DCD  MCTM0_1_UP_IRQHandler              ;  11, 27, 0x06C,
+                    DCD  MCTM0_1_TR_UP2_IRQHandler          ;  12, 28, 0x070,
+                    DCD  MCTM0_1_CC_IRQHandler              ;  13, 29, 0x074,
+                  ELSE
                     DCD  MCTM0_BRK_IRQHandler               ;  10, 26, 0x068,
                     DCD  MCTM0_UP_IRQHandler                ;  11, 27, 0x06C,
                     DCD  MCTM0_TR_UP2_IRQHandler            ;  12, 28, 0x070,
                     DCD  MCTM0_CC_IRQHandler                ;  13, 29, 0x074,
+                  ENDIF
                     DCD  GPTM0_G_IRQHandler                 ;  14, 30, 0x078,
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  GPTM0_1_VCLK_IRQHandler            ;  15, 31, 0x07C,
+                  ELSE
                     DCD  GPTM0_VCLK_IRQHandler              ;  15, 31, 0x07C,
+                  ENDIF
                     DCD  BFTM0_IRQHandler                   ;  16, 32, 0x080,
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  BFTM1_2_IRQHandler                 ;  17, 33, 0x084,
+                  ELSE
                     DCD  BFTM1_IRQHandler                   ;  17, 33, 0x084,
+                  ENDIF
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  CMP0_1_IRQHandler                  ;  18, 34, 0x088,
+                    DCD  CMP2_3_IRQHandler                  ;  19, 35, 0x08C,
+                  ELSE
                     DCD  CMP0_IRQHandler                    ;  18, 34, 0x088,
                     DCD  CMP1_IRQHandler                    ;  19, 35, 0x08C,
+                  ENDIF
                     DCD  PID0_IRQHandler                    ;  20, 36, 0x090,
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  I2C0_1_IRQHandler                  ;  21, 37, 0x094,
+                    DCD  SPI0_1_IRQHandler                  ;  22, 38, 0x098,
+                  ELSE
                     DCD  I2C0_IRQHandler                    ;  21, 37, 0x094,
                     DCD  SPI0_IRQHandler                    ;  22, 38, 0x098,
+                  ENDIF
                     DCD  USART0_IRQHandler                  ;  23, 39, 0x09C,
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  UART0_1_IRQHandler                 ;  24, 40, 0x0A0,
+                  ELSE
                     DCD  UART0_IRQHandler                   ;  24, 40, 0x0A0,
+                  ENDIF
+                  IF (USE_HT32_CHIP=HT32F66256)
+                    DCD  GPTM1_G_IRQHandler                 ;  25, 41, 0x0A4,
+                    DCD  PDMA_CH0_2_IRQHandler              ;  26, 42, 0x0A8,
+                    DCD  PDMA_CH3_5_IRQHandler              ;  27, 43, 0x0AC,
+                  ELSE
                     DCD  PDMA_CH0_1_IRQHandler              ;  25, 41, 0x0A4,
                     DCD  PDMA_CH2_3_IRQHandler              ;  26, 42, 0x0A8,
                     DCD  PDMA_CH4_5_IRQHandler              ;  27, 43, 0x0AC,
+                  ENDIF
                     DCD  SCTM0_IRQHandler                   ;  28, 44, 0x0B0,
                     DCD  SCTM1_IRQHandler                   ;  29, 45, 0x0B4,
                     DCD  SCTM2_IRQHandler                   ;  30, 46, 0x0B8,
@@ -161,27 +214,45 @@ SysTick_Handler
         PUBWEAK EXTI0_1_IRQHandler
         PUBWEAK EXTI2_3_IRQHandler
         PUBWEAK EXTI4_15_IRQHandler
+        PUBWEAK EXTI0_7_IRQHandler
+        PUBWEAK EXTI8_15_IRQHandler
         PUBWEAK CAN0_IRQHandler
         PUBWEAK ADC_IRQHandler
+        PUBWEAK ADC0_IRQHandler
+        PUBWEAK ADC1_IRQHandler
         PUBWEAK CORDIC_IRQHandler
         PUBWEAK MCTM0_BRK_IRQHandler
         PUBWEAK MCTM0_UP_IRQHandler
         PUBWEAK MCTM0_TR_UP2_IRQHandler
         PUBWEAK MCTM0_CC_IRQHandler
+        PUBWEAK MCTM0_1_BRK_IRQHandler
+        PUBWEAK MCTM0_1_UP_IRQHandler
+        PUBWEAK MCTM0_1_TR_UP2_IRQHandler
+        PUBWEAK MCTM0_1_CC_IRQHandler
         PUBWEAK GPTM0_G_IRQHandler
         PUBWEAK GPTM0_VCLK_IRQHandler
+        PUBWEAK GPTM0_1_VCLK_IRQHandler
         PUBWEAK BFTM0_IRQHandler
         PUBWEAK BFTM1_IRQHandler
+        PUBWEAK BFTM1_2_IRQHandler
         PUBWEAK CMP0_IRQHandler
         PUBWEAK CMP1_IRQHandler
+        PUBWEAK CMP0_1_IRQHandler
+        PUBWEAK CMP2_3_IRQHandler
         PUBWEAK PID0_IRQHandler
         PUBWEAK I2C0_IRQHandler
         PUBWEAK SPI0_IRQHandler
+        PUBWEAK I2C0_1_IRQHandler
+        PUBWEAK SPI0_1_IRQHandler
         PUBWEAK USART0_IRQHandler
         PUBWEAK UART0_IRQHandler
+        PUBWEAK UART0_1_IRQHandler
         PUBWEAK PDMA_CH0_1_IRQHandler
         PUBWEAK PDMA_CH2_3_IRQHandler
         PUBWEAK PDMA_CH4_5_IRQHandler
+        PUBWEAK GPTM1_G_IRQHandler
+        PUBWEAK PDMA_CH0_2_IRQHandler
+        PUBWEAK PDMA_CH3_5_IRQHandler
         PUBWEAK SCTM0_IRQHandler
         PUBWEAK SCTM1_IRQHandler
         PUBWEAK SCTM2_IRQHandler
@@ -194,27 +265,45 @@ EVWUP_IRQHandler
 EXTI0_1_IRQHandler
 EXTI2_3_IRQHandler
 EXTI4_15_IRQHandler
+EXTI0_7_IRQHandler
+EXTI8_15_IRQHandler
 CAN0_IRQHandler
 ADC_IRQHandler
+ADC0_IRQHandler
+ADC1_IRQHandler
 CORDIC_IRQHandler
 MCTM0_BRK_IRQHandler
 MCTM0_UP_IRQHandler
 MCTM0_TR_UP2_IRQHandler
 MCTM0_CC_IRQHandler
+MCTM0_1_BRK_IRQHandler
+MCTM0_1_UP_IRQHandler
+MCTM0_1_TR_UP2_IRQHandler
+MCTM0_1_CC_IRQHandler
 GPTM0_G_IRQHandler
 GPTM0_VCLK_IRQHandler
+GPTM0_1_VCLK_IRQHandler
 BFTM0_IRQHandler
 BFTM1_IRQHandler
+BFTM1_2_IRQHandler
 CMP0_IRQHandler
 CMP1_IRQHandler
+CMP0_1_IRQHandler
+CMP2_3_IRQHandler
 PID0_IRQHandler
 I2C0_IRQHandler
 SPI0_IRQHandler
+I2C0_1_IRQHandler
+SPI0_1_IRQHandler
 USART0_IRQHandler
 UART0_IRQHandler
+UART0_1_IRQHandler
 PDMA_CH0_1_IRQHandler
 PDMA_CH2_3_IRQHandler
 PDMA_CH4_5_IRQHandler
+GPTM1_G_IRQHandler
+PDMA_CH0_2_IRQHandler
+PDMA_CH3_5_IRQHandler
 SCTM0_IRQHandler
 SCTM1_IRQHandler
 SCTM2_IRQHandler

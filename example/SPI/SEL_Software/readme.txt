@@ -18,7 +18,7 @@ This example configures Master as master and Slave as slave, remember to set SEL
 for slave select. Both SPIs are configured with 8 bits mode, non-FIFO mode, (PCLK_SPI/4) transmission speed.
 
 Notice setting SEL output as active to select slave Slave before transmission begins, Master starts to send
-data from SPI0_Buffer_Tx and receives data to SPI0_Buffer_Rx one by one. The same behavior slave
+data from SPI_Master_Buffer_Tx and receives data to SPI_Master_Buffer_Rx one by one. The same behavior slave
 Slave does simultaneously, Transmission and Receiving by polling, This example will end after 4 data
 are sent and received for each SPI, program will compare the received data to the transferred data to
 check on data validation.
@@ -31,7 +31,7 @@ check on data validation.
 @par Hardware and Software Environment:
 
 - Remember to connect Master to Slave respectively. Refer "ht32_board_config.h" for pin assignment.
-- This example shows the result by LED1 and LED2.
+- This example shows the result by LED1.
 - This example can be run on HT32 Series development board.
 
 @par Firmware Disclaimer Information

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/7_bit_mode_master/main.c
- * @version $Rev:: 9536         $
- * @date    $Date:: 2025-11-07 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -116,6 +116,9 @@ void I2C_Configuration(void)
     I2C_InitStructure.I2C_OwnAddress = I2C_MASTER_ADDRESS;
     I2C_InitStructure.I2C_Speed = ClockSpeed;
     I2C_InitStructure.I2C_SpeedOffset = 0;
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+    #endif
     I2C_Init(HTCFG_I2C_MASTER_PORT, &I2C_InitStructure);
   }
 

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/BandgapVoltage/ht32_board_config.h
- * @version $Rev:: 8660         $
- * @date    $Date:: 2025-04-29 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -74,6 +74,15 @@
   #define _HTCFG_VBG_GPIOX                        C
   #define _HTCFG_VBG_GPION                        7
   #endif
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define _HTCFG_VR_GPIOX                         C
+  #define _HTCFG_VR_GPION                         14
+  #define  HTCFG_VR_ADC_CH                        (ADC_CH_6)
+
+  #define _HTCFG_VBG_GPIOX                        A
+  #define _HTCFG_VBG_GPION                        4
 #endif
 
 #define HTCFG_VR_GPIO_ID                          STRCAT2(GPIO_P,         _HTCFG_VR_GPIOX)

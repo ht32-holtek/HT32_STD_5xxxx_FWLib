@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/PDMA/main.c
- * @version $Rev:: 6486         $
- * @date    $Date:: 2022-11-24 #$
+ * @version $Rev:: 9705         $
+ * @date    $Date:: 2026-03-18 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -106,7 +106,11 @@ void PDMA_Configuration(void)
     PDMACH_InitTypeDef PDMACH_InitStructure;
 
     /* I2C Master Rx PDMA Channel configuration                                                             */
+    #if (!LIBCFG_I2C_NOSTRETCH)
     PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &HTCFG_I2C_MASTER_PORT->DR;
+    #else
+    PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &HTCFG_I2C_MASTER_PORT->RXDR;
+    #endif
     PDMACH_InitStructure.PDMACH_DstAddr = (u32) &I2C_Master_Buffer_Rx;
     PDMACH_InitStructure.PDMACH_BlkCnt = BufferSize;
     PDMACH_InitStructure.PDMACH_BlkLen = 1;
@@ -117,7 +121,11 @@ void PDMA_Configuration(void)
 
     /* I2C1 Slave Tx PDMA Channel configuration                                                             */
     PDMACH_InitStructure.PDMACH_SrcAddr = (u32) &I2C_Slave_Buffer_Tx;
+    #if (!LIBCFG_I2C_NOSTRETCH)
     PDMACH_InitStructure.PDMACH_DstAddr = (u32) &HTCFG_I2C_SLAVE_PORT->DR;
+    #else
+    PDMACH_InitStructure.PDMACH_DstAddr = (u32) &HTCFG_I2C_SLAVE_PORT->TXDR;
+    #endif
     PDMACH_InitStructure.PDMACH_Priority = M_PRIO;
     PDMACH_InitStructure.PDMACH_AdrMod = SRC_ADR_LIN_INC | DST_ADR_FIX;
     PDMA_Config(HTCFG_I2C_SLAVE_TX_DMA, &PDMACH_InitStructure);
@@ -170,6 +178,9 @@ void I2C_Configuration(void)
     I2C_InitStructure.I2C_OwnAddress = I2C_MASTER_ADDRESS;
     I2C_InitStructure.I2C_Speed = ClockSpeed;
     I2C_InitStructure.I2C_SpeedOffset = 0;
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+    #endif
     I2C_Init(HTCFG_I2C_MASTER_PORT, &I2C_InitStructure);
 
     /* I2C Slave configuration                                                                              */
@@ -177,6 +188,11 @@ void I2C_Configuration(void)
     I2C_InitStructure.I2C_AddressingMode = I2C_ADDRESSING_7BIT;
     I2C_InitStructure.I2C_Acknowledge = ENABLE;
     I2C_InitStructure.I2C_OwnAddress = I2C_SLAVE_ADDRESS;
+    I2C_InitStructure.I2C_Speed = ClockSpeed;
+    I2C_InitStructure.I2C_SpeedOffset = 0;
+    #if (LIBCFG_I2C_NOSTRETCH)
+    I2C_InitStructure.I2C_StretchMode = I2C_STRETCH_YES;
+    #endif
     I2C_Init(HTCFG_I2C_SLAVE_PORT, &I2C_InitStructure);
   }
 

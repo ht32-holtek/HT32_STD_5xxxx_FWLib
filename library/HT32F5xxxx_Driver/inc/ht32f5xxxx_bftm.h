@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_bftm.h
- * @version $Rev:: 6393         $
- * @date    $Date:: 2022-10-27 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of the BFTM library.
  *************************************************************************************************************
  * @attention
@@ -61,7 +61,7 @@ typedef u32 BFTM_DataTypeDef;
 /** @defgroup BFTM_Exported_Constants BFTM exported constants
   * @{
   */
-#define IS_BFTM(x)                (IS_BFTM0(x) || IS_BFTM1(x))
+#define IS_BFTM(x)                (IS_BFTM0(x) || IS_BFTM1(x) || IS_BFTM2(x))
 
 #define IS_BFTM0(x)               (x == HT_BFTM0)
 
@@ -69,6 +69,12 @@ typedef u32 BFTM_DataTypeDef;
 #define IS_BFTM1(x)               (x == HT_BFTM1)
 #else
 #define IS_BFTM1(x)               (0)
+#endif
+
+#if (LIBCFG_BFTM2)
+#define IS_BFTM2(x)               (x == HT_BFTM2)
+#else
+#define IS_BFTM2(x)               (0)
 #endif
 
 #define BFTM_FLAG_MATCH           (1UL << 0)

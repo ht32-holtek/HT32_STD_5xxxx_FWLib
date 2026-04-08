@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/FIFO_SEL_Hardware/ht32f5xxxx_01_it.c
- * @version $Rev:: 4935         $
- * @date    $Date:: 2020-08-26 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -43,9 +43,12 @@
 
 
 /* Private variables ---------------------------------------------------------------------------------------*/
-extern vu8 SPI0_Buffer_Rx[];
-extern vu8 SPI1_Buffer_Rx[];
-extern vu8 SPI0_Rx_Index, SPI1_Rx_Index, tmpflag;
+extern vu8 SPI_Master_Buffer_Rx[];
+extern vu8 SPI_Slave_Buffer_Rx[];
+extern vu8 SPI_Master_Rx_Index, SPI_Slave_Rx_Index, tmpflag;
+
+/* Global functions ----------------------------------------------------------------------------------------*/
+
 
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
@@ -117,22 +120,22 @@ void SysTick_Handler(void)
 }
 
 /*********************************************************************************************************//**
- * @brief   This function handles SPI interrupt.
+ * @brief   This function handles common SPI interrupt processing.
  * @retval  None
  ************************************************************************************************************/
-void HTCFG_SPI_MASTER_IRQHandler(void)
+__STATIC_INLINE void SPI_Process_Handler(HT_SPI_TypeDef* SPIx, vu8* pBuffer, vu8* pIndex)
 {
-  bool bIsRxDataReady = FALSE;
+bool bIsRxDataReady = FALSE;
 
   /* Timeout: Clear Timeout Flag                                                                            */
-  if (SPI_GetFlagStatus(HTCFG_SPI_MASTER, SPI_FLAG_TOUT))
+  if (SPI_GetFlagStatus(SPIx, SPI_FLAG_TOUT))
   {
-    SPI_ClearFlag(HTCFG_SPI_MASTER, SPI_FLAG_TOUT);
+    SPI_ClearFlag(SPIx, SPI_FLAG_TOUT);
     bIsRxDataReady = TRUE;
   }
 
   /* Rx FIFO level is reached                                                                               */
-  if (SPI_GetFlagStatus(HTCFG_SPI_MASTER, SPI_FLAG_RXBNE))
+  if (SPI_GetFlagStatus(SPIx, SPI_FLAG_RXBNE))
   {
     bIsRxDataReady = TRUE;
   }
@@ -140,7 +143,7 @@ void HTCFG_SPI_MASTER_IRQHandler(void)
   /* Rx: Move data from SPI FIFO to buffer                                                                  */
   if (bIsRxDataReady == TRUE)
   {
-    u32 uCount = SPI_GetFIFOStatus(HTCFG_SPI_MASTER, SPI_FIFO_RX);
+    u32 uCount = SPI_GetFIFOStatus(SPIx, SPI_FIFO_RX);
 
     /* !!! NOTICE !!!
        Turn off the RXBNE interrupt before reading data to prevent the interrupt be triggered again.
@@ -148,17 +151,37 @@ void HTCFG_SPI_MASTER_IRQHandler(void)
        data count reaches the RX FIFO trigger level (RXFTLS) again, the RXBNE flag will be set and trigger
        the SPI interrupt again.
     */
-    SPI_IntConfig(HTCFG_SPI_MASTER, SPI_INT_RXBNE, DISABLE);
+    SPI_IntConfig(SPIx, SPI_INT_RXBNE, DISABLE);
 
     while(uCount--)
     {
-      SPI0_Buffer_Rx[SPI0_Rx_Index++] = SPI_ReceiveData(HTCFG_SPI_MASTER);
+      pBuffer[(*pIndex)++] = SPI_ReceiveData(SPIx);
     }
 
-    SPI_IntConfig(HTCFG_SPI_MASTER, SPI_INT_RXBNE, ENABLE);
+    SPI_IntConfig(SPIx, SPI_INT_RXBNE, ENABLE);
+    tmpflag++;
   }
+}
 
-  tmpflag++;
+#if defined(LIBCFG_SPI_COMBINED_SPI01)
+/*********************************************************************************************************//**
+ * @brief   This function handles SPI interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void SPI0_1_IRQHandler(void)
+{
+  SPI_Process_Handler(HTCFG_SPI_MASTER, SPI_Master_Buffer_Rx, &SPI_Master_Rx_Index);
+
+  SPI_Process_Handler(HTCFG_SPI_SLAVE, SPI_Slave_Buffer_Rx, &SPI_Slave_Rx_Index);
+}
+#else
+/*********************************************************************************************************//**
+ * @brief   This function handles SPI interrupt.
+ * @retval  None
+ ************************************************************************************************************/
+void HTCFG_SPI_MASTER_IRQHandler(void)
+{
+  SPI_Process_Handler(HTCFG_SPI_MASTER, SPI_Master_Buffer_Rx, &SPI_Master_Rx_Index);
 }
 
 /*********************************************************************************************************//**
@@ -167,44 +190,9 @@ void HTCFG_SPI_MASTER_IRQHandler(void)
  ************************************************************************************************************/
 void HTCFG_SPI_SLAVE_IRQHandler(void)
 {
-  bool bIsRxDataReady = FALSE;
-
-  /* Timeout: Clear Timeout Flag                                                                            */
-  if (SPI_GetFlagStatus(HTCFG_SPI_SLAVE, SPI_FLAG_TOUT))
-  {
-    SPI_ClearFlag(HTCFG_SPI_SLAVE, SPI_FLAG_TOUT);
-    bIsRxDataReady = TRUE;
-  }
-
-  /* Rx FIFO level is reached                                                                               */
-  if (SPI_GetFlagStatus(HTCFG_SPI_SLAVE, SPI_FLAG_RXBNE))
-  {
-    bIsRxDataReady = TRUE;
-  }
-
-  /* Rx: Move data from SPI FIFO to buffer                                                                  */
-  if (bIsRxDataReady == TRUE)
-  {
-    u32 uCount = SPI_GetFIFOStatus(HTCFG_SPI_SLAVE, SPI_FIFO_RX);
-
-    /* !!! NOTICE !!!
-       Turn off the RXBNE interrupt before reading data to prevent the interrupt be triggered again.
-       The RXBNE flag will be cleared after reading one data. If new data arrivals at this time and the FIFO
-       data count reaches the RX FIFO trigger level (RXFTLS) again, the RXBNE flag will be set and trigger
-       the SPI interrupt again.
-    */
-    SPI_IntConfig(HTCFG_SPI_SLAVE, SPI_INT_RXBNE, DISABLE);
-
-    while(uCount--)
-    {
-      SPI1_Buffer_Rx[SPI1_Rx_Index++] = SPI_ReceiveData(HTCFG_SPI_SLAVE);
-    }
-
-    SPI_IntConfig(HTCFG_SPI_SLAVE, SPI_INT_RXBNE, ENABLE);
-  }
-
-  tmpflag++;
+  SPI_Process_Handler(HTCFG_SPI_SLAVE, SPI_Slave_Buffer_Rx, &SPI_Slave_Rx_Index);
 }
+#endif
 
 
 /**

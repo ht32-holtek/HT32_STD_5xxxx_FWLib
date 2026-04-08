@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/TouchKey/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9723         $
+ * @date    $Date:: 2026-03-25 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -454,6 +454,32 @@
 
   #define TOUCHKEY_I2C_SDA_GPIO_ID      (GPIO_PA)
   #define TOUCHKEY_I2C_SDA_AFIO_PIN     (AFIO_PIN_5)
+  #define TOUCHKEY_I2C_SDA_AFIO_MODE    (AFIO_FUN_I2C)
+#endif
+
+#if defined(USE_HT32F66256_DVB)
+  #define TOUCHKEY_I2C_CLK(CK)          (CK.Bit.I2C0)
+  #define TOUCHKEY_I2C                  (HT_I2C0)
+
+  #define TOUCHKEY_I2C_SCL_GPIO_ID      (GPIO_PA)
+  #define TOUCHKEY_I2C_SCL_AFIO_PIN     (AFIO_PIN_1)
+  #define TOUCHKEY_I2C_SCL_AFIO_MODE    (AFIO_FUN_I2C)
+
+  #define TOUCHKEY_I2C_SDA_GPIO_ID      (GPIO_PC)
+  #define TOUCHKEY_I2C_SDA_AFIO_PIN     (AFIO_PIN_3)
+  #define TOUCHKEY_I2C_SDA_AFIO_MODE    (AFIO_FUN_I2C)
+#endif
+
+#if defined(USE_HT32F61152_DVB) //PRELIMINARY_NOT_TEST
+  #define TOUCHKEY_I2C_CLK(CK)          (CK.Bit.I2C0)
+  #define TOUCHKEY_I2C                  (HT_I2C0)
+
+  #define TOUCHKEY_I2C_SCL_GPIO_ID      (GPIO_PA)
+  #define TOUCHKEY_I2C_SCL_AFIO_PIN     (AFIO_PIN_6)
+  #define TOUCHKEY_I2C_SCL_AFIO_MODE    (AFIO_FUN_I2C)
+
+  #define TOUCHKEY_I2C_SDA_GPIO_ID      (GPIO_PA)
+  #define TOUCHKEY_I2C_SDA_AFIO_PIN     (AFIO_PIN_7)
   #define TOUCHKEY_I2C_SDA_AFIO_MODE    (AFIO_FUN_I2C)
 #endif
 

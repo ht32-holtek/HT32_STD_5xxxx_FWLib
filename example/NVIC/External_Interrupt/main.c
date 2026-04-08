@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    NVIC/External_Interrupt/main.c
- * @version $Rev:: 4434         $
- * @date    $Date:: 2019-12-20 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -58,8 +58,13 @@ int main(void)
 
   NVIC_Configuration();
 
+  #if defined(USE_HT32F66256_DVB)
+  /* Generate EXTI line 0 & 7 Interrupt                                                                     */
+  NVIC_SetPendingIRQ(EXTI0_7_IRQn);
+  #else
   /* Generate EXTI line 0 & 1 Interrupt                                                                     */
   NVIC_SetPendingIRQ(EXTI0_1_IRQn);
+  #endif
 
   /* Check on the LEDs flash sequence                                                                       */
   while (1);
@@ -72,13 +77,21 @@ int main(void)
 void NVIC_Configuration(void)
 {
   /* Configure the External Interrupts Priority                                                             */
+  #if defined(USE_HT32F66256_DVB)
+  NVIC_SetPriority(EXTI0_7_IRQn, 2);
+  #else
   NVIC_SetPriority(EXTI0_1_IRQn, 2);
+  #endif
   NVIC_SetPriority(LVD_BOD_IRQn, 1);
   NVIC_SetPriority(FLASH_IRQn  , 0);
 
   /* Enable the Interrupts                                                                                  */
   NVIC_EnableIRQ(LVD_BOD_IRQn);
+  #if defined(USE_HT32F66256_DVB)
+  NVIC_EnableIRQ(EXTI0_7_IRQn);
+  #else
   NVIC_EnableIRQ(EXTI0_1_IRQn);
+  #endif
   NVIC_EnableIRQ(FLASH_IRQn);
 }
 

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_lib.h
- * @version $Rev:: 8417         $
- * @date    $Date:: 2025-02-26 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file includes all the header files of the libraries.
  *************************************************************************************************************
  * @attention
@@ -34,8 +34,8 @@
 #endif
 
 /* Settings ------------------------------------------------------------------------------------------------*/
-#define HT32_FWLIB_VER                  (0x01019002)
-#define HT32_FWLIB_SVN                  (0x9665)
+#define HT32_FWLIB_VER                  (0x01020001)
+#define HT32_FWLIB_SVN                  (0x9758)
 
 #if defined(USE_HT32F52220_30)
   #include "ht32f52220_30_libcfg.h"
@@ -133,6 +133,9 @@
 #if defined(USE_HT32F52234_44)
   #include "ht32f52234_44_libcfg.h"
 #endif
+#if defined(USE_HT32F66256)
+  #include "ht32f66256_libcfg.h"
+#endif
 
 /* Includes ------------------------------------------------------------------------------------------------*/
 #include <stdio.h>
@@ -158,7 +161,7 @@ void assert_error(u8* file, u32 line);
 
 
 #if _ADC
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
   #include "ht32f65xxx_66xxx_adc.h"
   #else
   #include "ht32f5xxxx_adc.h"

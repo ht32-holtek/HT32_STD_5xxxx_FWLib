@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_cmp.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9687         $
+ * @date    $Date:: 2026-03-12 #$
  * @brief   The header file of the CMP library.
  *************************************************************************************************************
  * @attention
@@ -68,6 +68,12 @@ typedef struct
 } CMP_InitTypeDef;
 
 #if (LIBCFG_CMP_CO)
+#if (LIBCFG_MCTM1)
+/* !!! NOTICE !!!
+   For the CMP0~CMP3 synchronization output configuration to MCTM0/MCTM1,
+   please refer to the device User Manual.
+*/
+#endif
 typedef enum
 {
   CMP_SYNCOUT_CMPnO       = 0,
@@ -107,64 +113,162 @@ typedef enum
 #define IS_CMP_Wakeup_Set(x)                      ((x == CMP_WUP_ENABLE) || (x == CMP_WUP_DISABLE))
 
 
+/* Definitions of CMP Output Selection Check Choose                                                         */
+#if (LIBCFG_CMP_TRIG_CHECK_CHOOSE)
+#define CMP0_TRIG_MARK                            (1 << 0)
+#define CMP1_TRIG_MARK                            (1 << 1)
+#if (LIBCFG_CMP2)
+#define CMP2_TRIG_MARK                            (1 << 2)
+#else
+#define CMP2_TRIG_MARK                            (0)
+#endif
+#if (LIBCFG_CMP3)
+#define CMP3_TRIG_MARK                            (1 << 3)
+#else
+#define CMP3_TRIG_MARK                            (0)
+#endif
+#define CMP_TRIG_MASK                             (CMP0_TRIG_MARK | CMP1_TRIG_MARK | \
+                                                   CMP2_TRIG_MARK | CMP3_TRIG_MARK)
+
+#define CMP_TRIG_REMOVE_MARK(TRIGGER)             (TRIGGER & ~(CMP_TRIG_MASK))
+
+#define IS_CMP0_TRIG_CHOOSE(HT_CMPn, TRIGGER)     ((HT_CMPn == HT_CMP0) && (TRIGGER & CMP0_TRIG_MARK))
+#define IS_CMP1_TRIG_CHOOSE(HT_CMPn, TRIGGER)     ((HT_CMPn == HT_CMP1) && (TRIGGER & CMP1_TRIG_MARK))
+#if (LIBCFG_CMP2)
+#define IS_CMP2_TRIG_CHOOSE(HT_CMPn, TRIGGER)     ((HT_CMPn == HT_CMP2) && (TRIGGER & CMP2_TRIG_MARK))
+#else
+#define IS_CMP2_TRIG_CHOOSE(HT_CMPn, TRIGGER)     (0)
+#endif
+#if (LIBCFG_CMP3)
+#define IS_CMP3_TRIG_CHOOSE(HT_CMPn, TRIGGER)     ((HT_CMPn == HT_CMP3) && (TRIGGER & CMP3_TRIG_MARK))
+#else
+#define IS_CMP3_TRIG_CHOOSE(HT_CMPn, TRIGGER)     (0)
+#endif
+#define IS_CMP_TRIG_CHOOSE(HT_CMPn, TRIGGER)      (((TRIGGER & CMP_TRIG_MASK) == 0x00000000) || \
+                                                   (IS_CMP0_TRIG_CHOOSE(HT_CMPn, TRIGGER)) || \
+                                                   (IS_CMP1_TRIG_CHOOSE(HT_CMPn, TRIGGER)) || \
+                                                   (IS_CMP2_TRIG_CHOOSE(HT_CMPn, TRIGGER)) || \
+                                                   (IS_CMP3_TRIG_CHOOSE(HT_CMPn, TRIGGER)))
+#else
+#define CMP0_TRIG_MARK                            (0)
+#define CMP1_TRIG_MARK                            (0)
+#if (LIBCFG_CMP2)
+#define CMP2_TRIG_MARK                            (0)
+#endif
+#if (LIBCFG_CMP3)
+#define CMP3_TRIG_MARK                            (0)
+#endif
+#endif
+
 /* Definitions of CMP Output Selection for IP Trigger Source                                                */
 #if (LIBCFG_CMP_65x_66x_VER)
 #define CMP_TRIG_NONE                             ((u32)0x0 << 11)
-#define CMP_TRIG_GPTM_CH0                         ((u32)0x1 << 11) // CMP0
-#define CMP_TRIG_GPTM_CH1                         ((u32)0x1 << 11) // CMP1
-
-#define IS_CMP_OutputSelection2(x)                (0)
-#if (LIBCFG_CMP2)
-#define CMP_TRIG_GPTM_CH2                         ((u32)0x1 << 11) // CMP2
-#undef IS_CMP_OutputSelection2
-#define IS_CMP_OutputSelection2(x)                (x == CMP_TRIG_GPTM_CH2)
-#endif
-
-#define CMP_TRIG_GPTM_CH3                         ((u32)0x2 << 11)
-#define CMP_TRIG_SCTM                             ((u32)0x3 << 11)
-#define CMP_TRIG_MCTM_CH3                         ((u32)0x4 << 11)
-#define CMP_TRIG_MCTM_BK0                         ((u32)0x5 << 11)
-#if (LIBCFG_TM_65X_66X_V1_NO_BK1)
-#define IS_CMP_OutputSelection3(x)                (0)
+#define CMP_TRIG_GPTM0_CH0                        ((u32)0x1 << 11) // CMP0
+#define CMP_TRIG_GPTM0_CH1                        ((u32)0x1 << 11) // CMP1
+#if (LIBCFG_GPTM1)
+#define CMP_TRIG_GPTM1_CH0                        ((u32)0x1 << 11) // CMP2
+#define CMP_TRIG_GPTM1_CH1                        ((u32)0x1 << 11) // CMP3
+#define IS_CMP_OutputSelection2(x)                ((x == CMP_TRIG_GPTM1_CH0) || (x == CMP_TRIG_GPTM1_CH1))
 #else
-#define CMP_TRIG_MCTM_BK1                         ((u32)0x6 << 11)
-#define IS_CMP_OutputSelection3(x)                (x == CMP_TRIG_MCTM_BK1)
+#define IS_CMP_OutputSelection2(x)                (0)
 #endif
-#define CMP_TRIG_ADC                              ((u32)0x7 << 11)
+
+#define IS_CMP_OutputSelection3(x)                (0)
+#if (LIBCFG_CMP2) && (!LIBCFG_CMP_TRIG_NO_GPTM_CH2)
+#define CMP_TRIG_GPTM0_CH2                        ((u32)0x1 << 11) // CMP2
+#undef IS_CMP_OutputSelection3
+#define IS_CMP_OutputSelection3(x)                (x == CMP_TRIG_GPTM0_CH2)
+#endif
+
+#define CMP_TRIG_GPTM0_CH3                        ((u32)0x2 << 11)
+#if (LIBCFG_GPTM1)
+#define CMP_TRIG_GPTM1_CH3                        ((u32)0x2 << 11)
+#define IS_CMP_OutputSelection4(x)                (x == CMP_TRIG_GPTM1_CH3)
+#else
+#define IS_CMP_OutputSelection4(x)                (0)
+#endif
+
+#define CMP_TRIG_SCTM                             ((u32)0x3 << 11)
+#define CMP_TRIG_MCTM0_CH3                        ((u32)0x4 << 11)
+#define CMP_TRIG_MCTM0_BK0                        ((u32)0x5 << 11)
+#if (LIBCFG_TM_65X_66X_V1_NO_BK1)
+#define IS_CMP_OutputSelection5(x)                (0)
+#else
+#define CMP_TRIG_MCTM0_BK1                        ((u32)0x6 << 11)
+#define IS_CMP_OutputSelection5(x)                (x == CMP_TRIG_MCTM0_BK1)
+#endif
+
+#define IS_CMP_OutputSelection6(x)                (0)
+#define IS_CMP_OutputSelection7(x)                (0)
+#if (LIBCFG_MCTM1)
+#define CMP_TRIG_MCTM1_CH3                        ((u32)0x4 << 11)
+#define CMP_TRIG_MCTM1_BK0                        ((u32)0x5 << 11)
+#undef IS_CMP_OutputSelection6
+#define IS_CMP_OutputSelection6(x)                ((x == CMP_TRIG_MCTM1_CH3) || (x == CMP_TRIG_MCTM1_BK0))
+#if (!LIBCFG_TM_65X_66X_V1_NO_BK1)
+#define CMP_TRIG_MCTM1_BK1                        ((u32)0x6 << 11)
+#undef IS_CMP_OutputSelection7
+#define IS_CMP_OutputSelection7(x)                (x == CMP_TRIG_MCTM1_BK1)
+#endif
+#endif
+
+#define CMP_TRIG_ADC0                             ((u32)0x7 << 11)
+#if (LIBCFG_ADC1)
+#define CMP_TRIG_ADC1                             ((u32)0x7 << 11)
+#define IS_CMP_OutputSelection8(x)                (x == CMP_TRIG_ADC1)
+#else
+#define IS_CMP_OutputSelection8(x)                (0)
+#endif
+
+#if defined(USE_HT32F66256) && (LIBCFG_CMP_TRIG_CHECK_CHOOSE)
+#undef CMP_TRIG_MCTM0_BK0
+#define CMP_TRIG_MCTM0_BK0                        (CMP0_TRIG_MARK | CMP1_TRIG_MARK | (u32)0x5 << 11)
+#undef CMP_TRIG_MCTM1_BK0
+#define CMP_TRIG_MCTM1_BK0                        (CMP0_TRIG_MARK | CMP1_TRIG_MARK | (u32)0x6 << 11)
+#undef CMP_TRIG_MCTM0_BK1
+#define CMP_TRIG_MCTM0_BK1                        (CMP2_TRIG_MARK | CMP3_TRIG_MARK | (u32)0x5 << 11)
+#undef CMP_TRIG_MCTM1_BK1
+#define CMP_TRIG_MCTM1_BK1                        (CMP2_TRIG_MARK | CMP3_TRIG_MARK | (u32)0x6 << 11)
+#endif
 
 #define IS_CMP_OutputSelection(x)                 ((x == CMP_TRIG_NONE)       || \
-                                                   (x == CMP_TRIG_GPTM_CH0)   || \
-                                                   (x == CMP_TRIG_GPTM_CH1)   || \
+                                                   (x == CMP_TRIG_GPTM0_CH0)  || \
+                                                   (x == CMP_TRIG_GPTM0_CH1)  || \
                                                    IS_CMP_OutputSelection2(x) || \
-                                                   (x == CMP_TRIG_GPTM_CH3)   || \
-                                                   (x == CMP_TRIG_SCTM)       || \
-                                                   (x == CMP_TRIG_MCTM_CH3)   || \
-                                                   (x == CMP_TRIG_MCTM_BK0)   || \
                                                    IS_CMP_OutputSelection3(x) || \
-                                                   (x == CMP_TRIG_ADC))
+                                                   (x == CMP_TRIG_GPTM0_CH3)  || \
+                                                   IS_CMP_OutputSelection4(x) || \
+                                                   (x == CMP_TRIG_SCTM)       || \
+                                                   (x == CMP_TRIG_MCTM0_CH3)  || \
+                                                   (x == CMP_TRIG_MCTM0_BK0)  || \
+                                                   IS_CMP_OutputSelection5(x) || \
+                                                   IS_CMP_OutputSelection6(x) || \
+                                                   IS_CMP_OutputSelection7(x) || \
+                                                   (x == CMP_TRIG_ADC0)       || \
+                                                   IS_CMP_OutputSelection8(x))
 #else
 #define CMP_TRIG_NONE                             ((u32)0x0 << 11)
-#define CMP_TRIG_GPTM_CH3                         ((u32)0x1 << 11)
+#define CMP_TRIG_GPTM0_CH3                         ((u32)0x1 << 11)
 #if (LIBCFG_MCTM0)
-#define CMP_TRIG_MCTM_CH3                         ((u32)0x2 << 11)
+#define CMP_TRIG_MCTM0_CH3                         ((u32)0x2 << 11)
 #if (LIBCFG_TM_65X_66X_V1_NO_BK1)
-#define CMP_TRIG_MCTM_BK1(x)                      (0)
+#define CMP_TRIG_MCTM0_BK1(x)                      (0)
 #else
-#define CMP_TRIG_MCTM_BK1                         ((u32)0x3 << 11)
+#define CMP_TRIG_MCTM0_BK1                         ((u32)0x3 << 11)
 #endif
 #endif
-#define CMP_TRIG_ADC                              ((u32)0x4 << 11)
+#define CMP_TRIG_ADC0                              ((u32)0x4 << 11)
 
 #if (LIBCFG_MCTM0)
-#define IS_CMP_OutSelMCTM(x)                      ((x == CMP_TRIG_MCTM_CH3) || (x == CMP_TRIG_MCTM_BK1))
+#define IS_CMP_OutSelMCTM(x)                      ((x == CMP_TRIG_MCTM0_CH3) || (x == CMP_TRIG_MCTM0_BK1))
 #else
 #define IS_CMP_OutSelMCTM(x)                      (0)
 #endif
 
-#define IS_CMP_OutputSelection(x)                 ((x == CMP_TRIG_NONE)     || \
-                                                   (x == CMP_TRIG_GPTM_CH3) || \
-                                                   IS_CMP_OutSelMCTM(x)     || \
-                                                   (x == CMP_TRIG_ADC))
+#define IS_CMP_OutputSelection(x)                 ((x == CMP_TRIG_NONE)      || \
+                                                   (x == CMP_TRIG_GPTM0_CH3) || \
+                                                   IS_CMP_OutSelMCTM(x)      || \
+                                                   (x == CMP_TRIG_ADC0))
 #endif
 
 /* Definitions of CMP Scaler Source Selection                                                               */
@@ -256,6 +360,45 @@ typedef enum
                                                    (x == CMP_INPUT_CMP1P1)     || \
                                                    (x == CMP_INPUT_CMP1P2)     || \
                                                    (x == CMP_INPUT_PGA0O))
+#elif (LIBCFG_CMP_POS_INPUT_SEL_V5)
+#define CMP_INPUT_CMP0P                           ((u32)0x00000000) // CMP0, CMP1
+#define CMP_INPUT_CMP0P0                          ((u32)0x00000000) // CMP0, CMP1
+#define CMP_INPUT_CMP2P0                          ((u32)0x00000000) // CMP2, CMP3
+#define CMP_INPUT_CMP0P1                          ((u32)0x00000001) // CMP0, CMP1
+#define CMP_INPUT_CMP2P1                          ((u32)0x00000001) // CMP2, CMP3
+#define CMP_INPUT_CMP0P2                          ((u32)0x00000002) // CMP0, CMP1
+#define CMP_INPUT_CMP2P2                          ((u32)0x00000002) // CMP2, CMP3
+#define CMP_INPUT_CMP1P                           ((u32)0x00000003) // CMP0, CMP1
+#define CMP_INPUT_CMP3P                           ((u32)0x00000003) // CMP2, CMP3
+#define CMP_INPUT_PGA0O                           ((u32)0x00000004) // CMP0, CMP2
+#define CMP_INPUT_PGA2O                           ((u32)0x00000004) // CMP1, CMP3
+#define CMP_INPUT_PGA1O                           ((u32)0x00000005) // CMP0, CMP2
+#define CMP_INPUT_PGA3O                           ((u32)0x00000005) // CMP1, CMP3
+#define CMP_INPUT_PGA4O                           ((u32)0x00000006) // CMP0, CMP2
+#define CMP_INPUT_PGA5O                           ((u32)0x00000006) // CMP1, CMP3
+#define CMP_INPUT_PGA0P                           ((u32)0x00000007) // CMP0
+#define CMP_INPUT_PGA1P                           ((u32)0x00000007) // CMP1
+#define CMP_INPUT_PGA3P                           ((u32)0x00000007) // CMP2
+#define CMP_INPUT_PGA4P                           ((u32)0x00000007) // CMP3
+
+#define IS_CMP_InputSelection(x)                  ((x == CMP_INPUT_CMP0P0)     || \
+                                                   (x == CMP_INPUT_CMP2P0)     || \
+                                                   (x == CMP_INPUT_CMP0P1)     || \
+                                                   (x == CMP_INPUT_CMP2P1)     || \
+                                                   (x == CMP_INPUT_CMP0P2)     || \
+                                                   (x == CMP_INPUT_CMP2P2)     || \
+                                                   (x == CMP_INPUT_CMP1P)      || \
+                                                   (x == CMP_INPUT_CMP3P)      || \
+                                                   (x == CMP_INPUT_PGA0O)      || \
+                                                   (x == CMP_INPUT_PGA2O)      || \
+                                                   (x == CMP_INPUT_PGA1O)      || \
+                                                   (x == CMP_INPUT_PGA3O)      || \
+                                                   (x == CMP_INPUT_PGA4O)      || \
+                                                   (x == CMP_INPUT_PGA5O)      || \
+                                                   (x == CMP_INPUT_PGA0P)      || \
+                                                   (x == CMP_INPUT_PGA1P)      || \
+                                                   (x == CMP_INPUT_PGA3P)      || \
+                                                   (x == CMP_INPUT_PGA4P))
 #else
 #define CMP_INPUT_CMPnP                           ((u32)0x00000000)
 #define CMP_INPUT_OPA0O                           ((u32)0x00000001)
@@ -271,27 +414,55 @@ typedef enum
 
 #if defined(USE_HT32F66242) || defined(USE_HT32F66246)
 #define CMP0_CMP0N_CN_IN                          ((u32)0x00000000)
-#define CMP1_CMP1N_CN_IN                          ((u32)0x00000000)
+#define CMP1_CMP0N_CN_IN                          ((u32)0x00000000)
 
 #define CMP0_CMP1N_CN_IN                          ((u32)0x00000010)
-#define CMP1_CMP0N_CN_IN                          ((u32)0x00000010)
+#define CMP1_CMP1N_CN_IN                          ((u32)0x00000010)
 
-#define CMP_CVREF0_CN_IN                          ((u32)0x00000020)
-#define CMP_CVREF1_CN_IN                          ((u32)0x00000030)
+#define CMP0_CVREF0_CN_IN                         ((u32)0x00000020)
+#define CMP1_CVREF0_CN_IN                         ((u32)0x00000020)
 
-#define IS_CMP_InvInputSelection(x)               ((x == CMP_EXTERNAL_CN_IN) || (x == CMP0_CMP0N_CN_IN) || (x == CMP1_CMP1N_CN_IN) || \
-                                                   (x == CMP0_CMP1N_CN_IN)   || (x == CMP1_CMP0N_CN_IN) || \
-                                                   (x == CMP_CVREF0_CN_IN)   || \
-                                                   (x == CMP_CVREF1_CN_IN))
+#define CMP0_CVREF1_CN_IN                         ((u32)0x00000030)
+#define CMP1_CVREF1_CN_IN                         ((u32)0x00000030)
+
+#define IS_CMP_InvInputSelection(x)               ((x == CMP_EXTERNAL_CN_IN) || (x == CMP0_CMP0N_CN_IN)  || (x == CMP1_CMP1N_CN_IN) || \
+                                                   (x == CMP0_CMP1N_CN_IN)   || (x == CMP1_CMP0N_CN_IN)  || \
+                                                   (x == CMP0_CVREF0_CN_IN)  || (x == CMP1_CVREF0_CN_IN) || \
+                                                   (x == CMP0_CVREF1_CN_IN)  || (x == CMP1_CVREF1_CN_IN))
 #elif defined(USE_HT32F65233)
 #define CMP0_CMP1N_CN_IN                          ((u32)0x00000000)
 #define CMP1_CMP1N_CN_IN                          ((u32)0x00000000)
 #define CMP0_CMP0N_CN_IN                          ((u32)0x00000010)
 #define CMP1_CMP0N_CN_IN                          ((u32)0x00000010)
-#define CMP_CVREF0_CN_IN                          ((u32)0x00000020)
+#define CMP0_CVREF0_CN_IN                         ((u32)0x00000020)
+#define CMP1_CVREF0_CN_IN                         ((u32)0x00000020)
 
-#define IS_CMP_InvInputSelection(x)               ((x == CMP0_CMP1N_CN_IN) || (x == CMP1_CMP1N_CN_IN) || (x == CMP0_CMP0N_CN_IN) || \
-                                                   (x == CMP1_CMP0N_CN_IN) || (x == CMP_CVREF0_CN_IN))
+#define IS_CMP_InvInputSelection(x)               ((x == CMP0_CMP1N_CN_IN) || (x == CMP1_CMP1N_CN_IN)  || (x == CMP0_CMP0N_CN_IN) || \
+                                                   (x == CMP1_CMP0N_CN_IN) || (x == CMP0_CVREF0_CN_IN) || (x == CMP1_CVREF0_CN_IN)
+#elif defined(USE_HT32F66256)
+#define CMP0_CMP0N_CN_IN                          ((u32)0x00000000)
+#define CMP1_CMP0N_CN_IN                          ((u32)0x00000000)
+#define CMP2_CMP2N_CN_IN                          ((u32)0x00000000)
+#define CMP3_CMP2N_CN_IN                          ((u32)0x00000000)
+#define CMP0_CMP1N_CN_IN                          ((u32)0x00000010)
+#define CMP1_CMP1N_CN_IN                          ((u32)0x00000010)
+#define CMP2_CMP3N_CN_IN                          ((u32)0x00000010)
+#define CMP3_CMP3N_CN_IN                          ((u32)0x00000010)
+#define CMP0_CVREF0_CN_IN                         ((u32)0x00000020)
+#define CMP1_CVREF1_CN_IN                         ((u32)0x00000020)
+#define CMP2_CVREF2_CN_IN                         ((u32)0x00000020)
+#define CMP3_CVREF3_CN_IN                         ((u32)0x00000020)
+#define CMP0_PGA0N_CN_IN                          ((u32)0x00000030)
+#define CMP1_PGA1N_CN_IN                          ((u32)0x00000030)
+#define CMP2_PGA3N_CN_IN                          ((u32)0x00000030)
+#define CMP3_PGA4N_CN_IN                          ((u32)0x00000030)
+
+#define IS_CMP_InvInputSelection(x)               ((x == CMP0_CMP0N_CN_IN)  || (x == CMP1_CMP0N_CN_IN)  || (x == CMP2_CMP2N_CN_IN)  || \
+                                                   (x == CMP3_CMP2N_CN_IN)  || (x == CMP0_CMP1N_CN_IN)  || (x == CMP1_CMP1N_CN_IN)  || \
+                                                   (x == CMP2_CMP3N_CN_IN)  || (x == CMP3_CMP3N_CN_IN)  || (x == CMP0_CVREF0_CN_IN) || \
+                                                   (x == CMP1_CVREF1_CN_IN) || (x == CMP2_CVREF2_CN_IN) || (x == CMP3_CVREF3_CN_IN) || \
+                                                   (x == CMP0_PGA0N_CN_IN)  || (x == CMP1_PGA1N_CN_IN)  || (x == CMP2_PGA3N_CN_IN)  || \
+                                                   (x == CMP3_PGA4N_CN_IN))
 #else
 #define CMP_SCALER_CN_IN                          ((u32)0x00000010)
 
@@ -369,7 +540,12 @@ typedef enum
 #else
 #define IS_CMP2(x)                                (0)
 #endif
-#define IS_CMP(x)                                 ((x == HT_CMP0) || (x == HT_CMP1) || IS_CMP2(x))
+#if (LIBCFG_CMP3)
+#define IS_CMP3(x)                                (x == HT_CMP3)
+#else
+#define IS_CMP3(x)                                (0)
+#endif
+#define IS_CMP(x)                                 ((x == HT_CMP0) || (x == HT_CMP1) || IS_CMP2(x) || IS_CMP3(x))
 
 
 /* Check the Scaler Value                                                                                   */

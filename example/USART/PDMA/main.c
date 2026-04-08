@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/PDMA/main.c
- * @version $Rev:: 8175         $
- * @date    $Date:: 2024-09-23 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -102,7 +102,7 @@ int main(void)
   {
     #if 1
     // Wait for LSE clock Ready timeout, do the error handling here
-    while(1);
+    while(1){};
     #endif
   }
 
@@ -110,7 +110,7 @@ int main(void)
   {
     #if 1
     // Wait for HSI Auto Trim Ready timeout, do the error handling here
-    while(1);
+    while(1){};
     #endif
   }
   #endif

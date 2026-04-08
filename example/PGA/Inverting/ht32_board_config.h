@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PGA/Inverting/ht32_board_config.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 9671         $
+ * @date    $Date:: 2026-03-04 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -54,6 +54,16 @@
 #endif
 
 #if defined(USE_HT32F66246_DVB)
+  #define HTCFG_PGA_PORT                          HT_PGA2
+  #define _HTCFG_PGA_POS_GPIOX                    A
+  #define _HTCFG_PGA_POS_GPION                    5
+  #define _HTCFG_PGA_NEG_GPIOX                    A
+  #define _HTCFG_PGA_NEG_GPION                    4
+  #define _HTCFG_PGA_OUT_GPIOX                    A
+  #define _HTCFG_PGA_OUT_GPION                    3
+#endif
+
+#if defined(USE_HT32F66256_DVB)
   #define HTCFG_PGA_PORT                          HT_PGA2
   #define _HTCFG_PGA_POS_GPIOX                    A
   #define _HTCFG_PGA_POS_GPION                    5
