@@ -4,6 +4,13 @@
 <!-- Global site tag (gtag.js) - Google Analytics --> 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GBVTFSKWWB"></script> 
 <script>
+document.getElementById('download-link').addEventListener('click', function(event) {
+    gtag('event', 'file_download', {
+      'file_name': 'HT32_STD_5xxxx_FWLib',
+      'link_url': this.href // 自動獲取當前連結
+    });
+    console.log("下載事件已送出，準備跳轉...");
+  });      
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -11,7 +18,7 @@
       gtag("js", new Date());
 
       gtag("config", "G-GBVTFSKWWB");
-    </script>
+</script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>HT32F5 Firmware Librry Download</title>
 <style type="text/css">
@@ -88,7 +95,7 @@ a:hover {
     </div>
   </div>
   <div class="tbody">
-    <a href="https://github.com/ht32-holtek/HT32_STD_5xxxx_FWLib/releases/latest" class="tr"> 
+    <a href="https://github.com/ht32-holtek/HT32_STD_5xxxx_FWLib/releases/latest" class="tr" id="download-link"> 
       <span class="td">HT32_STD_5xxxx_FWLib</span> <span class="td">
       <figure><img src="https://www.holtek.com/WebAPI/fl26790990/Download_all.svg" /></figure>
       </span>
