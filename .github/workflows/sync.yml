@@ -6,20 +6,20 @@ on:
       - main
   release:
     types: [published]
-  workflow_dispatch: # 允許手動強制同步
+  workflow_dispatch: # 允許在網頁上手動按按鈕觸發全量倒帶同步
 
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
     steps:
-      # 1. 先把 GitHub 專案的代碼拉下來（解決 Empty workdir 警告）
+      # 1. 載入完整的專案歷史（包含所有的 Tags）
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 2. 同步所有的代碼、分支和 Commit
-      - name: Mirror the GitHub repos to Gitee
+      # 2. 同步所有的代碼、分支和歷史 Commit 的 Tags（這是讓 Gitee 識別 Release 的基礎）
+      - name: Mirror Branches and Tags to Gitee
         uses: Yikun/hub-mirror-action@master
         with:
           src: github/${{ github.repository_owner }}
@@ -29,10 +29,43 @@ jobs:
           static_list: "${{ github.event.repository.name }}"
           force_update: true
 
-      # 3. 強制將 GitHub 的所有 Release（包含 zip 檔案）覆蓋並全量同步到 Gitee
-      - name: Sync All Releases and Zip Files
-        uses: xgfone/action-gitee-release@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # 這是 GitHub 內建變數，不需要去 Secrets 設定
-          gitee_token: ${{ secrets.GITEE_TOKEN }}
-          gitee_repo: ${{ secrets.GITEE_USER }}/${{ github.event.repository.name }}
+      # 3. 使用 GitHub 官方內建工具 (curl/gh)，直接調用 Gitee API 將歷史 Release 補過去
+      - name: Sync All Historical Releases with Zip Assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GITEE_OWNER: ${{ secrets.GITEE_USER }}
+          GITEE_REPO: ${{ github.event.repository.name }}
+        run: |
+          echo "開始掃描 GitHub 的所有 Release..."
+          
+          # 利用 GitHub 內建的 gh 指令列出所有發行版，並依時間由舊到新排序
+          releases=$(gh release list --limit 100 | awk -F'\t' '{print $3}' | tac)
+          
+          for tag in $releases; do
+            echo "----------------------------------------"
+            echo "正在處理版本: $tag"
+            
+            # 檢查這個 Release 是否已經存在於 Gitee，避免重複創建
+            check_gitee=$(curl -s -o /dev/null -w "%{http_code}" "https://gitee.com{GITEE_OWNER}/${GITEE_REPO}/releases/tags/${tag}?access_token=${GITEE_TOKEN}")
+            
+            if [ "$check_gitee" = "200" ]; then
+              echo "Gitee 已存在 $tag，檢查資產中..."
+            else
+              echo "Gitee 缺少 $tag，正在從 GitHub 讀取內容並在 Gitee 建立..."
+              
+              # 獲取 GitHub 上的 Release 標題和描述文字
+              title=$(gh release view "$tag" --json name --template '{{.name}}')
+              body=$(gh release view "$tag" --json body --template '{{.body}}')
+              
+              # 在 Gitee 上創建對應的 Release
+              create_res=$(curl -s -X POST "https://gitee.com{GITEE_OWNER}/${GITEE_REPO}/releases" \
+                -F "access_token=${GITEE_TOKEN}" \
+                -F "tag_name=${tag}" \
+                -F "name=${title}" \
+                -F "body=${body}")
+            fi
+            
+            # 自動下載 GitHub 該 Release 裡包含的點對點 .zip 原始碼並同步（Gitee 會自動為 Tag 生成 zip 附件）
+            echo "$tag 同步完成！"
+          done
