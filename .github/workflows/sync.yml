@@ -23,9 +23,10 @@ jobs:
 
       - name: Sync Release to Gitee
         if: github.event_name == 'release' # 只有發布 Release 時才執行這一步
-        uses: up9cloud/action-gitee-release@master
+        uses: trustedinster/sync-release-gitee@v1.3
         with:
-          gitee_token: ${{ secrets.GITEE_TOKEN }}
-          gitee_username: ${{ secrets.GITEE_USER }}
+          github_owner: ${{ github.repository_owner }}
+          github_repo: ${{ github.event.repository.name }}
+          gitee_owner: ${{ secrets.GITEE_USER }}
           gitee_repo: ${{ github.event.repository.name }}
-          gitee_repo_owner: ${{ secrets.GITEE_USER }}
+          gitee_token: ${{ secrets.GITEE_TOKEN }}
