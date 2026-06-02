@@ -77,7 +77,7 @@ a:hover {
     </div>
   </div>
   <div class="tbody">
-    <a href="https://github.com/ht32-holtek/HT32_STD_5xxxx_FWLib/releases/latest" class="tr" id="download-link"> 
+    <a href="https://github.com/ht32-holtek/HT32_STD_5xxxx_FWLib/releases/latest" class="tr" id="download-link" target="_blank" rel="noopener noreferrer"> 
       <span class="td">HT32_STD_5xxxx_FWLib</span> <span class="td">
       <figure><img src="https://www.holtek.com/WebAPI/fl26790990/Download_all.svg" /></figure>
       </span>
@@ -90,9 +90,9 @@ a:hover {
 document.getElementById('download-link').addEventListener('click', function(event) {
     gtag('event', 'file_download', {
       'file_name': 'HT32_STD_5xxxx_FWLib',
-      'link_url': this.href // 自動獲取當前連結
+      'link_url': this.href
     });
-    console.log("下載事件已送出，準備跳轉...");
+    console.log("Download event sent, opening GitHub in a new window...");
   });      
       window.dataLayer = window.dataLayer || [];
       function gtag() {
