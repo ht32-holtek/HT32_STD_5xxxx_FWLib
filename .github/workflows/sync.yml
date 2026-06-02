@@ -3,7 +3,9 @@ name: Sync to Gitee
 on:
   push:
     branches:
-      - main  # ⚠️請確認你的預設分支是 main 還是 master，需與網頁顯示的一致
+      - main
+  release:
+    types: [published] # 當 GitHub 發布新 Release 時觸發
 
 jobs:
   repo-sync:
@@ -18,3 +20,12 @@ jobs:
           dst_token: ${{ secrets.GITEE_TOKEN }}
           static_list: "${{ github.event.repository.name }}"
           force_update: true
+
+      - name: Sync Release to Gitee
+        if: github.event_name == 'release' # 只有發布 Release 時才執行這一步
+        uses: up9cloud/action-gitee-release@master
+        with:
+          gitee_token: ${{ secrets.GITEE_TOKEN }}
+          gitee_username: ${{ secrets.GITEE_USER }}
+          gitee_repo: ${{ github.event.repository.name }}
+          gitee_repo_owner: ${{ secrets.GITEE_USER }}
