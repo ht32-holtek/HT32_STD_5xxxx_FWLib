@@ -6,12 +6,19 @@ on:
       - main
   release:
     types: [published]
-  workflow_dispatch: # 👈 關鍵：這行能讓你在網頁上手動點擊執行
+  workflow_dispatch: # 允許手動強制同步
 
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
     steps:
+      # 1. 先把 GitHub 專案的代碼拉下來（解決 Empty workdir 警告）
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. 同步所有的代碼、分支和 Commit
       - name: Mirror the GitHub repos to Gitee
         uses: Yikun/hub-mirror-action@master
         with:
@@ -22,11 +29,10 @@ jobs:
           static_list: "${{ github.event.repository.name }}"
           force_update: true
 
-      - name: Sync All History Releases to Gitee
-        uses: trustedinster/sync-release-gitee@v1.3
+      # 3. 強制將 GitHub 的所有 Release（包含 zip 檔案）覆蓋並全量同步到 Gitee
+      - name: Sync All Releases and Zip Files
+        uses: xgfone/action-gitee-release@v1
         with:
-          github_owner: ${{ github.repository_owner }}
-          github_repo: ${{ github.event.repository.name }}
-          gitee_owner: ${{ secrets.GITEE_USER }}
-          gitee_repo: ${{ github.event.repository.name }}
+          github_token: ${{ secrets.GITHUB_TOKEN }} # 這是 GitHub 內建變數，不需要去 Secrets 設定
           gitee_token: ${{ secrets.GITEE_TOKEN }}
+          gitee_repo: ${{ secrets.GITEE_USER }}/${{ github.event.repository.name }}
