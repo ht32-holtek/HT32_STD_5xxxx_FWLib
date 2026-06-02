@@ -5,7 +5,8 @@ on:
     branches:
       - main
   release:
-    types: [published] # 當 GitHub 發布新 Release 時觸發
+    types: [published]
+  workflow_dispatch: # 👈 關鍵：這行能讓你在網頁上手動點擊執行
 
 jobs:
   repo-sync:
@@ -21,8 +22,7 @@ jobs:
           static_list: "${{ github.event.repository.name }}"
           force_update: true
 
-      - name: Sync Release to Gitee
-        if: github.event_name == 'release' # 只有發布 Release 時才執行這一步
+      - name: Sync All History Releases to Gitee
         uses: trustedinster/sync-release-gitee@v1.3
         with:
           github_owner: ${{ github.repository_owner }}
