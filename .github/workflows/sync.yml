@@ -78,6 +78,13 @@ jobs:
           echo "📡 Gitee API 回應狀態碼: $HTTP_STATUS"
           echo "📡 Gitee API 回應內容: $BODY"
 
+          # 檢查回傳內容是否包含「标签已经存在」的關鍵字
+          if echo "$BODY" | grep -q "标签已经存在"; then
+            echo "⚠️ 提示：Gitee 上已存在此 Release，無需重複建立。"
+            echo "✅ 視同同步成功！"
+            exit 0
+          fi
+          
           # 201 代表成功建立，422 代表該 Release 其實已經存在
           if [ "$HTTP_STATUS" != "201" ] && [ "$HTTP_STATUS" != "422" ]; then
             echo "❌ Gitee Release 同步失敗！"
