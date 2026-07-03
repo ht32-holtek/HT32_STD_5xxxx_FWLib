@@ -12,23 +12,76 @@ jobs:
   repo-sync:
     runs-on: ubuntu-latest
     steps:
-      # 1. 先同步代碼與 Tags
-      - name: Mirror the GitHub repos to Gitee
-        uses: Yikun/hub-mirror-action@master
+      # 1. 完整下載 GitHub 專案與所有 Git 紀錄、Tags
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          src: github/${{ github.repository_owner }}
-          dst: gitee/${{ secrets.GITEE_USER }}
-          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
-          dst_token: ${{ secrets.GITEE_TOKEN }}
-          static_list: "${{ github.event.repository.name }}"
-          force_update: true
+          fetch-depth: 0 # 設為 0 才會下載完整歷史紀錄與所有 Tags
 
-      # 2. 同步 Release（移除了限制條件，手動執行時也一定會跑這一步！）
+      # 2. 用原生 Git 指令直接將代碼與 Tags 強制推送到 Gitee
+      - name: Mirror Code and Tags to Gitee
+        env:
+          GITEE_USER: ${{ secrets.GITEE_USER }}
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GITEE_REPO: ${{ github.event.repository.name }}
+        run: |
+          echo "🚀 開始同步代碼與 Tags 至 Gitee..."
+          # 組合包含 Token 的安全傳輸 URL
+          GITEE_REMOTE_URL="https://${GITEE_USER}:${GITEE_TOKEN}@gitee.com/${GITEE_USER}/${GITEE_REPO}.git"
+          
+          # 強制推送當前分支與所有 Tags
+          git push --force "$GITEE_REMOTE_URL" refs/remotes/origin/*:refs/heads/*
+          git push --tags --force "$GITEE_REMOTE_URL"
+          echo "✅ 代碼與 Tags 同步成功！"
+
+      # 3. 同步 Release（原生 cURL 呼叫 Gitee API）
       - name: Sync Release to Gitee
-        uses: trustedinster/sync-release-gitee@v1.3
-        with:
-          github_owner: ${{ github.repository_owner }}
-          github_repo: ${{ github.event.repository.name }}
-          gitee_owner: ${{ secrets.GITEE_USER }}
-          gitee_repo: ${{ github.event.repository.name }}
-          gitee_token: ${{ secrets.GITEE_TOKEN }}
+        env:
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GITEE_OWNER: ${{ secrets.GITEE_USER }}
+          GITEE_REPO: ${{ github.event.repository.name }}
+        run: |
+          # 取得最新 GitHub Release 的標籤與名稱
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          RELEASE_NAME="${{ github.event.release.name }}"
+          RELEASE_BODY="${{ github.event.release.body }}"
+
+          # 防呆：手動觸發時若抓不到 release 變數，就自動拿最後一個 Git Tag
+          if [ -z "$TAG_NAME" ] || [ "$TAG_NAME" = "null" ]; then
+            TAG_NAME=$(git describe --tags `git rev-list --tags --max-count=1`)
+            RELEASE_NAME="Release $TAG_NAME"
+            RELEASE_BODY="Automated sync from GitHub"
+          fi
+
+          echo "🔍 偵測到要同步的 Tag 為: $TAG_NAME"
+
+          if [ -z "$TAG_NAME" ]; then
+            echo "❌ 錯誤：找不到任何有效的 Git Tag！"
+            exit 1
+          fi
+
+          echo "🚀 正在發送請求到 Gitee API 建立 Release..."
+          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST "https://gitee.com/api/v5/repos/${GITEE_OWNER}/${GITEE_REPO}/releases" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"access_token\": \"${GITEE_TOKEN}\",
+              \"tag_name\": \"${TAG_NAME}\",
+              \"name\": \"${RELEASE_NAME}\",
+              \"body\": \"${RELEASE_BODY}\",
+              \"target_commitish\": \"main\",
+              \"prerelease\": false
+            }")
+
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
+          BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS/d')
+
+          echo "📡 Gitee API 回應狀態碼: $HTTP_STATUS"
+          echo "📡 Gitee API 回應內容: $BODY"
+
+          # 201 代表成功建立，422 代表該 Release 其實已經存在
+          if [ "$HTTP_STATUS" != "201" ] && [ "$HTTP_STATUS" != "422" ]; then
+            echo "❌ Gitee Release 同步失敗！"
+            exit 1
+          else
+            echo "✅ Gitee Release 同步完成！"
+          fi
