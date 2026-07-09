@@ -1,8 +1,8 @@
 /*********************************************************************************************************//**
  * @file    CAN/Send_REMOTE/ht32_can_config.h
  * Source:  project_template/IP/Example/ht32_can_config.h
- * @version $Rev:: 9287         $
- * @date    $Date:: 2025-07-02 #$
+ * @version $Rev:: 9868         $
+ * @date    $Date:: 2026-06-11 #$
  * @brief   The header file of CAN baudrate configuration.
  *************************************************************************************************************
  * @attention
@@ -92,9 +92,10 @@
 //   <i> Enter custom CAN baudrate (e.g., 83333)
 #define HTCFG_CAN_CF0_CUSTOM_BAUDRATE             (83333)
 
-// <o> -- CAN Baudrate Allow Error Rate (ppm) <0-200000:100>
-// <i> Set the allowed baudrate error rate (in parts per million, e.g., 15800 = 1.58%)
-#define HTCFG_CAN_CF0_ERROR_RATE                  (15800)
+// <o> -- CAN Baudrate Allowed Clock Division Error Rate (ppm) <0-200000:100>
+// <i> Set the allowed baudrate error rate (in parts per million, e.g., 3900 = 0.39%)
+// <i> Note: This value should ideally be 0 to avoid adding Clock Division Error to physical tolerance.
+#define HTCFG_CAN_CF0_ERROR_RATE                  (0)
 
 #if (HTCFG_CAN_CF0_MENU_BAUDRATE == 1)
   #define HTCFG_CAN_CF0_BAUDRATE HTCFG_CAN_CF0_CUSTOM_BAUDRATE

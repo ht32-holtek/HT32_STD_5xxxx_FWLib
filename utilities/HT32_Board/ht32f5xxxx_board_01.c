@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_board_01.c
- * @version $Rev:: 8284         $
- * @date    $Date:: 2024-11-22 #$
+ * @version $Rev:: 9787         $
+ * @date    $Date:: 2026-04-27 #$
  * @brief   This file provides firmware functions to manage LEDs, push-buttons
  *          and COM ports and is available on HT32F5xxxx board.
  *************************************************************************************************************
@@ -366,7 +366,7 @@ void HT32F_DVB_BuzzerFun(u16 hFreq, u8 bDuty, u32 mode)
   /* !!! NOTICE !!!
      Notice that the local variable (structure) did not have an initial value.
      Please confirm that there are no missing members in the parameter settings below in this function.
-  */  
+  */
   CKCU_ClocksTypeDef Clocks;
   TM_TimeBaseInitTypeDef TimeBaseInit = {0};
   TM_OutputInitTypeDef OutInit;

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    spi_lcd.c
- * @version $Rev:: 6738         $
- * @date    $Date:: 2023-02-20 #$
+ * @version $Rev:: 9842         $
+ * @date    $Date:: 2026-06-04 #$
  * @brief   This file provides a set of functions needed to manage the
  *          communication between SPI peripheral and LCD.
  *************************************************************************************************************
@@ -113,7 +113,7 @@ void LCD_Init(void)
   CKCUClock.Bit.AFIO         = 1;
   CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
-  #if defined(USE_HT32F50343) || defined(USE_HT32F65240_SK)
+  #if defined(USE_HT32F50343) || defined(USE_HT32F65240_SK) || defined(USE_HT32F61049_SK)
   GPIO_DriveConfig(GPIO_PORT[LCD_SPI_SEL_GPIO_ID], LCD_SPI_SEL_AFIO_PIN, GPIO_DV_8MA);
   GPIO_DriveConfig(GPIO_PORT[LCD_SPI_SCK_GPIO_ID], LCD_SPI_SCK_AFIO_PIN, GPIO_DV_8MA);
   GPIO_DriveConfig(GPIO_PORT[LCD_SPI_MOSI_GPIO_ID], LCD_SPI_MOSI_AFIO_PIN, GPIO_DV_8MA);

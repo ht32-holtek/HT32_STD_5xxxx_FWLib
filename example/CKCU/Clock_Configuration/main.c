@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/Clock_Configuration/main.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9769         $
+ * @date    $Date:: 2026-04-09 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -106,9 +106,9 @@ int main(void)
 
   #if (DISABLE_BOOTPIN_OUTPUT)
   /* !!! NOTICE !!!
-     A 0Ω pull-up resistor will cause circuit conflicts when BootPin is set as an output.
-     To enable BootPin output, remove the 0Ω resistor or replace it with a resistor greater
-     than 10kΩ, and modify the setting in the ht32_board_config.h file.
+     A 0 Ohm pull-up resistor will cause circuit conflicts when BootPin is set as an output.
+     To enable BootPin output, remove the 0 Ohm resistor or replace it with a resistor greater
+     than 10k Ohm, and modify the setting in the ht32_board_config.h file.
      #define DISABLE_BOOTPIN_OUTPUT (1) => #define DISABLE_BOOTPIN_OUTPUT (0)
   */
   #else

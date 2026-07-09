@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/HSI_AutoTrim_By_USB/ht32_usbd_class.c
- * @version $Rev:: 2638         $
- * @date    $Date:: 2018-02-28 #$
+ * @version $Rev:: 9834         $
+ * @date    $Date:: 2026-05-28 #$
  * @brief   The USB Device Class.
  *************************************************************************************************************
  * @attention
@@ -248,12 +248,11 @@ static void USBDClass_EPT2OUTProcess(void)
   * @param  uPara: Parameter for Class Reset.
   * @retval None
   ***********************************************************************************************************/
-
 static void USBDClass_Reset(u32 uPara)
 {
   static u32 isFirstReset = TRUE;
   /* Just for once.                                                                                         */
-  if(isFirstReset)
+  if (isFirstReset)
   {
     /*
       1. HSI Trimming is enabled.

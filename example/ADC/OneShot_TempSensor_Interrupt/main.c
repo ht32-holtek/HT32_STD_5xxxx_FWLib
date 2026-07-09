@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_TempSensor_Interrupt/main.c
- * @version $Rev:: 9705         $
- * @date    $Date:: 2026-03-18 #$
+ * @version $Rev:: 9771         $
+ * @date    $Date:: 2026-04-16 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -47,7 +47,7 @@ void ADC_TempSensor_Configuration(void);
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 vu8 gADC_CycleEndOfConversion = FALSE;
-extern s32 gAvgTemp;
+extern s32 gTemp;
 extern bool bIsAvgTempReady;
 
 /* Global functions ----------------------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ int main(void)
       /* Display the temperature result                                                                     */
       if(bIsAvgTempReady)
       {
-        printf("Current Temperature = %d mC\r\n", gAvgTemp);
+        printf("Current Temperature = %d mC\r\n", gTemp);
         bIsAvgTempReady = FALSE;
       }
       gADC_CycleEndOfConversion = FALSE;

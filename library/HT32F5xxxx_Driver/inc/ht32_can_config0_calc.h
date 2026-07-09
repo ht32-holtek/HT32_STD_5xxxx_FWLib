@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_can_config0_calc.h
- * @version $Rev:: 8766         $
- * @date    $Date:: 2025-05-14 #$
+ * @version $Rev:: 9869         $
+ * @date    $Date:: 2026-06-11 #$
  * @brief   The CAN config calculation features.
  *************************************************************************************************************
  * @attention
@@ -54,8 +54,8 @@
   #define _TMP_CF0_NBT                            (25UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -92,8 +92,8 @@
   #define _TMP_CF0_NBT                            (24UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -130,8 +130,8 @@
   #define _TMP_CF0_NBT                            (23UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -168,8 +168,8 @@
   #define _TMP_CF0_NBT                            (22UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -206,8 +206,8 @@
   #define _TMP_CF0_NBT                            (21UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -244,8 +244,8 @@
   #define _TMP_CF0_NBT                            (20UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -282,8 +282,8 @@
   #define _TMP_CF0_NBT                            (19UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -320,8 +320,8 @@
   #define _TMP_CF0_NBT                            (18UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -358,8 +358,8 @@
   #define _TMP_CF0_NBT                            (17UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -396,8 +396,8 @@
   #define _TMP_CF0_NBT                            (16UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -434,8 +434,8 @@
   #define _TMP_CF0_NBT                            (15UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -472,8 +472,8 @@
   #define _TMP_CF0_NBT                            (14UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -510,8 +510,8 @@
   #define _TMP_CF0_NBT                            (13UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -548,8 +548,8 @@
   #define _TMP_CF0_NBT                            (12UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -586,8 +586,8 @@
   #define _TMP_CF0_NBT                            (11UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -624,8 +624,8 @@
   #define _TMP_CF0_NBT                            (10UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -662,8 +662,8 @@
   #define _TMP_CF0_NBT                            (9UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -700,8 +700,8 @@
   #define _TMP_CF0_NBT                            (8UL)
 
   /* Compute the prescaler using integer-based rounding:                                                    */
-  /* Prescaler = round(CAN_CLK / (BAUD × NBT))                                                              */
-  /* = ((2 × CAN_CLK / (BAUD × NBT)) + 1) / 2                                                               */
+  /* Prescaler = round(CAN_CLK / (BAUD * NBT))                                                              */
+  /* = ((2 * CAN_CLK / (BAUD * NBT)) + 1) / 2                                                               */
   /* This implements true 4-round-5-up rounding behavior entirely with integer math,                        */
   /* avoiding the use of floating-point arithmetic while still providing accurate results.                  */
   #define _TMP_CF0_PRESCALER     (((2 * _HTCFG_CF0_CK_CAN / (HTCFG_CAN_CF0_BAUDRATE * _TMP_CF0_NBT)) + 1) / 2)
@@ -734,8 +734,9 @@
 
 #ifndef HTCFG_CAN_CF0_NOMINAL_BIT_TIME
   #error Can not find the suitable Nominal Bit Time setting. \
-    1. Try to increase CK_CAN or lower the CAN Baudrate (HTCFG_CAN_CF0_BAUDRATE). \
-    2. The baudrate error might be too large with current HTCFG_CAN_CF0_ERROR_RATE setting.
+       1. The current PCLK frequency cannot be evenly divided to achieve a valid Bit Time. \
+       2. The gap between PCLK and target Baud Rate is too large, causing the required Prescaler value to exceed the hardware register limit. \
+       Please adjust the PCLK or system clock and try again.
 #endif
 
 /* define value for CAN_Init()                                                                              */

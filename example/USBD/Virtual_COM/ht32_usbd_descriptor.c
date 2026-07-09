@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/Virtual_COM/ht32_usbd_descriptor.c
- * @version $Rev:: 4426         $
- * @date    $Date:: 2019-12-02 #$
+ * @version $Rev:: 9853         $
+ * @date    $Date:: 2026-06-05 #$
  * @brief   The USB Descriptor.
  *************************************************************************************************************
  * @attention
@@ -248,9 +248,8 @@ __ALIGN4 static uc8 guUSB_ConfnDesc[] =
                               //                                  10  Bulk
                               //                                  11  Interrupt
                               //                        All other reserved
-
-  DESC_H2B(_EP2LEN),          // wMaxPacketSize      2 Maximum packet size (8)
-  0x00,                       // bInterval           1 Interval for polling endpoint
+  DESC_H2B(_EP2LEN),          // wMaxPacketSize      2 Maximum packet size
+  0x10,                       // bInterval           1 Interval for polling endpoint
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Data class interface1 descriptor                                                                       */
@@ -285,8 +284,8 @@ __ALIGN4 static uc8 guUSB_ConfnDesc[] =
                               //                                  10 = Bulk
                               //                                  11 = Interrupt
                               //                        All other reserved
-  DESC_H2B(_EP3LEN),          // wMaxPacketSize      2
-  0x00,                       // bInterval           1 ignore for Bulk transfer
+  DESC_H2B(_EP3LEN),          // wMaxPacketSize      2 Maximum packet size
+  0x00,                       // bInterval           1 Interval for polling endpoint (ignore for Bulk transfer)
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Endpoint n In Descriptor                                                                               */
@@ -306,9 +305,8 @@ __ALIGN4 static uc8 guUSB_ConfnDesc[] =
                               //                                  10 = Bulk
                               //                                  11 = Interrupt
                               //                        All other reserved
-
-  DESC_H2B(_EP1LEN),          // wMaxPacketSize      2 64
-  0x00,                       // bInterval           1
+  DESC_H2B(_EP1LEN),          // wMaxPacketSize      2 Maximum packet size
+  0x00,                       // bInterval           1 Interval for polling endpoint (ignore for Bulk transfer)
 
   #ifdef RETARGET_IS_USB
     #include "ht32_retarget_desc.h"

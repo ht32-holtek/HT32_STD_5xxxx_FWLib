@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_tm.h
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9797         $
+ * @date    $Date:: 2026-05-06 #$
  * @brief   The header file of the TM library.
  *************************************************************************************************************
  * @attention
@@ -433,6 +433,12 @@ typedef struct
 #define TM_FLAG_TEV         0x0400  /*!< Trigger flag                                                       */
 #define TM_FLAG_BRK0        0x0800  /*!< Break 0 flag                                                       */
 #define TM_FLAG_BRK1        0x1000  /*!< Break 1 flag                                                       */
+#if (LIBCFG_TM_65X_66X_V1)
+#define TM_FLAG_VC          0x1000  /*!< Velocity Clock Trigger flag                                        */
+#define TM_FLAG_QC          0x2000  /*!< Quadrature Decoder CLKPULSE flag                                   */
+#define TM_FLAG_PE          0x4000  /*!< Phase Error flag                                                   */
+#define TM_FLAG_DC          0x8000  /*!< Counter Direction Change flag                                      */
+#endif
 /**
   * @}
   */

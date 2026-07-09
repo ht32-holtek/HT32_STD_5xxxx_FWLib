@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f66xxx_cordic.h
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9804         $
+ * @date    $Date:: 2026-05-20 #$
  * @brief   The header file of the CORDIC library.
  *************************************************************************************************************
  * @attention
@@ -272,7 +272,7 @@ typedef struct
   */
 void CORDIC_DeInit(void);
 void CORDIC_Init(CORDIC_InitTypeDef *CORDIC_InitStruct);
-void CORDIC_IntCmd(ControlStatus NewState);
+void CORDIC_IntConfig(ControlStatus NewState);
 void CORDIC_PDMACmd(u32 CORDIC_DMA, ControlStatus NewState);
 FlagStatus CORDIC_GetFlagStatus_RRDY(void);
 void CORDIC_WriteData(u32 InData);

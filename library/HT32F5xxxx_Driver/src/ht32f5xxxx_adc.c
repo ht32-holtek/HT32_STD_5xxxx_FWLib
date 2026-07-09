@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_adc.c
- * @version $Rev:: 7691         $
- * @date    $Date:: 2024-04-02 #$
+ * @version $Rev:: 9814         $
+ * @date    $Date:: 2026-05-26 #$
  * @brief   This file provides all the ADC firmware functions.
  *************************************************************************************************************
  * @attention
@@ -90,7 +90,7 @@ void ADC_Reset(HT_ADC_TypeDef* HT_ADCn)
   Assert_Param(IS_ADC(HT_ADCn));
 
   HT_ADCn->CR |= ADC_SOFTWARE_RESET;
-  while ((HT_ADCn->CR & ADC_SOFTWARE_RESET) != 0);
+  while ((HT_ADCn->CR & ADC_SOFTWARE_RESET) != 0){};
 }
 
 /*********************************************************************************************************//**
@@ -590,7 +590,6 @@ void ADC_MVDDACmd(HT_ADC_TypeDef* HT_ADCn, ControlStatus NewState)
     HT_ADCn->VREFCR &= ~(ADC_VREF_MVDDAEN);
   }
 }
-
 #endif
 /**
   * @}

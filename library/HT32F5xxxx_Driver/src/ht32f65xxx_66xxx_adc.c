@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f65xxx_66xxx_adc.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9814         $
+ * @date    $Date:: 2026-05-26 #$
  * @brief   This file provides all the ADC firmware functions.
  *************************************************************************************************************
  * @attention
@@ -121,6 +121,7 @@ void ADC_Reset(HT_ADC_TypeDef* HT_ADCn)
   Assert_Param(IS_ADC(HT_ADCn));
 
   HT_ADCn->RST |= ADC_SOFTWARE_RESET;
+  while ((HT_ADCn->RST & ADC_SOFTWARE_RESET) != 0){};
 }
 
 /*********************************************************************************************************//**
@@ -138,6 +139,7 @@ void ADC_Cmd(HT_ADC_TypeDef* HT_ADCn, ControlStatus NewState)
   if (NewState != DISABLE)
   {
     HT_ADCn->CONV |= ADC_ENABLE_BIT;
+    ADC_Reset(HT_ADCn);
   }
   else
   {

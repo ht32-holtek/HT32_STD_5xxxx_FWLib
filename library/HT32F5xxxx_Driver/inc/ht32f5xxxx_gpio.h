@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_gpio.h
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9794         $
+ * @date    $Date:: 2026-05-04 #$
  * @brief   The header file of the GPIO and AFIO library.
  *************************************************************************************************************
  * @attention
@@ -344,7 +344,7 @@ typedef enum
 /* check parameter of the GPIOx                                                                             */
 #define IS_GPIO(x)           (IS_GPIO1(x) || IS_GPIO2(x) || IS_GPIO3(x) || IS_GPIO4(x) || IS_GPIO5(x))
 
-#define IS_GPIO1(x)          ((x == HT_GPIOA) || (x == HT_GPIOB) )
+#define IS_GPIO1(x)          ((x == HT_GPIOA) || (x == HT_GPIOB))
 
 #if (LIBCFG_GPIOC)
 #define IS_GPIO2(x)          (x == HT_GPIOC)
@@ -360,7 +360,7 @@ typedef enum
 #define IS_GPIO4(x)          (x == HT_GPIOE)
 #else
 #define IS_GPIO4(x)          (0)
-  #endif
+#endif
 #if (LIBCFG_GPIOF)
 #define IS_GPIO5(x)          (x == HT_GPIOF)
 #else

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/HID_Keyboard_Mass_Storage/ht32_usbd_descriptor.c
- * @version $Rev:: 3382         $
- * @date    $Date:: 2019-02-12 #$
+ * @version $Rev:: 9848         $
+ * @date    $Date:: 2026-06-05 #$
  * @brief   The USB Descriptor.
  *************************************************************************************************************
  * @attention
@@ -243,7 +243,7 @@ __ALIGN4 static uc8 guUSB_ConfnDesc[] =
                               //                                  11 = Interrupt
                               //                        All other reserved
   DESC_H2B(_EP2LEN),          // wMaxPacketSize      2 Maximum packet size
-  0x00,                       // bInterval           1 Interval for polling endpoint
+  0x00,                       // bInterval           1 Interval for polling endpoint (ignore for Bulk transfer)
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Endpoint                                                                                               */
@@ -264,7 +264,7 @@ __ALIGN4 static uc8 guUSB_ConfnDesc[] =
                               //                                  11 = Interrupt
                               //                        All other reserved
   DESC_H2B(_EP3LEN),          // wMaxPacketSize      2 Maximum packet size
-  0x00,                       // bInterval           1 Interval for polling endpoint
+  0x00,                       // bInterval           1 Interval for polling endpoint (ignore for Bulk transfer)
 
   #ifdef RETARGET_IS_USB
     #include "ht32_retarget_desc.h"

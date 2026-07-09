@@ -1,8 +1,8 @@
 /***************************************************************************//**
  * @file    ht32f5xxxx_01.h
  * @brief   CMSIS Cortex-M0+ Device Peripheral Access Layer Header File
- * @version $Rev:: 9723         $
- * @date    $Date:: 2026-03-25 #$
+ * @version $Rev:: 9842         $
+ * @date    $Date:: 2026-06-04 #$
  *
  * @note
  * Copyright (C) Holtek Semiconductor Inc. All rights reserved.
@@ -54,6 +54,8 @@
 //   HT32F66242, HT32F66246
 //   HT32F67041, HT32F67051
 //   HT32F52234, HT32F52244
+//   HT32F61049
+//   HT32F66256
 
 /** @addtogroup CMSIS
   * @{
@@ -105,6 +107,7 @@
     !defined(USE_HT32F66242) && \
     !defined(USE_HT32F66246) && \
     !defined(USE_HT32F52234_44) && \
+    !defined(USE_HT32F61049) && \
     !defined(USE_HT32F66256)
 
   //#define USE_HT32F52220_30
@@ -139,6 +142,7 @@
   //#define USE_HT32F66242
   //#define USE_HT32F66246
   //#define USE_HT32F52234_44
+  //#define USE_HT32F61049
   //#define USE_HT32F66256
 
 #endif
@@ -176,6 +180,7 @@
     !defined(USE_HT32F66242) && \
     !defined(USE_HT32F66246) && \
     !defined(USE_HT32F52234_44) && \
+    !defined(USE_HT32F61049) && \
     !defined(USE_HT32F66256)
 
   #error Please add "USE_HT32Fxxxxx_xx" define into C Preprocessor Symbols of the Project configuration.
@@ -255,7 +260,7 @@ typedef enum IRQn
   EXTI0_1_IRQn            = 4,      /*!< EXTI0-1 Line detection Interrupt                                   */
   EXTI2_3_IRQn            = 5,      /*!< EXTI2-3 Line detection Interrupt                                   */
   #endif
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F61049)
   EXTI4_9_IRQn            = 6,      /*!< EXTI4-9 Line detection Interrupt                                   */
   #elif defined(USE_HT32F50020_30) || defined(USE_HT32F65233)
   EXTI4_7_IRQn            = 6,      /*!< EXTI4-7 Line detection Interrupt                                   */
@@ -264,14 +269,14 @@ typedef enum IRQn
   #else
   EXTI4_15_IRQn           = 6,      /*!< EXTI4-15 Line detection Interrupt                                  */
   #endif
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233) || defined(USE_HT32F66256)
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233) || defined(USE_HT32F66256) || defined(USE_HT32F61049)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F61049)
   EXTI10_15_IRQn          = 7,      /*!< EXTI10-15 Line detection Interrupt                                 */
   #elif defined(USE_HT32F66246) || defined(USE_HT32F66256)
   CAN0_IRQn               = 7,      /*!< CAN0 global Interrupt                                              */
   #endif
   ADC0_IRQn               = 8,      /*!< ADC0 Interrupt                                                     */
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F66256)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F66256) || defined(USE_HT32F61049)
   ADC1_IRQn               = 9,      /*!< ADC1 Interrupt                                                     */
   #elif defined(USE_HT32F66242) || defined(USE_HT32F66246)
   CORDIC_IRQn             = 9,      /*!< CORDIC global Interrupt                                            */
@@ -306,7 +311,7 @@ typedef enum IRQn
   CMP0_IRQn               = 18,     /*!< Comparator0 Interrupt                                              */
   CMP1_IRQn               = 19,     /*!< Comparator1 Interrupt                                              */
   #endif
-  #if defined(USE_HT32F65230_40)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
   CMP2_IRQn               = 20,     /*!< Comparator2 Interrupt                                              */
   #elif defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
   PID0_IRQn               = 20,     /*!< PID global Interrupt                                               */
@@ -487,7 +492,7 @@ typedef enum IRQn
 #define EXTI1_IRQn EXTI0_1_IRQn
 #define EXTI2_IRQn EXTI2_3_IRQn
 #define EXTI3_IRQn EXTI2_3_IRQn
-#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F61049)
 #define EXTI4_IRQn EXTI4_9_IRQn
 #define EXTI5_IRQn EXTI4_9_IRQn
 #define EXTI6_IRQn EXTI4_9_IRQn
@@ -531,7 +536,7 @@ typedef enum IRQn
 #else
 #define PDMACH0_IRQn PDMACH0_1_IRQn
 #define PDMACH1_IRQn PDMACH0_1_IRQn
-#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233) || defined(USE_HT32F61049)
 #define PDMACH2_IRQn PDMACH2_3_IRQn
 #define PDMACH3_IRQn PDMACH2_3_IRQn
 #define PDMACH4_IRQn PDMACH4_5_IRQn
@@ -754,7 +759,7 @@ typedef struct
 } HT_SPI_TypeDef;
 
 
-#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256) || defined(USE_HT32F61049)
 /**
  * @brief Analog to Digital Converter
  */
@@ -769,7 +774,7 @@ typedef struct
   __IO uint32_t HCONV;           /*!< 0x00C         ADC High-priority Conversion Mode Register              */
   __IO uint32_t LST[2];          /*!< 0x010 - 0x014 ADC Conversion List Register                            */
        uint32_t RESERVE0[2];     /*!< 0x018 - 0x01C Reserved                                                */
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F61049)
   __IO uint32_t HLST;            /*!< 0x020         ADC High-priority Conversion List Register              */
        uint32_t RESERVE1[3];     /*!< 0x024 - 0x02C Reserved                                                */
   #endif
@@ -777,7 +782,7 @@ typedef struct
   __IO uint32_t HLST[3];         /*!< 0x020 - 0x028 ADC High-priority Conversion List Register 0-2          */
        uint32_t RESERVE1[1];     /*!< 0x02C         Reserved                                                */
   #endif
-  #if defined(USE_HT32F65230_40)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
   __IO uint32_t OFR[12];         /*!< 0x030 - 0x05C ADC Input Offset Register 0-11                          */
        uint32_t RESERVE2[4];     /*!< 0x060 - 0x06C Reserved                                                */
   __IO uint32_t STR[12];         /*!< 0x070 - 0x08C ADC Input Sampling Time Register 0-11                   */
@@ -812,7 +817,7 @@ typedef struct
   __IO uint32_t ISR;             /*!< 0x138         ADC Interrupt Status Register                           */
   __IO uint32_t ICLR;            /*!< 0x13C         ADC Interrupt Clear Register                            */
   __IO uint32_t PDMAR;           /*!< 0x140         ADC PDMA Request Register                               */
-  #if defined(USE_HT32F65230_40)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
        uint32_t RESERVE8[3];     /*!< 0x144 - 0x14C Reserved                                                */
   __IO uint32_t DIESR;           /*!< 0x150         Dual ADC Interrupt Enable/Status Register (ADC1 only)   */
   __IO uint32_t DPDMAR;          /*!< 0x154         Dual ADC PDMA Request Register (ADC1 only)              */
@@ -943,7 +948,7 @@ typedef struct
   __IO uint32_t VALR;            /*!< 0x004          Comparator Voltage Reference Value Register            */
   __IO uint32_t IER;             /*!< 0x008          Comparator Interrupt Enable Register                   */
   __IO uint32_t TFR;             /*!< 0x00C          Comparator Transition Flag Register                    */
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256) || defined(USE_HT32F61049)
   __IO uint32_t CI;              /*!< 0x010          Comparator Input Control Register                      */
   #endif
   #if defined(USE_HT32F65232) || defined(USE_HT32F65233) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
@@ -1152,7 +1157,7 @@ typedef struct
                                  /* PWRCU: 0x4006A100                                                       */
   __IO uint32_t SR;              /*!< 0x000         Status Register                                         */
   __IO uint32_t CR;              /*!< 0x004         Control Register                                        */
-  #if !defined(USE_HT32F50220_30) && !defined(USE_HT32F50231_41)  && !defined(USE_HT32F65230_40) && !defined(USE_HT32F50343) && !defined(USE_HT32F54231_41) && !defined(USE_HT32F54243_53) && !defined(USE_HT32F50020_30) && !defined(USE_HT32F53231_41) && !defined(USE_HT32F53242_52) && !defined(USE_HT32F50431_41) && !defined(USE_HT32F50442_52) && !defined(USE_HT32F66242) && !defined(USE_HT32F66246) && !defined(USE_HT32F65233) && !defined(USE_HT32F66256)
+  #if !defined(USE_HT32F50220_30) && !defined(USE_HT32F50231_41)  && !defined(USE_HT32F65230_40) && !defined(USE_HT32F50343) && !defined(USE_HT32F54231_41) && !defined(USE_HT32F54243_53) && !defined(USE_HT32F50020_30) && !defined(USE_HT32F53231_41) && !defined(USE_HT32F53242_52) && !defined(USE_HT32F50431_41) && !defined(USE_HT32F50442_52) && !defined(USE_HT32F66242) && !defined(USE_HT32F66246) && !defined(USE_HT32F65233) && !defined(USE_HT32F66256) && !defined(USE_HT32F61049)
   __IO uint32_t TEST;            /*!< 0x008         Test Register                                           */
   #else
   uint32_t RESERVE0[1];          /*!< 0x008         Reserved                                                */
@@ -1310,7 +1315,7 @@ typedef struct
   #else
        uint32_t RESERVED4[174];  /*!< 0x048 ~ 0x2FC Reserved                                                */
   #endif
-  #if !defined(USE_HT32F50020_30) && !defined(USE_HT32F65230_40) && !defined(USE_HT32F65232) && !defined(USE_HT32F66242) && !defined(USE_HT32F66246) && !defined(USE_HT32F65233) && !defined(USE_HT32F66256)
+  #if !defined(USE_HT32F50020_30) && !defined(USE_HT32F65230_40) && !defined(USE_HT32F65232) && !defined(USE_HT32F66242) && !defined(USE_HT32F66246) && !defined(USE_HT32F65233) && !defined(USE_HT32F66256) && !defined(USE_HT32F61049)
   __IO uint32_t LPCR;            /*!< 0x300         Low Power Control Register                              */
   #else
        uint32_t RESERVED5;       /*!< 0x300         Reserved                                                */
@@ -1724,7 +1729,7 @@ typedef struct
   __IO uint32_t CTR;             /*!< 0x010          Control Register                                       */
        uint32_t RESERVED1[3];    /*!< 0x014 - 0x01C  Reserved                                               */
   __IO uint32_t CH0ICFR;         /*!< 0x020          Channel 0 Input Configuration Register                 */
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233) || defined(USE_HT32F61049)
   __IO uint32_t CH1ICFR;         /*!< 0x024          Channel 1 Input Configuration Register                 */
        uint32_t RESERVED2[6];    /*!< 0x028 - 0x03C  Reserved                                               */
   #else
@@ -1748,7 +1753,7 @@ typedef struct
   __IO uint32_t CRR;             /*!< 0x088          Counter Reload Register                                */
        uint32_t RESERVED5[1];    /*!< 0x08C          Reserved                                               */
   __IO uint32_t CH0CCR;          /*!< 0x090          Channel 0 Capture/Compare Register                     */
-  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F50020_30) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F50020_30) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233) || defined(USE_HT32F61049)
   __IO uint32_t CH1CCR;          /*!< 0x094          Channel 1 Capture Register                             */
   #endif
 } HT_SCTM_TypeDef;
@@ -2333,11 +2338,11 @@ typedef struct
 #define HT_SCTM1                 ((HT_TM_TypeDef *) HT_SCTM1_BASE)
 #endif
 
-#if defined(USE_HT32F52231_41) || defined(USE_HT32F52331_41) || defined(USE_HT32F52243_53) || defined(USE_HT32F0006) || defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F54243_53) || defined(USE_HT32F50020_30) || defined(USE_HT32F67041_51) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
+#if defined(USE_HT32F52231_41) || defined(USE_HT32F52331_41) || defined(USE_HT32F52243_53) || defined(USE_HT32F0006) || defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F54243_53) || defined(USE_HT32F50020_30) || defined(USE_HT32F67041_51) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256) || defined(USE_HT32F61049)
 #define HT_SCTM2                 ((HT_TM_TypeDef *) HT_SCTM2_BASE)
 #endif
 
-#if defined(USE_HT32F52231_41) || defined(USE_HT32F52331_41) || defined(USE_HT32F52243_53) || defined(USE_HT32F0006) || defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F54243_53) || defined(USE_HT32F67041_51) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
+#if defined(USE_HT32F52231_41) || defined(USE_HT32F52331_41) || defined(USE_HT32F52243_53) || defined(USE_HT32F0006) || defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F54243_53) || defined(USE_HT32F67041_51) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256) || defined(USE_HT32F61049)
 #define HT_SCTM3                 ((HT_TM_TypeDef *) HT_SCTM3_BASE)
 #endif
 
@@ -2543,7 +2548,7 @@ typedef struct
 #define HT_LCD                   ((HT_LCD_TypeDef *) HT_LCD_BASE)
 #endif
 
-#if defined(USE_HT32F65230_40)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
 #define HT_PDMA                  ((HT_PDMA_TypeDef *) HT_PDMA_BASE)
 #define HT_ADC1                  ((HT_ADC_TypeDef *) HT_ADC1_BASE)
 #define HT_CMP0                  ((HT_CMP_TypeDef *) HT_CMP0_BASE)
@@ -2930,7 +2935,7 @@ typedef struct
   #define UART3_IRQn             UART1_UART3_IRQn
 #endif
 
-#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F65232) || defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F65233) || defined(USE_HT32F61049)
   // Alias
   #define GPTM0_IRQn             GPTM0_G_IRQn
   #define GPTM0_IRQHandler       GPTM0_G_IRQHandler

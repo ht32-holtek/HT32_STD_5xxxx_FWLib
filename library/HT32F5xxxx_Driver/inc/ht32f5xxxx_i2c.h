@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_i2c.h
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9836         $
+ * @date    $Date:: 2026-05-29 #$
  * @brief   The header file of the I2C library.
  *************************************************************************************************************
  * @attention
@@ -372,15 +372,15 @@ typedef enum
 #define IS_I2C_TIMEOUT(TIMEOUT)                     (TIMEOUT <= 0xFFFF)
 #endif
 
-#define SEQ_FILTER_DISABLE                          ((u32)0x00000000)
-#define SEQ_FILTER_1_PCLK                           ((u32)0x00004000)
-#define SEQ_FILTER_2_PCLK                           ((u32)0x00008000)
+#define SEQ_FILTER_DISABLE                          (0)
+#define SEQ_FILTER_1_PCLK                           (1)
+#define SEQ_FILTER_2_PCLK                           (2)
 #if (LIBCFG_I2C_SEQ3_7)
-#define SEQ_FILTER_3_PCLK                           ((u32)0x0000C000)
-#define SEQ_FILTER_4_PCLK                           ((u32)0x00010000)
-#define SEQ_FILTER_5_PCLK                           ((u32)0x00014000)
-#define SEQ_FILTER_6_PCLK                           ((u32)0x00018000)
-#define SEQ_FILTER_7_PCLK                           ((u32)0x0001C000)
+#define SEQ_FILTER_3_PCLK                           (3)
+#define SEQ_FILTER_4_PCLK                           (4)
+#define SEQ_FILTER_5_PCLK                           (5)
+#define SEQ_FILTER_6_PCLK                           (6)
+#define SEQ_FILTER_7_PCLK                           (7)
 #endif
 
 #if (LIBCFG_I2C_SEQ3_7)
@@ -397,7 +397,7 @@ typedef enum
 #define IS_SEQ_FILTER_7_PCLK(x)                     (0)
 #endif
 
-#define IS_I2C_SEQ_FILTER_MASK(CONFIG)              ((CONFIG == SEQ_FILTER_DISABLE) || \
+#define IS_I2C_SEQ_FILTER(CONFIG)                   ((CONFIG == SEQ_FILTER_DISABLE) || \
                                                      (CONFIG == SEQ_FILTER_1_PCLK)  || \
                                                      (CONFIG == SEQ_FILTER_2_PCLK)  || \
                                                      IS_SEQ_FILTER_3_PCLK(CONFIG)  || \

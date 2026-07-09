@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f52234_44_libcfg.h
- * @version $Rev:: 7265         $
- * @date    $Date:: 2023-10-02 #$
+ * @version $Rev:: 9835         $
+ * @date    $Date:: 2026-05-28 #$
  * @brief   The library configuration file.
  *************************************************************************************************************
 * @attention
@@ -72,6 +72,7 @@
 #define LIBCFG_CKCU_PLLSRCDIV             (1)
 #define LIBCFG_CKCU_SYS_CK_60M            (1)
 #define LIBCFG_CKCU_HSIRDYCR              (1)
+#define LIBCFG_CKCU_HSEGAIN1              (1)
 #define LIBCFG_CKCU_REFCLK_EXT_PIN        (1)
 #define LIBCFG_DAC0                       (1)
 #define LIBCFG_DAC1                       (1)

@@ -3,8 +3,8 @@
 
  @verbatim
  * @file    IP/Example/readme.txt
- * @version V1.06
- * @date    2022-06-02
+ * @version V1.07
+ * @date    2026-05-26
  * @brief   Description of project template.
  @endverbatim
 
@@ -21,11 +21,10 @@ a convenient way to create and configure projects for Holtek example codes.
   SEGGER emStudio     emStudio V6.20       Project_xxxxx.emProject project_template/IP/Template/emStudiov4/
   IAR EWARM           EWARM    V6.50       Project_xxxxx.eww       project_template/IP/Template/EWARM/
   IAR EWARM           EWARM    V8.11       Project_xxxxx.eww       project_template/IP/Template/EWARMv8/
-  GNU Arm             MDK-ARM  V5.15       Project_xxxxx.uvprojx   Project_template/IP/Template/GNU_ARM/
-  Keil MDK-ARM        MDK-ARM  V4.21       Project_xxxxx.uvproj    project_template/IP/Template/MDK_ARM/
+  GNU Arm             MDK-ARM  V5.15       Project_xxxxx.uvprojx   project_template/IP/Template/GNU_ARM/
+  HT32-IDE            HT32-IDE V1.0.0      Project_xxxxx/          project_template/IP/Template/HT32-IDE/
   Keil MDK-ARM        MDK-ARM  V5.15       Project_xxxxx.uvprojx   project_template/IP/Template/MDK_ARMv5/
   Keil MDK-ARM        MDK-ARM  V5.37(*2)   Project_xxxxx.uvprojx   project_template/IP/Template/MDK_ARMv537/
-  SourceryG++Lite     MDK-ARM  V5.15       Project_xxxxx.uvprojx   project_template/IP/Template/SourceryG++Lite/
 
 Note 1: The format of project files may not be compatible with different IDE versions. For the situation,
         users may need to create project files based on the IDE version before used.

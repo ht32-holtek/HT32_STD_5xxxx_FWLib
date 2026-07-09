@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_TempSensor_Interrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 9600         $
- * @date    $Date:: 2025-12-04 #$
+ * @version $Rev:: 9771         $
+ * @date    $Date:: 2026-04-16 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -44,8 +44,8 @@
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 u8 guCount;
-s32 gAvgTemp;
-s32 gSumTemp;
+s32 gTemp;
+u32 gSumData;
 bool bIsAvgTempReady = FALSE;
 
 /* Global functions ----------------------------------------------------------------------------------------*/
@@ -150,34 +150,34 @@ void HTCFG_ADC_IRQHandler(void)
 
     /* Change the SW flag                                                                                   */
     gADC_CycleEndOfConversion = TRUE;
-    /* Prepare parameters for temperature calculation                                                       */
-    /* !!! NOTICE !!!
-      If an external VREF is used, tempPara.Advrefp_mV must be set to the corresponding supply voltage.
-      For example, if the external VREF is 3.3 V, then tempPara.Advrefp_mV = 3300 (millivolts).
-      If the internal VREF is selected, the actual VREF voltage depends on the VREFVAL configuration,
-      and tempPara.Advrefp_mV should be set to the corresponding voltage value.
-    */
-    tempPara.Advrefp_mV = HTCFG_ADC_ADVREFP_MV;
-    tempPara.TsData = (ADC_GetConversionData(HTCFG_ADC_PORT, 0)); /* ADC conversion result                   */
-    tempPara.CalTempPoint_mC = ADC_TempSensorGetCalTempPoint(HTCFG_ADC_PORT);
 
-    if(ADC_TempSensorGetTemp(HTCFG_ADC_PORT, &tempPara, &temperature_mC) == SUCCESS)
+    gSumData += (u32)(ADC_GetConversionData(HTCFG_ADC_PORT, 0));      /* ADC conversion result              */
+    guCount++;
+
+    if (guCount >= 32)
     {
-      gSumTemp += temperature_mC;
-      guCount++;
-      if(guCount >= 32)
+      /* Prepare parameters for temperature calculation                                                     */
+      /* !!! NOTICE !!!
+        If an external VREF is used, tempPara.Advrefp_mV must be set to the corresponding supply voltage.
+        For example, if the external VREF is 3.3 V, then tempPara.Advrefp_mV = 3300 (millivolts).
+        If the internal VREF is selected, the actual VREF voltage depends on the VREFVAL configuration,
+        and tempPara.Advrefp_mV should be set to the corresponding voltage value.
+      */
+      tempPara.Advrefp_mV = HTCFG_ADC_ADVREFP_MV;
+      tempPara.TsData = (u16)(gSumData >> 5);
+      tempPara.CalTempPoint_mC = ADC_TempSensorGetCalTempPoint(HTCFG_ADC_PORT);
+      if(ADC_TempSensorGetTemp(HTCFG_ADC_PORT, &tempPara, &temperature_mC) == SUCCESS)
       {
-        /* Calculate the average of 32 temperature sensor samples                                            */
-        gAvgTemp = gSumTemp >> 5;  /* Dividing by 32                                                         */
+        gTemp = temperature_mC;
         guCount = 0;
-        gSumTemp = 0;
+        gSumData = 0;
         bIsAvgTempReady = TRUE;
       }
-    }
-    else
-    {
-      printf("Temperature calculation error!\r\n");
-      while(1){};
+      else
+      {
+        printf("Temperature calculation error!\r\n");
+        while(1){};
+      }
     }
   }
 }

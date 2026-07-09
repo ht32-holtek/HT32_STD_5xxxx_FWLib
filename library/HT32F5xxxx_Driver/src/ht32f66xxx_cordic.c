@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f66xxx_cordic.c
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9804         $
+ * @date    $Date:: 2026-05-20 #$
  * @brief   This file provides all the CORDIC firmware functions.
  *************************************************************************************************************
  * @attention
@@ -144,7 +144,7 @@ void CORDIC_Init(CORDIC_InitTypeDef *CORDIC_InitStruct)
  * @param NewState: This parameter can be ENABLE or DISABLE.
  * @retval None
  ************************************************************************************************************/
-void CORDIC_IntCmd(ControlStatus NewState)
+void CORDIC_IntConfig(ControlStatus NewState)
 {
   /* Check the parameters                                                                                   */
   Assert_Param(IS_CONTROL_STATUS(NewState));

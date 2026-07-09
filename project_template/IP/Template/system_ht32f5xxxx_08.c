@@ -2,8 +2,8 @@
  * @file    library/Device/Holtek/HT32F5xxxx/Source/system_ht32f5xxxx_08.c
  * @brief   CMSIS Cortex-M0+ Device Peripheral Access Layer Source File
  *          for the Holtek HT32F5xxxx Device Series
- * @version $Rev:: 9268         $
- * @date    $Date:: 2025-07-01 #$
+ * @version $Rev:: 9842         $
+ * @date    $Date:: 2026-06-04 #$
  *
  * @note
  * Copyright (C) Holtek Semiconductor Inc. All rights reserved.
@@ -215,7 +215,7 @@
 /**
  * @brief Check LSE frequency
  */
-#if defined(USE_HT32F65230_40)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
 #if (LSE_VALUE != 32768UL)
   #error "CK_LSE clock issue: must be 32.768 kHz!"
 #endif
@@ -285,7 +285,7 @@
     #error "CK_SYS clock source issue: HSI is not enable!"
   #endif
 #elif (HCLK_SRC == 6)
-  #if defined(USE_HT32F65230_40)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
   #if (LSE_ENABLE == 1)
     #define __CK_SYS    LSE_VALUE             /*!< Select LSE as CK_SYS source                              */
   #else
@@ -384,7 +384,7 @@ void SystemInit(void)
 #endif
 
   /* LSE initiation                                                                                         */
-#if defined(USE_HT32F65230_40)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
 #if (LSE_ENABLE == 1)
   do {
     SetBit_BB((u32)(&HT_RTC->CR), 3);                           /* enable LSE                               */
@@ -498,7 +498,7 @@ void SystemCoreClockUpdate(void)
   {
     SystemCoreClock = HSI_VALUE >> SystemCoreClockDiv;
   }
-  #if defined(USE_HT32F65230_40)
+  #if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
   else if (SystemCoreClockSrc == 6)
   {
     SystemCoreClock = LSE_VALUE >> SystemCoreClockDiv;

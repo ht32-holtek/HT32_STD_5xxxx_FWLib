@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/USB_UAC_Sound/ht32_usbd_descriptor.c
- * @version $Rev:: 2478         $
- * @date    $Date:: 2017-12-30 #$
+ * @version $Rev:: 9770         $
+ * @date    $Date:: 2026-04-09 #$
  * @brief   The USB Descriptor.
  *************************************************************************************************************
  * @attention
@@ -211,7 +211,7 @@ __ALIGN4 static uc8 guUSB_ConfnDesc[] =
   IT_ID,                      // bTerminalID         1 Constant ID of the Terminal within the audio function
   DESC_H2B(0x0101),           // wTerminalType       2 Constant characterizing the type of Terminal
   0x00,                       // bAssocTerminal      1 ID of the Output Terminal to associated with this
-  0x01,                       // bNrChannels         1 Number of logical output channels in the Terminal¡¦s output audio channel cluster
+  0x01,                       // bNrChannels         1 Number of logical output channels in the Terminal's output audio channel cluster
   DESC_H2B(0x0000),           // wChannelConfig      2 Describes the spatial location of the logical channels
   0x00,                       // iChannelNames       1 Index of a string descriptor for first logic channel
   0x00,                       // iTerminal           1 Index of a string descriptor for the Input Terminal

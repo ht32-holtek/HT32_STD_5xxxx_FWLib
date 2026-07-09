@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Release_Notes.txt
- * @version V1.20.1
- * @date    2026-04-07
+ * @version V1.21.1
+ * @date    2026-06-24
  * @brief   The Release notes of HT32 Firmware Library.
  *************************************************************************************************************
  * @attention
@@ -86,6 +86,54 @@
 //   HT32F62143, HT50F32023
 //   HT32F59740, HT32F59750
 //   MXTX5030
+//   HT32F61031
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* HT32_STD_5xxxx_FWLib_V1.21.1_9874                                                                        */
+/*----------------------------------------------------------------------------------------------------------*/
+  Release Date: 2026-06-24
+  Main Changes
+  + Add new device support.
+    - HT32F61031
+  + Add example support.
+    - HT32F61049
+  + Add new example.
+    - "example/CORDIC/Sin_PDMA"
+  + Fix I2S clock configuration in the following examples to reduce prescaler error:
+    - "example/I2S/CodecLoopback_PDMA"
+    - "example/USBD/USB_UAC_Sound"
+    - "example/USBD/USB_UAC_Sound_RateControl"
+  + Update interval for polling endpoint in the following examples to comply with the specification:
+    - "example/USBD/HID_Keyboard_Virtual_COM"
+    - "example/USBD/Virtual_COM"
+  + Update CORDIC driver and example.
+    - Rename "CORDIC_IntCmd()" function to "CORDIC_IntConfig()"
+    - Update "example/CORDIC/CosSin_Interrupt" error handling flow
+  + Update time function in the following files to support MCTM1:
+    - "ht32_time.h"
+    - "ht32f5xxxx_conf.h"
+  + Update CKCU driver to support the "LIBCFG_CKCU_HSEGAIN1" option and add the following parameters:
+    - "CKCU_HSE_MEDIUM_LOW_GAIN_MODE"
+    - "CKCU_HSE_MEDIUM_HIGH_GAIN_MODE"
+  + Update TM driver to add new flags for "HT32F65X_66X":
+    - "TM_FLAG_VC"
+    - "TM_FLAG_QC"
+    - "TM_FLAG_PE"
+    - "TM_FLAG_DC"
+  + Update I2C driver to avoid I2C Busy Flag being set in "I2C_SequentialFilterConfig()" function.
+  + Update ADC driver to modify the "ADC_Reset()" function to wait until the software reset finish.
+  + Update temperature examples to optimize the process in the following examples:
+    - "example/ADC/OneShot_TempSensor_Polling"
+    - "example/ADC/OneShot_TempSensor_Interrupt"
+
+  Others
+  + Modify "printf.c" to avoid compilation issues when "_RETARGET" is disabled.
+  + Update GPIO driver to optimize the size of "AFIO_GPxConfig()" function.
+  + Modify supported device list for "example/RAND/Random_Number".
+  + Update "example/NVIC/External_Interrupt" to improve code readability and enhance implementation portability.
+  + Update the default baud rate tolerance setting in "ht32_can_config.h" to avoid clock divider calculation errors.
+  + Update comment, format, typing error, and coding style.
+  + Update and sync "ht32f5xxxx_conf.h".
 
 /*----------------------------------------------------------------------------------------------------------*/
 /* HT32_STD_5xxxx_FWLib_V1.20.1_9758                                                                        */
@@ -109,7 +157,7 @@
     "LCD_SetUpdateDisplayRequest()" to ensure reliable synchronization for display updates.
   + Update USBD driver.
     - Add "LIBCFG_USBD_V3" support and increase maximum endpoint number to 13.
-    - Add ht32f5xxxx_03_usbdconf.h to support HT32F61152 (EPT0–EPT12).
+    - Add ht32f5xxxx_03_usbdconf.h to support HT32F61152 (EPT0-EPT12).
   + Update "ht32f65xxx_66xxx_adc.c"
     - Add "ADC_TempSensorParam_TypeDef" and associated APIs for temperature measurement and calibration.
     - Add "VREF" buffer/voltage configuration and "MVDDA" control logic.

@@ -14,19 +14,19 @@
 This example shows how to measure the ADC of Temperature Sensor using ADC one shot mode trigger by software.
 
   <PRE>
-  =================     ====================     ===============     =======================
-  =               =     =    TempSensor    =     =     ADC     =     =  MainRoutine        =
-  = MainRoutine() = --> = start to operate = --> = SW Trigger  = --> =  Calculate gAvgTemp =
-  =               =     =                  =     =   One Shot  =     =  Print gAvgTemp     =
-  =================     ====================     ===============     =======================
+  =================     ====================     ===============     ==============================
+  =               =     =    TempSensor    =     =     ADC     =     =        MainRoutine         =
+  = MainRoutine() = --> = start to operate = --> = SW Trigger  = --> =   Sum and Average ADC Data =
+  =               =     =                  =     =   One Shot  =     = Calculate and Print gTemp  =
+  =================     ====================     ===============     ==============================
                                      TempSensor Ready         Cycle End
   </PRE>
 
 
-Temperture Sensor of ADC configuration:
+Temperature Sensor of ADC configuration:
   - The temperature sensor's optimal operation clock frequency (TSCLK) is around 250 kHz. Therefore,
     in this example, the system frequency is set to 80 MHz through system_ht32f5xxxx_xx.c, and the
-    temperature divider (TSDIV) is setted to 8 (TSCLK = (80 MHz / 2^8) = 80 MHz / 256 = 312.5 kHz).
+    temperature divider (TSDIV) is set to 8 (TSCLK = (80 MHz / 2^8) = 80 MHz / 256 = 312.5 kHz).
 
 ADC configuration:
   - ADC clock frequency: CK_ADC = 80 MHz / 8 = 10 MHz
@@ -36,9 +36,9 @@ ADC configuration:
   - Set ADC conversion sequence 0 as channel ADC_CH_VTS.
 
 The cycle-end of conversion Polling is enabled. Each time the ADC cycle conversion is finished a "cycle-end
-of conversion" Polling will be occurred. In this example, the ADC performs 32 consecutive conversions,
-and the final temperature value is obtained by averaging these 32 sampled results.After averaging, the
-temperature result is displayed.
+of conversion" polling event will occur. In this example, the ADC performs 32 consecutive samples. These
+samples are averaged, and the averaged result is then converted to calculate the temperature, which is
+subsequently displayed.
 
 If the USART/UART is connected to PC, the ADC result will be printed on the terminal.
 

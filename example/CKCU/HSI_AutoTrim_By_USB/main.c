@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/HSI_AutoTrim_By_USB/main.c
- * @version $Rev:: 7525         $
- * @date    $Date:: 2024-01-17 #$
+ * @version $Rev:: 9837         $
+ * @date    $Date:: 2026-06-01 #$
  * @brief   The main program of USB Device HID example.
  *************************************************************************************************************
  * @attention
@@ -353,19 +353,19 @@ void USBPLL_Configuration(void)
 
 #if (LIBCFG_PWRCU_VREG)
 /*********************************************************************************************************//**
- * @brief  Configure USB Voltage 
+ * @brief  Configure USB Voltage
  * @retval None
  ************************************************************************************************************/
 void USBVRG_Configuration(void)
 {
   CKCU_PeripClockConfig_TypeDef CKCUClock = {{ 0 }};
-  CKCUClock.Bit.BKP                   = 1;
+  CKCUClock.Bit.BKP = 1;
   CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
   PWRCU_SetVREG(PWRCU_VREG_3V3);
 
   /* !!! NOTICE !!!
-     USB LDO Should be enabled (PWRCU_VREG_ENABLE) if the MCU VDD > 3.6 V.
+     USB LDO should be enabled (PWRCU_VREG_ENABLE) if the MCU VDD > 3.6 V.
   */
   PWRCU_VREGConfig(PWRCU_VREG_BYPASS);
 }
@@ -382,6 +382,7 @@ void Suspend(u32 uPara)
   #if (REMOTE_WAKEUP == 1)
   u32 IsRemoteWakeupAllowed;
   #endif
+
   if (gIsLowPowerAllowed)
   {
 

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_board.h
- * @version $Rev:: 9723         $
- * @date    $Date:: 2026-03-25 #$
+ * @version $Rev:: 9842         $
+ * @date    $Date:: 2026-06-04 #$
  * @brief   HT32 target board definition file.
  *************************************************************************************************************
  * @attention
@@ -119,6 +119,10 @@
   #include "HT32_Board/ht32f52244_sk.h"
 #elif defined USE_HT32F66256_DVB
   #include "HT32_Board/ht32f66256_dvb.h"
+#elif defined USE_HT32F61049_DVB
+  #include "HT32_Board/ht32f61049_dvb.h"
+#elif defined USE_HT32F61049_SK
+  #include "HT32_Board/ht32f61049_sk.h"
 #else
  #error "Please select board by define USE_HT32FXXXX_XXX in project."
 #endif

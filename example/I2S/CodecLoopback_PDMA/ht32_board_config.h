@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2S/CodecLoopback_PDMA/ht32_board_config.h
- * @version $Rev:: 8284         $
- * @date    $Date:: 2024-11-22 #$
+ * @version $Rev:: 9815         $
+ * @date    $Date:: 2026-05-26 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -88,11 +88,11 @@
   #define HTCFG_I2S_WS_GPIOX                      A
   #define HTCFG_I2S_WS_GPION                      9
 
-  #define HTCFG_I2S_VOICE_X_DIV                   (14)
-  #define HTCFG_I2S_VOICE_Y_DIV                   (205)
+  #define HTCFG_I2S_VOICE_X_DIV                   (17)
+  #define HTCFG_I2S_VOICE_Y_DIV                   (249)
 
-  #define HTCFG_I2S_MUSIC_X_DIV                   (34)
-  #define HTCFG_I2S_MUSIC_Y_DIV                   (83)
+  #define HTCFG_I2S_MUSIC_X_DIV                   (77)
+  #define HTCFG_I2S_MUSIC_Y_DIV                   (188)
 #endif
 
 #if defined(USE_HT32F52367_SK)
@@ -113,11 +113,11 @@
   #define HTCFG_I2S_WS_GPIOX                      A
   #define HTCFG_I2S_WS_GPION                      9
 
-  #define HTCFG_I2S_VOICE_X_DIV                   (14)
-  #define HTCFG_I2S_VOICE_Y_DIV                   (205)
+  #define HTCFG_I2S_VOICE_X_DIV                   (17)
+  #define HTCFG_I2S_VOICE_Y_DIV                   (249)
 
-  #define HTCFG_I2S_MUSIC_X_DIV                   (34)
-  #define HTCFG_I2S_MUSIC_Y_DIV                   (83)
+  #define HTCFG_I2S_MUSIC_X_DIV                   (77)
+  #define HTCFG_I2S_MUSIC_Y_DIV                   (188)
 #endif
 
 #if defined(USE_BM53A367A_DVB)
@@ -138,11 +138,11 @@
   #define HTCFG_I2S_WS_GPIOX                      A               // A6/D30
   #define HTCFG_I2S_WS_GPION                      0
 
-  #define HTCFG_I2S_VOICE_X_DIV                   (14)
-  #define HTCFG_I2S_VOICE_Y_DIV                   (205)
+  #define HTCFG_I2S_VOICE_X_DIV                   (17)
+  #define HTCFG_I2S_VOICE_Y_DIV                   (249)
 
-  #define HTCFG_I2S_MUSIC_X_DIV                   (34)
-  #define HTCFG_I2S_MUSIC_Y_DIV                   (83)
+  #define HTCFG_I2S_MUSIC_X_DIV                   (77)
+  #define HTCFG_I2S_MUSIC_Y_DIV                   (188)
 #endif
 
 #if defined(USE_BM18B367A_DVB)
@@ -163,11 +163,11 @@
   #define HTCFG_I2S_WS_GPIOX                      A               // A8/D30
   #define HTCFG_I2S_WS_GPION                      0
 
-  #define HTCFG_I2S_VOICE_X_DIV                   (14)
-  #define HTCFG_I2S_VOICE_Y_DIV                   (205)
+  #define HTCFG_I2S_VOICE_X_DIV                   (17)
+  #define HTCFG_I2S_VOICE_Y_DIV                   (249)
 
-  #define HTCFG_I2S_MUSIC_X_DIV                   (34)
-  #define HTCFG_I2S_MUSIC_Y_DIV                   (83)
+  #define HTCFG_I2S_MUSIC_X_DIV                   (77)
+  #define HTCFG_I2S_MUSIC_Y_DIV                   (188)
 #endif
 
 #if defined(USE_HT32F61355_SK) || defined(USE_HT32F61356_SK) || defined(USE_HT32F61357_SK)

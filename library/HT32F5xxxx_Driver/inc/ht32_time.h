@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_time.h
- * @version $Rev:: 7693         $
- * @date    $Date:: 2024-04-02 #$
+ * @version $Rev:: 9822         $
+ * @date    $Date:: 2026-05-28 #$
  * @brief   The header file of time function.
  *************************************************************************************************************
  * @attention
@@ -76,11 +76,14 @@
 #if (HTCFG_TIME_IPSEL == 11)
 #define HTCFG_TIME_IPN    MCTM0
 #endif
+#if (HTCFG_TIME_IPSEL == 12)
+#define HTCFG_TIME_IPN    MCTM1
+#endif
 #endif
 
 /* Exported constants --------------------------------------------------------------------------------------*/
 #ifndef IS_IPN_BFTM
-#undef IPN_MCTM0 
+#undef IPN_MCTM0
 #undef IPN_MCTM1
 #undef IPN_GPTM0
 #undef IPN_GPTM1

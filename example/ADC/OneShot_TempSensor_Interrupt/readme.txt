@@ -14,19 +14,19 @@
 This example shows how to measure the ADC of Temperature Sensor using ADC one shot mode trigger by software.
 
   <PRE>
-  ====================     ===================     ======================     ===============================
-  =       Main()     =     = ADC ISR (TSRDY) =     = ADC ISR (EOC)      =     =           Main()            =
-  =    TempSensor    = --> = ADC SW Trigger  = --> = Calculate gAvgTemp = --> =       Print gAvgTemp        =
-  = start to operate =     =                 =     =                    =     = TempSensor start to operate =
-  ====================     ===================     ======================     ===============================
+  ====================     ===================     ========================     ===============================
+  =       Main()     =     = ADC ISR (TSRDY) =     = ADC ISR (EOC)        =     =           Main()            =
+  =    TempSensor    = --> = ADC SW Trigger  = --> = Sum and Avg ADC Data = --> =        Print gTemp          =
+  = start to operate =     =                 =     = Calculate gTemp      =     = TempSensor start to operate =
+  ====================     ===================     ========================     ===============================
                  TempSensor Ready            Cycle End             gADC_CycleEndOfConversion
   </PRE>
 
 
-Temperture Sensor of ADC configuration:
+Temperature Sensor of ADC configuration:
   - The temperature sensor's optimal operation clock frequency (TSCLK) is around 250 kHz. Therefore,
     in this example, the system frequency is set to 80 MHz through system_ht32f5xxxx_xx.c, and the
-    temperature divider (TSDIV) is setted to 8 (TSCLK = (80 MHz / 2^8) = 48 MHz / 256 = 312.5 kHz).
+    temperature divider (TSDIV) is set to 8 (TSCLK = (80 MHz / 2^8) = 80 MHz / 256 = 312.5 kHz).
 
 ADC configuration:
   - ADC clock frequency: CK_ADC = 80 MHz / 8 = 10 MHz
@@ -36,9 +36,9 @@ ADC configuration:
   - Set ADC conversion sequence 0 as channel ADC_CH_VTS.
 
 The cycle-end of conversion interrupt is enabled. Each time the ADC cycle conversion is finished a "cycle-end
-of conversion" interrupt will occur. In this example, the ADC accumulates the conversion results until 32
-samples are collected, and the final temperature value is obtained by averaging these 32 sampled results.
-After averaging, the temperature result is displayed.
+of conversion" interrupt will occur. In this example, the ADC accumulates data until 32 samples are collected.
+The 32 samples are then averaged, and the averaged value is used to calculate the temperature through
+conversion. The resulting temperature is then displayed.
 
 If the USART/UART is connected to PC, the ADC result will be printed on the terminal.
 

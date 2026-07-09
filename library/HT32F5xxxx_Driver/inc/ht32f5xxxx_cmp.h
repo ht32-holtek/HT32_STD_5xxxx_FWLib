@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_cmp.h
- * @version $Rev:: 9687         $
- * @date    $Date:: 2026-03-12 #$
+ * @version $Rev:: 9842         $
+ * @date    $Date:: 2026-06-04 #$
  * @brief   The header file of the CMP library.
  *************************************************************************************************************
  * @attention
@@ -474,7 +474,7 @@ typedef enum
 #define IS_CMP_InvInSel2(x)                       ((x == CMP_IVREF_CN_IN))
 #endif
 
-#if defined(USE_HT32F65230_40)
+#if defined(USE_HT32F65230_40) || defined(USE_HT32F61049)
 #define CMP_CMP0N_CN_IN                           ((u32)0x00000020)
 #undef  IS_CMP_InvInSel2
 #define IS_CMP_InvInSel2(x)                       ((x == CMP_CMP0N_CN_IN))

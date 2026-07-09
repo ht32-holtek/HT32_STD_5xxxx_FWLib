@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/USB_UAC_Sound_RateControl/i2cm.h
- * @version $Rev:: 3333         $
- * @date    $Date:: 2018-12-25 #$
+ * @version $Rev:: 9871         $
+ * @date    $Date:: 2026-06-15 #$
  * @brief   The header file of I2C master driver.
  *************************************************************************************************************
  * @attention
@@ -36,6 +36,19 @@
 
 /* Includes ------------------------------------------------------------------------------------------------*/
 #include "ht32_board_config.h"
+
+/** @addtogroup HT32_Series_Peripheral_Examples HT32 Peripheral Examples
+  * @{
+  */
+
+/** @addtogroup USBD_Examples USBD
+  * @{
+  */
+
+/** @addtogroup USB_UAC_Sound_RateControl
+  * @{
+  */
+
 
 #define I2CM_SPEED    (400000)
 #define I2CM          HTCFG_I2CM_ID
@@ -96,6 +109,19 @@ u32 I2CM_GetTransferStatus(void);
 ErrStatus I2CM_WaitTransferEnd(void);
 ErrStatus I2CM_BlockedBufferRead(u16 dev, u16 word_addr, u8* data, u16 count);
 ErrStatus I2CM_BlockedBufferWrite(u16 dev, u16 word_addr, u8* data, u16 count);
+
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 #ifdef __cplusplus
 }

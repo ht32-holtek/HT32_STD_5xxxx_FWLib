@@ -6,8 +6,8 @@
 ;/*                                                                                                         */
 ;/*-----------------------------------------------------------------------------------------------------------
 ;  File Name        : startup_ht32f5xxxx_13.s
-;  Version          : $Rev:: 9657         $
-;  Date             : $Date:: 2026-01-30 #$
+;  Version          : $Rev:: 9798         $
+;  Date             : $Date:: 2026-05-18 #$
 ;  Description      : Startup code.
 ;-----------------------------------------------------------------------------------------------------------*/
 
@@ -16,6 +16,7 @@
 ;   HT32F50020, HT32F50030
 ;   HT32F61630
 ;   HT32F61030
+;   HT32F61031
 ;   HT32F61730
 ;   MXTX5030
 
@@ -28,6 +29,7 @@
 ;//      <25=> HT32F50020/30
 ;//      <25=> HT32F61630
 ;//      <25=> HT32F61030
+;//      <25=> HT32F61031
 ;//      <25=> HT32F61730
 ;//      <25=> MXTX5030
 USE_HT32_CHIP_SET   EQU     25 ; Notice that the project's Asm Define has the higher priority.
@@ -37,12 +39,14 @@ _HT32FWID           EQU     0xFFFFFFFF
 ;_HT32FWID           EQU     0x00050030
 ;_HT32FWID           EQU     0x00061630
 ;_HT32FWID           EQU     0x00061030
+;_HT32FWID           EQU     0x00061031
 ;_HT32FWID           EQU     0x00061730
 ;_HT32FWID           EQU     0x00005030
 
 HT32F50020_30       EQU     25
 HT32F61630          EQU     25
 HT32F61030          EQU     25
+HT32F61031          EQU     25
 HT32F61730          EQU     25
 MXTX5030            EQU     25
 

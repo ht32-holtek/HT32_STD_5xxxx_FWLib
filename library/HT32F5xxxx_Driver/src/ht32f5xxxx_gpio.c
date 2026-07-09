@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_gpio.c
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 9795         $
+ * @date    $Date:: 2026-05-06 #$
  * @brief   This file provides all the GPIO and AFIO firmware functions.
  *************************************************************************************************************
  * @attention
@@ -627,35 +627,53 @@ void AFIO_DeInit(void)
  ************************************************************************************************************/
 void AFIO_GPxConfig(u32 GPIO_Px, u32 AFIO_PIN_n, AFIO_MODE_Enum AFIO_MODE_n)
 {
+  #if (HT32_LIB_LITE == 0)
   vu32* pGPxCFGR = ((vu32*)&HT_AFIO->GPACFGR[0]) + GPIO_Px * 2;
-  u32 index = 0;
-  u32 Mask = 0, PinMode = 0;
-  s32 i;
+  u32 i = 2;
   AFIO_CK_ST;
 
   Assert_Param(IS_AFIO_MODE(AFIO_MODE_n));
   AFIO_CK_ON();
 
-  for (i = 0; i <= 8; i += 8)
+  do
   {
-    Mask = 0;
-    PinMode = 0;
-    if (AFIO_PIN_n & (0x00FF << i))
+    u32 pins = AFIO_PIN_n & 0xFF;
+    u32 index = 0;
+    if (pins)
     {
-      for (index = 0; index < 8; index++)
+      u32 Mask = 0, PinMode = 0;
+      do
       {
-        if ((AFIO_PIN_n >> index) & (0x0001 << i))
+        if (pins & 1)
         {
-          Mask |= (0xF << (index * 4));
-          PinMode |= (AFIO_MODE_n << (index * 4));
+          Mask |= (0xF << index);
+          PinMode |= (AFIO_MODE_n << index);
         }
-      }
+        index += 4;
+      } while (pins >>= 1);
       *pGPxCFGR = (*pGPxCFGR & (~Mask)) | PinMode;
     }
     pGPxCFGR++;
-  }
+  } while ((AFIO_PIN_n >>= 8) && --i);
 
   AFIO_CK_OFF();
+  #else
+  u32 pin_idx = 0;
+  u32 reg_idx;
+  u32 shift;
+
+  Assert_Param(IS_AFIO_MODE(AFIO_MODE_n));
+
+  while (AFIO_PIN_n >>= 1)
+  {
+    pin_idx++;
+  }
+  
+  reg_idx = (GPIO_Px << 1) + (pin_idx >> 3);
+  shift = (pin_idx & 0x07) << 2;  
+  
+  HT_AFIO->GPACFGR[reg_idx] = (HT_AFIO->GPACFGR[reg_idx] & ~(0xF << shift)) | (AFIO_MODE_n << shift);
+  #endif
 }
 
 /*********************************************************************************************************//**

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CORDIC/CosSin_Interrupt/main.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9855         $
+ * @date    $Date:: 2026-06-09 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -47,9 +47,9 @@ typedef enum {Fail = 0, Pass = !Fail} TestResult;
 
 /* Private constants ---------------------------------------------------------------------------------------*/
 /* Reference values in Q1.31 format                                                                         */
-#define ANGLE_CORDIC      (s32)0x10000000       /* pi/8 in CORDIC input angle mapping                   */
-#define COS_REF           (s32)0x7641AF3C       /* cos(pi/8) reference value                            */
-#define SIN_REF           (s32)0x30FBC54D       /* sin(pi/8) reference value                            */
+#define ANGLE_CORDIC      (s32)0x10000000       /* pi/8 in CORDIC input angle mapping                       */
+#define COS_REF           (s32)0x7641AF3C       /* cos(pi/8) reference value                                */
+#define SIN_REF           (s32)0x30FBC54D       /* sin(pi/8) reference value                                */
 #define DELTA             (s32)0x00001000       /* Max residual error for cos and sin, with 6 cycle precision:
                                                        2^-19 max residual error, ie 31-19=12 LSB, ie <0x1000*/
 
@@ -59,8 +59,8 @@ TestResult Check_Residual_Error(s32 VarA, s32 VarB, s32 MaxError);
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 volatile bool gCORDIC_ComputeDone = FALSE;
-s32 cosOutput = 0;
-s32 sinOutput = 0;
+vs32 cosOutput = 0;
+vs32 sinOutput = 0;
 
 /* Global functions ----------------------------------------------------------------------------------------*/
 /*********************************************************************************************************//**
@@ -87,12 +87,13 @@ int main(void)
 
       /* Check RRDY, result ready flag. 
          [Reset by hardware when the CORDICRDATA register is read (NRES + 1) times]                         */
+      #if 1
       if (CORDIC_GetFlagStatus_RRDY() == SET)
       {
         printf("Result: Unexpected result.\r\n");
         printf("RRDY should reset when the CORDICRDATA register is read (NRES + 1) times.\r\n");
-        while(1){};
       }
+      #endif
 
       /* Check residual error on cosine and sine results                                                    */
       if ((Check_Residual_Error(cosOutput, COS_REF, DELTA) == Fail) ||
@@ -102,14 +103,16 @@ int main(void)
 
         printf("Result: Unexpected result.\r\n");
         printf("Check residual error on cosine and sine fail.\r\n");
-        while(1){};
+        printf("cosOutput = 0x%X", cosOutput);
+        printf(", sinOutput = 0x%X\r\n", sinOutput);
       }
       else
       {
         HT32F_DVB_LEDOn(HT_LED1);
 
         printf("Result: Success.\r\n");
-        printf("cosOutput = 0x%X, sinOutput = 0x%X\r\n", cosOutput, sinOutput);
+        printf("cosOutput = 0x%X", cosOutput);
+        printf(", sinOutput = 0x%X\r\n", sinOutput);
       }
     }
   }
@@ -138,7 +141,7 @@ void CORDIC_Configuration(void)
     CORDIC_InitStructure.Precision = CORDIC_PRECISION_6CYCLES; /* max precision for q1.31 cosine */
     CORDIC_InitStructure.Scale     = CORDIC_SCALE_0;           /* no scale */
     CORDIC_InitStructure.NbWrite   = CORDIC_NBWRITE_1;         /* One input data: angle. Second input data (modulus) is 1 after cordic reset */
-    CORDIC_InitStructure.NbRead    = CORDIC_NBREAD_2;          /* One output data: sine */
+    CORDIC_InitStructure.NbRead    = CORDIC_NBREAD_2;          /* Two output data: cosine, then sine */
     CORDIC_InitStructure.InSize    = CORDIC_INSIZE_32BITS;     /* q1.31 format for input data */
     CORDIC_InitStructure.OutSize   = CORDIC_OUTSIZE_32BITS;    /* q1.31 format for output data */
 
@@ -146,7 +149,7 @@ void CORDIC_Configuration(void)
   }
 
   /* Enable CORDIC interrupts                                                                               */
-  CORDIC_IntCmd(ENABLE);
+  CORDIC_IntConfig(ENABLE);
   NVIC_EnableIRQ(CORDIC_IRQn);
 }
 

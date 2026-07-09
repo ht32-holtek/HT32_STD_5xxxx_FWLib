@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_TempSensor_Polling/main.c
- * @version $Rev:: 9601         $
- * @date    $Date:: 2025-12-04 #$
+ * @version $Rev:: 9771         $
+ * @date    $Date:: 2026-04-16 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -127,51 +127,48 @@ void ADC_TempSensor_MainRoutine(void)
   ADC_TempSensorParam_TypeDef tempPara;
   s32 temperature_mC;
   u8 index;
-  s32 sum = 0;
-  s32 avgTemp;
+  u32 sumdata = 0;
 
-  /* Calculate the average of 32 temperature sensor samples */
-  for (index = 0;index < 32;index++)
+  /* Calculate the average of 32 temperature sensor samples                                                 */
+  for (index = 0; index < 32; index++)
   {
-    /* Trigger the Temperature Sensor to start preparing the voltage                                         */
+    /* Trigger the Temperature Sensor to start preparing the voltage                                        */
     ADC_TempSensorStartOperateCmd(HTCFG_ADC_PORT, ENABLE);
 
-    /* Waits until the volatge of Temperature Sensor is ready                                                */
-    while (!ADC_TempSensorGetFlagStatus(HTCFG_ADC_PORT, TEMP_SENSOR_FLAG_READY)){}
-    ADC_TempSensorClearFlag(HTCFG_ADC_PORT, TEMP_SENSOR_FLAG_READY); /* Clear ready flag                     */
+    /* Waits until the volatge of Temperature Sensor is ready                                               */
+    while (!ADC_TempSensorGetFlagStatus(HTCFG_ADC_PORT, TEMP_SENSOR_FLAG_READY)){};
+    ADC_TempSensorClearFlag(HTCFG_ADC_PORT, TEMP_SENSOR_FLAG_READY); /* Clear ready flag                    */
 
-    /* Software trigger to start ADC conversion                                                              */
+    /* Software trigger to start ADC conversion                                                             */
     ADC_SoftwareStartConvCmd(HTCFG_ADC_PORT, ENABLE);
-    while (!ADC_GetIntStatus(HTCFG_ADC_PORT, ADC_INT_CYCLE_EOC)){} /* Waits until the ADC comversion is finish */
+    while (!ADC_GetIntStatus(HTCFG_ADC_PORT, ADC_INT_CYCLE_EOC)){};  /* Waits for ADC conversion finish     */
 
-    ADC_ClearIntPendingBit(HTCFG_ADC_PORT, ADC_INT_CYCLE_EOC);    /* Clear ready end of conversion flag      */
+    ADC_ClearIntPendingBit(HTCFG_ADC_PORT, ADC_INT_CYCLE_EOC);       /* Clear ready end of conversion flag  */
 
-    /* Prepare parameters for temperature calculation                                                        */
-    /* !!! NOTICE !!!
-      If an external VREF is used, tempPara.Advrefp_mV must be set to the corresponding supply voltage.
-      For example, if the external VREF is 3.3 V, then tempPara.Advrefp_mV = 3300 (millivolts).
-      If the internal VREF is selected, the actual VREF voltage depends on the VREFVAL configuration,
-      and tempPara.Advrefp_mV should be set to the corresponding voltage value.
-    */
-    tempPara.Advrefp_mV = HTCFG_ADC_ADVREFP_MV;
-    tempPara.TsData = (ADC_GetConversionData(HTCFG_ADC_PORT, 0)); /* ADC conversion result                   */
-    tempPara.CalTempPoint_mC = ADC_TempSensorGetCalTempPoint(HTCFG_ADC_PORT);
-
-    if(ADC_TempSensorGetTemp(HTCFG_ADC_PORT, &tempPara, &temperature_mC) == SUCCESS)
-    {
-      sum += temperature_mC;
-    }
-    else
-    {
-      printf("Temperature calculation error!\r\n");
-      while(1){}
-    }
+    sumdata += (u32)(ADC_GetConversionData(HTCFG_ADC_PORT, 0));      /* Sum of ADC conversion results       */
   }
 
-  avgTemp = sum >> 5; /* Dividing by 32, Calculate the average of 32 samples */
+  /* Prepare parameters for temperature calculation                                                         */
+  /* !!! NOTICE !!!
+    If an external VREF is used, tempPara.Advrefp_mV must be set to the corresponding supply voltage.
+    For example, if the external VREF is 3.3 V, then tempPara.Advrefp_mV = 3300 (millivolts).
+    If the internal VREF is selected, the actual VREF voltage depends on the VREFVAL configuration,
+    and tempPara.Advrefp_mV should be set to the corresponding voltage value.
+  */
+  tempPara.Advrefp_mV = HTCFG_ADC_ADVREFP_MV;
+  tempPara.TsData = (u16)(sumdata >> 5);             /* Dividing by 32, Calculate the average of 32 samples */
+  tempPara.CalTempPoint_mC = ADC_TempSensorGetCalTempPoint(HTCFG_ADC_PORT);
 
-  /* Display the average temperature result                                                                  */
-  printf("Current Temperature = %d mC\r\n", avgTemp);
+  if(ADC_TempSensorGetTemp(HTCFG_ADC_PORT, &tempPara, &temperature_mC) == SUCCESS)
+  {
+    /* Display the average temperature result                                                               */
+    printf("Current Temperature = %d mC\r\n", temperature_mC);
+  }
+  else
+  {
+    printf("Temperature calculation error!\r\n");
+    while(1){};
+  }
 }
 
 

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_ckcu.h
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9835         $
+ * @date    $Date:: 2026-05-28 #$
  * @brief   The header file of the Clock Control Unit library.
  *************************************************************************************************************
  * @attention
@@ -874,10 +874,25 @@ typedef enum
 
 #if (!LIBCFG_CKCU_NO_HSE)
 /* HSE Gain mode                                                                                            */
+#if (LIBCFG_CKCU_HSEGAIN1)
+#define CKCU_HSE_LOW_GAIN_MODE          ((0UL << 12) | (0UL << 8))
+#define CKCU_HSE_MEDIUM_LOW_GAIN_MODE   ((0UL << 12) | (1UL << 8))
+#define CKCU_HSE_MEDIUM_HIGH_GAIN_MODE  ((1UL << 12) | (0UL << 8))
+#define CKCU_HSE_HIGH_GAIN_MODE         ((1UL << 12) | (1UL << 8))
+
+#define IS_CKCU_HSE_MEDIUM_LOW_GAIN_MODE(x)     (x == CKCU_HSE_MEDIUM_LOW_GAIN_MODE)
+#define IS_CKCU_HSE_MEDIUM_HIGH_GAIN_MODE(x)    (x == CKCU_HSE_MEDIUM_HIGH_GAIN_MODE)
+#else
 #define CKCU_HSE_LOW_GAIN_MODE          (0UL << 8)
 #define CKCU_HSE_HIGH_GAIN_MODE         (1UL << 8)
 
-#define IS_GAINMODE(GanMode)    ((GanMode == CKCU_HSE_LOW_GAIN_MODE) || \
+#define IS_CKCU_HSE_MEDIUM_LOW_GAIN_MODE(x)     (0)
+#define IS_CKCU_HSE_MEDIUM_HIGH_GAIN_MODE(x)    (0)
+#endif
+
+#define IS_GAINMODE(GanMode)    ((GanMode == CKCU_HSE_LOW_GAIN_MODE)         || \
+                                 (IS_CKCU_HSE_MEDIUM_LOW_GAIN_MODE(GanMode)  || \
+                                 (IS_CKCU_HSE_MEDIUM_HIGH_GAIN_MODE(GanMode) || \
                                  (GanMode == CKCU_HSE_HIGH_GAIN_MODE))
 #endif
 

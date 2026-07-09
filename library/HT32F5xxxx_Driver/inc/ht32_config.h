@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_config.h
- * @version $Rev:: 9659         $
- * @date    $Date:: 2026-01-30 #$
+ * @version $Rev:: 9842         $
+ * @date    $Date:: 2026-06-04 #$
  * @brief   Configuration file of HT32.
  *************************************************************************************************************
  * @attention
@@ -460,16 +460,6 @@
   #define USE_MEM_HT32F57352
 #endif
 
-#ifdef USE_HT32F61049_SK
-  #define USE_HT32F65240_SK
-#endif
-#ifdef USE_HT32F61049
-  #define USE_HT32F65230_40
-#endif
-#ifdef USE_MEM_HT32F61049
-  #define USE_MEM_HT32F65240
-#endif
-
 #ifdef USE_HT32F61940_SK
   #define USE_HT32F65240_SK
 #endif
@@ -507,6 +497,16 @@
   #define USE_HT32F50020_30
 #endif
 #ifdef USE_MEM_MXTX5030
+  #define USE_MEM_HT32F50030
+#endif
+
+#ifdef USE_HT32F61031_SK
+  #define USE_HT32F50030_SK
+#endif
+#ifdef USE_HT32F61031
+  #define USE_HT32F50020_30
+#endif
+#ifdef USE_MEM_HT32F61031
   #define USE_MEM_HT32F50030
 #endif
 

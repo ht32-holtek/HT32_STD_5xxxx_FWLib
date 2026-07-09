@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CORDIC/CosSin_Interrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 8712         $
- * @date    $Date:: 2025-05-05 #$
+ * @version $Rev:: 9811         $
+ * @date    $Date:: 2026-05-26 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -111,8 +111,8 @@ void SysTick_Handler(void)
 {
 }
 
-extern s32 cosOutput;
-extern s32 sinOutput;
+extern vs32 cosOutput;
+extern vs32 sinOutput;
 /*********************************************************************************************************//**
  * @brief   This function handles CORDIC Handler.
  * @retval  None

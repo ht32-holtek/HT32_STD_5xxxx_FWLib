@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f66xxx_pid.h
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9847         $
+ * @date    $Date:: 2026-06-05 #$
  * @brief   The header file of the PID library.
  *************************************************************************************************************
  * @attention
@@ -86,12 +86,12 @@ typedef enum
 #define IS_PID_USR1_MODE(x)      (0)
 #endif
 
-#define IS_PID_MODE(PID_MODE)    (((PID_MODE) == PID_SPD_MODE)   || \
-                                  ((PID_MODE) == PID_IQ_MODE)    || \
-                                  ((PID_MODE) == PID_ID_MODE)    || \
-                                  ((PID_MODE) == PID_FWNK_MODE)  || \
-                                  ((PID_MODE) == PID_PLL_MODE)   || \
-                                  ((PID_MODE) == PID_USR_MODE)   || \
+#define IS_PID_MODE(PID_MODE)    (((PID_MODE) == PID_SPD0_MODE)   || \
+                                  ((PID_MODE) == PID_IQ0_MODE)    || \
+                                  ((PID_MODE) == PID_ID0_MODE)    || \
+                                  ((PID_MODE) == PID_FWNK0_MODE)  || \
+                                  ((PID_MODE) == PID_PLL0_MODE)   || \
+                                  ((PID_MODE) == PID_USR0_MODE)   || \
                                   IS_PID_SPD1_MODE(PID_MODE)     || \
                                   IS_PID_IQ1_MODE(PID_MODE)      || \
                                   IS_PID_ID1_MODE(PID_MODE)      || \

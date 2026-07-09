@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/USB_UAC_Sound_RateControl/ht32_board_config.h
- * @version $Rev:: 7356         $
- * @date    $Date:: 2023-12-06 #$
+ * @version $Rev:: 9815         $
+ * @date    $Date:: 2026-05-26 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -114,8 +114,8 @@
   #define HTCFG_I2S_WS_ID                                  (GPIO_PA)
   #define HTCFG_I2S_WS_ADIO_PIN                            (AFIO_PIN_9)
 
-  #define HTCFG_I2S_X_DIV                                  (51)
-  #define HTCFG_I2S_Y_DIV                                  (125)
+  #define HTCFG_I2S_X_DIV                                  (77)
+  #define HTCFG_I2S_Y_DIV                                  (188)
 
   #define HTCFG_FUN_I2C_IRQ                                (I2C1_IRQHandler)
 
@@ -142,8 +142,8 @@
   #define HTCFG_I2S_WS_ID                                  (GPIO_PA)
   #define HTCFG_I2S_WS_ADIO_PIN                            (AFIO_PIN_9)
 
-  #define HTCFG_I2S_X_DIV                                  (51)
-  #define HTCFG_I2S_Y_DIV                                  (125)
+  #define HTCFG_I2S_X_DIV                                  (77)
+  #define HTCFG_I2S_Y_DIV                                  (188)
 
   #define HTCFG_FUN_I2C_IRQ                                (I2C1_IRQHandler)
 
@@ -170,8 +170,8 @@
   #define HTCFG_I2S_WS_ID                                  (GPIO_PA)               // A6/D30
   #define HTCFG_I2S_WS_ADIO_PIN                            (AFIO_PIN_0)
 
-  #define HTCFG_I2S_X_DIV                                  (51)
-  #define HTCFG_I2S_Y_DIV                                  (125)
+  #define HTCFG_I2S_X_DIV                                  (77)
+  #define HTCFG_I2S_Y_DIV                                  (188)
 
   #define HTCFG_FUN_I2C_IRQ                                (I2C1_IRQHandler)
 
@@ -198,8 +198,8 @@
   #define HTCFG_I2S_WS_ID                                  (GPIO_PA)               // A8/D30
   #define HTCFG_I2S_WS_ADIO_PIN                            (AFIO_PIN_0)
 
-  #define HTCFG_I2S_X_DIV                                  (51)
-  #define HTCFG_I2S_Y_DIV                                  (125)
+  #define HTCFG_I2S_X_DIV                                  (77)
+  #define HTCFG_I2S_Y_DIV                                  (188)
 
   #define HTCFG_FUN_I2C_IRQ                                (I2C1_IRQHandler)
   
