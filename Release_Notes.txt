@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Release_Notes.txt
- * @version V1.21.1
- * @date    2026-06-24
+ * @version V1.21.2
+ * @date    2026-09-14
  * @brief   The Release notes of HT32 Firmware Library.
  *************************************************************************************************************
  * @attention
@@ -43,6 +43,7 @@
 //   HT32F52357, HT32F52367
 //   HT32F53231, HT32F53241
 //   HT32F53242, HT32F53252
+//   HT32F53742, HT32F53752
 //   HT32F54231, HT32F54241
 //   HT32F54243, HT32F54253
 //   HT32F57331, HT32F57341
@@ -70,7 +71,7 @@
 //   HT32F65230, HT32F65240
 //   HT32F65232
 //   HT32F65233
-//   HT32F66242, HT32F66246, HT32F66256
+//   HT32F66246, HT32F66256
 //   HT32F67041, HT32F67051
 //   HT32F67232
 //   HT32F67233
@@ -87,6 +88,26 @@
 //   HT32F59740, HT32F59750
 //   MXTX5030
 //   HT32F61031
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* HT32_STD_5xxxx_FWLib_V1.21.2_9994                                                                        */
+/*----------------------------------------------------------------------------------------------------------*/
+  Release Date: 2026-09-14
+  Main Changes
+  + Add new device support.
+    - HT32F53742, HT32F53752
+  + Update EEPROM Emulation middleware, improve reliability and error handling.
+    "utilities/middleware/eeprom_emulation.c/h"
+    - Improve EEPROM page state handling and recovery mechanism.
+    - Add parameter, address range, and Flash operation checks.
+    - Improve Flash erase/program and cache handling.
+
+  Others
+  + Update comment, format, typing error, and coding style.
+  + Update GCC startup files, modify stack and heap section attributes.
+    "startup_ht32f5xxxx_gcc_nn.s"
+  + Remove device support.
+    - HT32F66242
 
 /*----------------------------------------------------------------------------------------------------------*/
 /* HT32_STD_5xxxx_FWLib_V1.21.1_9874                                                                        */

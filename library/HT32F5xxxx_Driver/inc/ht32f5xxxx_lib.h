@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_lib.h
- * @version $Rev:: 9842         $
- * @date    $Date:: 2026-06-04 #$
+ * @version $Rev:: 9908         $
+ * @date    $Date:: 2026-07-09 #$
  * @brief   The header file includes all the header files of the libraries.
  *************************************************************************************************************
  * @attention
@@ -34,8 +34,8 @@
 #endif
 
 /* Settings ------------------------------------------------------------------------------------------------*/
-#define HT32_FWLIB_VER                  (0x01021001)
-#define HT32_FWLIB_SVN                  (0x9874)
+#define HT32_FWLIB_VER                  (0x01021002)
+#define HT32_FWLIB_SVN                  (0x9994)
 
 #if defined(USE_HT32F52220_30)
   #include "ht32f52220_30_libcfg.h"
@@ -138,6 +138,9 @@
 #endif
 #if defined(USE_HT32F66256)
   #include "ht32f66256_libcfg.h"
+#endif
+#if defined(USE_HT32F68040)
+  #include "ht32f68040_libcfg.h"
 #endif
 
 /* Includes ------------------------------------------------------------------------------------------------*/

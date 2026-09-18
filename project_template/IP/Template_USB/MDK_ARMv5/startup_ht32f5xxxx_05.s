@@ -6,8 +6,8 @@
 ;/*                                                                                                         */
 ;/*-----------------------------------------------------------------------------------------------------------
 ;  File Name        : startup_ht32f5xxxx_05.s
-;  Version          : $Rev:: 8472         $
-;  Date             : $Date:: 2025-03-10 #$
+;  Version          : $Rev:: 9883         $
+;  Date             : $Date:: 2026-07-02 #$
 ;  Description      : Startup code.
 ;-----------------------------------------------------------------------------------------------------------*/
 
@@ -23,6 +23,7 @@
 ;   HT32F57552
 ;   HT32F59740
 ;   HT32F59750
+;   HT32F53742, HT32F53752
 
 ;/* <<< Use Configuration Wizard in Context Menu >>>                                                        */
 
@@ -40,6 +41,7 @@
 ;//      <14=> HT32F57552
 ;//      <13=> HT32F59740
 ;//      <14=> HT32F59750
+;//      <14=> HT32F53742/52
 USE_HT32_CHIP_SET   EQU     0 ; Notice that the project's Asm Define has the higher priority.
 
 _HT32FWID           EQU     0xFFFFFFFF
@@ -55,6 +57,8 @@ _HT32FWID           EQU     0xFFFFFFFF
 ;_HT32FWID           EQU     0x00057552
 ;_HT32FWID           EQU     0x00059740
 ;_HT32FWID           EQU     0x00059750
+;_HT32FWID           EQU     0x00053742
+;_HT32FWID           EQU     0x00053752
 
 HT32F57331_41       EQU     13
 HT32F57342_52       EQU     14
@@ -66,6 +70,7 @@ HT32F57541          EQU     13
 HT32F57552          EQU     14
 HT32F59740          EQU     13
 HT32F59750          EQU     14
+HT32F53742_52       EQU     14
 
   IF USE_HT32_CHIP_SET=0
   ; Use project's Asm Define setting (default)

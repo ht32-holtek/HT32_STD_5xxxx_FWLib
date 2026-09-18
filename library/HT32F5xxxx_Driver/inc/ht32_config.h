@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_config.h
- * @version $Rev:: 9842         $
- * @date    $Date:: 2026-06-04 #$
+ * @version $Rev:: 9990         $
+ * @date    $Date:: 2026-09-14 #$
  * @brief   Configuration file of HT32.
  *************************************************************************************************************
  * @attention
@@ -508,6 +508,23 @@
 #endif
 #ifdef USE_MEM_HT32F61031
   #define USE_MEM_HT32F50030
+#endif
+
+#ifdef USE_HT32F68045_DVB
+  #define USE_HT32F68040_DVB
+#endif
+#ifdef USE_HT32F68045
+  #define USE_HT32F68040
+#endif
+#ifdef USE_MEM_HT32F68045
+  #define USE_MEM_HT32F68040
+#endif
+
+#ifdef USE_HT32F53742_52
+  #define USE_HT32F57342_52
+#endif
+#ifdef USE_MEM_HT32F53752
+  #define USE_MEM_HT32F57352
 #endif
 
 #ifdef __cplusplus

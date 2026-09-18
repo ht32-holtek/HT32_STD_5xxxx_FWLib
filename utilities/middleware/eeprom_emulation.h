@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    eeprom_emulation.h
- * @version $Rev:: 527          $
- * @date    $Date:: 2022-04-13 #$
+ * @version $Rev:: 1597         $
+ * @date    $Date:: 2026-09-07 #$
  * @brief   The header file of EEPROM emulation APIs.
  *************************************************************************************************************
  * @attention
@@ -62,15 +62,18 @@
  */
 typedef enum
 {
-  EEPROM_EMU_PAGE0_ACTIVE    = 0,
-  EEPROM_EMU_PAGE1_ACTIVE    = 1,
   EEPROM_EMU_NO_ACTIVE_PAGE  = 2,
   EEPROM_EMU_FLASH_ERROR     = 3,
   EEPROM_EMU_PAGE_FULL       = 4,
   EEPROM_EMU_DATA_NOT_FOUND  = 5,
   EEPROM_EMU_OPERATION_FAIL  = 6,
-  EEPROM_EMU_OPERATION_OK    = 7
-}EEPROM_EMU_State;
+  EEPROM_EMU_OPERATION_OK    = 7,
+  EEPROM_EMU_ADDR_OUTOFRANGE = 8,
+  EEPROM_EMU_INVALID_PARA    = 9
+} EEPROM_EMU_State;
+
+#define EEPROM_EMU_PAGE0_ACTIVE    (0)
+#define EEPROM_EMU_PAGE1_ACTIVE    (1)
 
 /* Exported functions --------------------------------------------------------------------------------------*/
 EEPROM_EMU_State EEPROM_Init(void);

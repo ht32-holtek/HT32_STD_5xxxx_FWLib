@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_board.c
- * @version $Rev:: 9842         $
- * @date    $Date:: 2026-06-04 #$
+ * @version $Rev:: 9990         $
+ * @date    $Date:: 2026-09-14 #$
  * @brief   HT32 target board related file.
  *************************************************************************************************************
  * @attention
@@ -75,6 +75,8 @@
   #include "HT32_Board/ht32f5xxxx_board_01.c"
 #elif defined USE_HT32F57352_SK
   #include "HT32_Board/ht32f5xxxx_board_01.c"
+#elif defined USE_HT32F53752_SK
+  #include "HT32_Board/ht32f5xxxx_board_01.c"
 #elif defined USE_HT32F50343_SK
   #include "HT32_Board/ht32f5xxxx_board_01.c"
 #elif defined USE_HT32F61355_SK
@@ -114,6 +116,8 @@
 #elif defined USE_HT32F61049_DVB
   #include "HT32_Board/ht32f5xxxx_board_01.c"
 #elif defined USE_HT32F61049_SK
+  #include "HT32_Board/ht32f5xxxx_board_01.c"
+#elif defined USE_HT32F68040_DVB
   #include "HT32_Board/ht32f5xxxx_board_01.c"
 #else
  #error "Please select board by define USE_HT32FXXXX_XXX in project."

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_rstcu.h
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 9908         $
+ * @date    $Date:: 2026-07-09 #$
  * @brief   The header file of the Reset Control Unit library.
  *************************************************************************************************************
  * @attention
@@ -176,7 +176,7 @@ typedef union
     unsigned long DAC0       :1;    // Bit 21
     #endif
     unsigned long CMP        :1;    // Bit 22
-    #if defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256)
+    #if defined(USE_HT32F66242) || defined(USE_HT32F66246) || defined(USE_HT32F66256) || defined(USE_HT32F68040)
     unsigned long PGA        :1;    // Bit 23
     #else
     unsigned long OPA        :1;    // Bit 23

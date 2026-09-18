@@ -6,8 +6,8 @@
 /*                                                                                                         */
 /*-----------------------------------------------------------------------------------------------------------
 ;  File Name        : startup_ht32f5xxxx_gcc_11.s
-;  Version          : $Rev:: 6206         $
-;  Date             : $Date:: 2022-10-05 #$
+;  Version          : $Rev:: 9985         $
+;  Date             : $Date:: 2026-09-10 #$
 ;  Description      : Startup code.
 ;-----------------------------------------------------------------------------------------------------------*/
 
@@ -65,7 +65,7 @@
 ;//   <o> Stack Size (in Bytes, must 8 byte aligned) <:8>
 */
     .equ    Stack_Size, 512
-    .section ".stack", "w"
+    .section ".stack", "aw", %nobits
     .align  3
     .globl  __StackTop
     .globl  __StackLimit
@@ -83,7 +83,7 @@ __StackTop:
 ;//   <o>  Heap Size (in Bytes) <:8>
 */
     .equ    Heap_Size, 0
-    .section ".heap", "w"
+    .section ".heap", "aw", %nobits
     .align  3
     .globl  __HeapBase
     .globl  _end

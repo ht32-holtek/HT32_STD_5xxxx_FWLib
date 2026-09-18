@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/BOD_LVD/ht32_board_config.h
- * @version $Rev:: 9723         $
- * @date    $Date:: 2026-03-25 #$
+ * @version $Rev:: 9978         $
+ * @date    $Date:: 2026-09-09 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -147,10 +147,6 @@
 
 #if defined(USE_HT32F61355_56_57)
   #define HTCFG_PWRCU_LVDS    (PWRCU_LVDS_3V)
-#endif
-
-#if defined(USE_HT32F66242)
-  #define HTCFG_PWRCU_LVDS    (PWRCU_LVDS_3V05)
 #endif
 
 #if defined(USE_HT32F66246)
