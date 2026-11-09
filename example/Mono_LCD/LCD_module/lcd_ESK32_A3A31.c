@@ -26,6 +26,8 @@
  ************************************************************************************************************/
 
 /* Includes ------------------------------------------------------------------------------------------------*/
+#include "ht32.h"
+#include "ht32_board_config.h"
 #include "ht32_lcd_board.h"
 #include "lcd_ESK32_A3A31.h"
 
@@ -172,7 +174,7 @@ void LCD_Init_ESK32_A3A31(void)
   /* !!! NOTICE !!!
      Must wait until the LCDENS = 0 before change the LCD control register.
   */
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
 
   /* LCDCLK config                                                                                          */
   CKCU_LCDClockConfig(CKCU_LCDSRC_LSI);     /* Using internal 32 kHz RC oscillator clock. LCDCLK = 32 kHz.  */
@@ -189,6 +191,11 @@ void LCD_Init_ESK32_A3A31(void)
   LCD_InitStructure.LCD_Waveform = LCD_Type_B_Waveform;
   LCD_DriverInit(&LCD_InitStructure);
 
+  LCD_MuxConfig(COM7_MUXPIN_GROUP, LCD_MUX_SEL_COM, LCD_MUX_UNUSED);
+  LCD_MuxConfig(COM6_MUXPIN_GROUP, LCD_MUX_SEL_COM, LCD_MUX_UNUSED);
+  LCD_MuxConfig(COM5_MUXPIN_GROUP, LCD_MUX_SEL_COM, LCD_MUX_UNUSED);
+  LCD_MuxConfig(COM4_MUXPIN_GROUP, LCD_MUX_SEL_COM, LCD_MUX_UNUSED);
+
   /* Enable High Drive Mode                                                                                 */
   LCD_HighDriveConfig(LCD_HighDrive_Static);
 
@@ -199,7 +206,7 @@ void LCD_Init_ESK32_A3A31(void)
   LCD_ChargePumpConfig(LCD_ChargePump_3V25);
 
   /* Wait for charge pump ready                                                                             */
-  while (LCD_GetFlagStatus(LCD_FLAG_RDY) == RESET);
+  while (LCD_GetFlagStatus(LCD_FLAG_RDY) == RESET){};
 
   /* LCD Interrupt                                                                                          */
   LCD_ClearFlag(LCD_CLR_UDD | LCD_CLR_SOF);
@@ -219,9 +226,13 @@ void LCD_Init_ESK32_A3A31(void)
 void LCD_PixelConfig(COM_SEG_Type pixel, LCD_PIXEL_CONTROL_Enum on_off)
 {
   if (on_off)
+  {
     HT_LCD->RAM[pixel.RAM_Index] |= (u32)0x1 << pixel.BIT_Index;
+  }
   else
+  {
     HT_LCD->RAM[pixel.RAM_Index] &= ~((u32)0x1 << pixel.BIT_Index);
+  }
 }
 
 /*********************************************************************************************************//**
@@ -283,14 +294,18 @@ void LCD_show_VoiceConfig(LCD_VOICE_LEVEL_Enum level)
     LCD_PixelConfig(TAB_Voice_Level[0], LCD_PIXEL_ON);
 
     for (i = 1; i < 6; i++)
+    {
       LCD_PixelConfig(TAB_Voice_Level[i], LCD_PIXEL_OFF);
+    }
   }
   else
   {
     LCD_PixelConfig(TAB_Voice_Level[0], LCD_PIXEL_OFF);
 
     for (i = 1; i < 6; i++)
+    {
       LCD_PixelConfig(TAB_Voice_Level[i], (LCD_PIXEL_CONTROL_Enum)(i <= level));
+    }
   }
 }
 
@@ -303,7 +318,9 @@ void LCD_show_RF_Level(LCD_RF_LEVEL_Enum level)
 {
   int i;
   for (i = 0; i < 3; i++)
+  {
     LCD_PixelConfig(TAB_RF_Level[i], (LCD_PIXEL_CONTROL_Enum)(i < level));
+  }
 }
 
 /*********************************************************************************************************//**
@@ -315,7 +332,9 @@ void LCD_show_BAT_Level(LCD_BAT_LEVEL_Enum level)
 {
   int i;
   for (i = 0; i < 3; i++)
+  {
     LCD_PixelConfig(TAB_BAT_Level[i], (LCD_PIXEL_CONTROL_Enum)(i < level));
+  }
 }
 
 /*********************************************************************************************************//**
@@ -327,7 +346,9 @@ void LCD_show_Group1_Unit(LCD_UNIT_Enum unit_id)
 {
   int i;
   for (i = 0; i < 3; i++)
+  {
     LCD_PixelConfig(TAB_G1_Unit[i], (LCD_PIXEL_CONTROL_Enum)(i == unit_id));
+  }
 }
 
 /*********************************************************************************************************//**
@@ -339,7 +360,9 @@ void LCD_show_Group2_Unit(LCD_UNIT_Enum unit_id)
 {
   int i;
   for (i = 0; i < 4; i++)
+  {
     LCD_PixelConfig(TAB_G2_Unit[i], (LCD_PIXEL_CONTROL_Enum)(i == unit_id));
+  }
 }
 
 /*********************************************************************************************************//**
@@ -351,7 +374,9 @@ void LCD_show_Group1_Dot(LCD_DIGIT_ID_Enum digit_n)
 {
   int i;
   for (i = 0; i < 3; i++)
+  {
     LCD_PixelConfig(TAB_G1_Dot[i], (LCD_PIXEL_CONTROL_Enum)(i == digit_n));
+  }
 }
 
 /*********************************************************************************************************//**
@@ -363,7 +388,9 @@ void LCD_show_Group2_Dot(LCD_DIGIT_ID_Enum digit_n)
 {
   int i;
   for (i = 0; i < 4; i++)
+  {
     LCD_PixelConfig(TAB_G2_Dot[i], (LCD_PIXEL_CONTROL_Enum)(i == digit_n));
+  }
 }
 
 /*********************************************************************************************************//**
@@ -378,19 +405,27 @@ void LCD_show_Matrix(u8 StartX, u8 StartY, LCD_PIXEL_CONTROL_Enum on_off)
   u8 bit_index, ram_index;
 
   if (StartX >= _MATRIX_X_SIZE)
+  {
     StartX = _MATRIX_X_SIZE-1;
+  }
 
   if (StartY >= _MATRIX_Y_SIZE)
+  {
     StartY = _MATRIX_Y_SIZE-1;
+  }
 
   bit_index = TAB_MATRIX_X_BIT_INDEX[StartX];
   ram_index = TAB_MATRIX_Y_RAM_INDEX[StartY] + (bit_index >> 5);
   bit_index =  bit_index & 0x1F;
 
   if (on_off)
+  {
     HT_LCD->RAM[ram_index] |= (u32)0x1 << bit_index;
+  }
   else
+  {
     HT_LCD->RAM[ram_index] &= ~((u32)0x1 << bit_index);
+  }
 }
 
 /*********************************************************************************************************//**

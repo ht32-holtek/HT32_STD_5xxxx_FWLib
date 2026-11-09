@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_board.c
- * @version $Rev:: 9990         $
- * @date    $Date:: 2026-09-14 #$
+ * @version $Rev:: 10083        $
+ * @date    $Date:: 2026-10-14 #$
  * @brief   HT32 target board related file.
  *************************************************************************************************************
  * @attention
@@ -102,6 +102,8 @@
 #elif defined USE_HT32F50441_SK
   #include "HT32_Board/ht32f5xxxx_board_01.c"
 #elif defined USE_HT32F53252_SK
+  #include "HT32_Board/ht32f5xxxx_board_01.c"
+#elif defined USE_HT32F64951_SK
   #include "HT32_Board/ht32f5xxxx_board_01.c"
 #elif defined USE_HT32F53241_SK
   #include "HT32_Board/ht32f5xxxx_board_01.c"

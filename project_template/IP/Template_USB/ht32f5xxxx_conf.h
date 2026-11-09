@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    IP/Example/ht32f5xxxx_conf.h
- * @version $Rev:: 9829         $
- * @date    $Date:: 2026-05-28 #$
+ * @version $Rev:: 10107        $
+ * @date    $Date:: 2026-10-28 #$
  * @brief   Library configuration file.
  *************************************************************************************************************
  * @attention
@@ -375,11 +375,11 @@
 // <i> !!! NOTICE !!! The fixed default temperature is calibrated under specific production test conditions,
 // <i> which represent the environment of that batch only. The actual calibration temperature may slightly
 // <i> between production lots.
-#define ADC_CAL_TEMP_POINT_SORUCE     0
+#define ADC_CAL_TEMP_POINT_SOURCE     0
 
 // <o0> Temperature Sensor Calibration Reference
 // <i> Set the calibration reference temperature in milli-degree Celsius.
-// <i> This setting is only effective when ADC_CAL_TEMP_POINT_SORUCE is set to 0 (Fixed Default Temperature).
+// <i> This setting is only effective when ADC_CAL_TEMP_POINT_SOURCE is set to 0 (Fixed Default Temperature).
 #define ADC_FIXED_CAL_TEMP_mC       22000
 
 /* Enable/disable the specific peripheral inclusion                                                         */

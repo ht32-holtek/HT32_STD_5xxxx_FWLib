@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    RSTCU/Peripheral_Reset_Function/ht32f5xxxx_01_it.c
- * @version $Rev:: 2970         $
- * @date    $Date:: 2018-08-03 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -110,7 +110,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* Toggle LED1                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 
 /**

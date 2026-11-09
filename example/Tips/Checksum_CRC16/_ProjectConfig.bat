@@ -1,7 +1,7 @@
 REM /*********************************************************************************************************//**
 REM * @file    _ProjectConfig.bat
-REM * @version $Rev:: 9096         $
-REM * @date    $Date:: 2025-06-17 #$
+REM * @version $Rev:: 10099        $
+REM * @date    $Date:: 2026-10-22 #$
 REM * @brief   Project configure file.
 REM *************************************************************************************************************
 
@@ -26,6 +26,7 @@ rmdir /S /Q "EWARM"
 rmdir /S /Q "EWARMv8"
 rmdir /S /Q "GNU_ARM"
 rem rmdir /S /Q "HT32-IDE"
+rem rmdir /S /Q "HT32_VSCode"
 rem rmdir /S /Q "MDK_ARM"
 rem rmdir /S /Q "MDK_ARMv5"
 rem rmdir /S /Q "MDK_ARMv537"
@@ -87,6 +88,7 @@ SET HT_LINKER_NAME_KEIL=linker.lin
 SET HT_LINKER_NAME_IAR=linker.icf
 SET HT_LINKER_NAME_GNU=..\GNU\linker.ld
 SET HT_LINKER_NAME_HT32_IDE=GNU_ARM\linker.ld
+SET HT_LINKER_NAME_HT32_VSCODE=GNU_ARM\linker.ld
 SET HT_LINKER_NAME_SES=../SES/linker_test.icf
 SET HT_LINKER_NAME_SourceryG=..\SourceryG\linker_test.ld
 REM ============================================================================
@@ -112,8 +114,9 @@ gsar.exe -s"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a       
 gsar.exe -s"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a            <RunUserProg2>0</RunUserProg2>" -r"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a            <RunUserProg2>1</RunUserProg2>" MDK_ARMv5\Project_*.uvprojx -o
 gsar.exe -s"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a            <RunUserProg2>0</RunUserProg2>" -r"<AfterMake>:x0a            <RunUserProg1>1</RunUserProg1>:x0a            <RunUserProg2>1</RunUserProg2>" MDK_ARMv537\Project_*.uvprojx -o
 
-gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARM\Project_*.uvproj -o
-gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARMv5\Project_*.uvprojx -o
-gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\_Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARMv537\Project_*.uvprojx -o
+gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARM\Project_*.uvproj -o
+gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARMv5\Project_*.uvprojx -o
+gsar.exe -s"<UserProg2Name>fromelf --text -c -o \":x21L.text\" \":x21L\"</UserProg2Name>" -r"<UserProg2Name>..\Tools\srec_make_combo.bat keil @L $D \"$J\"</UserProg2Name>" MDK_ARMv537\Project_*.uvprojx -o
 
-gsar.exe -s"REM ADD_YOUR_CODE_HERE" -r"REM ADD_YOUR_CODE_HERE:x0d:x0a..\..\..\_Tools\srec_make_combo.bat :x25VAR_MODE:x25 :x25VAR_OUTPUT_NAME:x25 :x25VAR_IC_NAME:x25 :x25VAR_KEIL_PATH:x25" HT32-IDE\afterbuild.bat -o
+gsar.exe -s"REM ADD_YOUR_CODE_HERE" -r"REM ADD_YOUR_CODE_HERE:x0d:x0a..\..\..\Tools\srec_make_combo.bat :x25VAR_MODE:x25 :x25VAR_OUTPUT_NAME:x25 :x25VAR_IC_NAME:x25 :x25VAR_KEIL_PATH:x25" HT32-IDE\afterbuild.bat -o
+gsar.exe -s"REM ADD_YOUR_CODE_HERE" -r"REM ADD_YOUR_CODE_HERE:x0d:x0a..\Tools\srec_make_combo.bat :x25VAR_MODE:x25 :x25VAR_OUTPUT_NAME:x25 :x25VAR_IC_NAME:x25 :x25VAR_KEIL_PATH:x25" HT32_VSCode\afterbuild.bat -o

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_TempSensor_Interrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 9771         $
- * @date    $Date:: 2026-04-16 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -137,14 +137,14 @@ void HTCFG_ADC_IRQHandler(void)
       ADC_ClearIntPendingBit(HTCFG_ADC_PORT, ADC_FLAG_CYCLE_EOC);
     }
     
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
     /* Software trigger to start ADC conversion                                                             */
     ADC_SoftwareStartConvCmd(HTCFG_ADC_PORT, ENABLE);
   }
 
   if (ADC_GetIntStatus(HTCFG_ADC_PORT, ADC_INT_CYCLE_EOC) == SET)
   {
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED2);
     /* The ADC comversion is finish, and clear ready end of conversion flag                                 */
     ADC_ClearIntPendingBit(HTCFG_ADC_PORT, ADC_FLAG_CYCLE_EOC);
 

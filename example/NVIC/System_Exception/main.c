@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    NVIC/System_Exception/main.c
- * @version $Rev:: 681          $
- * @date    $Date:: 2016-05-25 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -49,9 +49,9 @@
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   /* Configure the Exception Handler Interrupts Priority                                                    */
   NVIC_SetPriority(PendSV_IRQn, 0);

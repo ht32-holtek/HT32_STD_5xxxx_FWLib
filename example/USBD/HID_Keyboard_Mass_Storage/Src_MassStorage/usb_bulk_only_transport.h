@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Src_MassStorage/usb_bulk_only_transport.h
- * @version $Rev:: 3382         $
- * @date    $Date:: 2019-02-12 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The header file of Bulk Only Transport.
  *************************************************************************************************************
  * @attention
@@ -131,8 +131,8 @@ typedef struct
 #if (ACC_LED == 1)
 #undef ACC_LED_ON
 #undef ACC_LED_OFF
-#define ACC_LED_ON()            (HT32F_DVB_LEDOn(ACC_LED_ID))
-#define ACC_LED_OFF()           (HT32F_DVB_LEDOff(ACC_LED_ID))
+#define ACC_LED_ON()            (HT32_DVB_LEDOn(ACC_LED_ID))
+#define ACC_LED_OFF()           (HT32_DVB_LEDOff(ACC_LED_ID))
 #endif
 
 #define BOT_ADDR_MODE_BYTE      (0)

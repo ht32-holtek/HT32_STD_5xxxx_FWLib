@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/USB_UAC_Sound/main.c
- * @version $Rev:: 7416         $
- * @date    $Date:: 2023-12-19 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The main program of USB Device Audio example.
  *************************************************************************************************************
  * @attention
@@ -102,7 +102,7 @@ int main(void)
   /* Config I2S                                                                                             */
   I2S_Configuration();
 
-  HT32F_DVB_USBConnect();
+  HT32_DVB_USBConnect();
 
   while (1)
   {

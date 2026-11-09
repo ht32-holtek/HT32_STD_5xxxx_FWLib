@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    NVIC/External_Interrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -125,7 +125,7 @@ void FLASH_IRQHandler(void)
 {
   Delay(DELAY_TIME);
   /* Turn on LED1                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
 }
 
 /*********************************************************************************************************//**
@@ -138,7 +138,7 @@ void LVD_BOD_IRQHandler(void)
   NVIC_SetPendingIRQ(FLASH_IRQn);
   Delay(DELAY_TIME);
   /* Turn on LED2                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED2);
+  HT32_DVB_LEDOn(HT_LED2);
 }
 
 /*********************************************************************************************************//**
@@ -151,7 +151,7 @@ void EXTI0_1_IRQHandler(void)
   NVIC_SetPendingIRQ(LVD_BOD_IRQn);
   Delay(DELAY_TIME);
   /* Turn on LED3                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED3);
+  HT32_DVB_LEDOn(HT_LED3);
 }
 
 /*********************************************************************************************************//**
@@ -164,7 +164,7 @@ void EXTI0_7_IRQHandler(void)
   NVIC_SetPendingIRQ(LVD_BOD_IRQn);
   Delay(DELAY_TIME);
   /* Turn on LED3                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED3);
+  HT32_DVB_LEDOn(HT_LED3);
 }
 
 /* Private functions ---------------------------------------------------------------------------------------*/

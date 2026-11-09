@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/WakeUp_SleepMode/main.c
- * @version $Rev:: 4968         $
- * @date    $Date:: 2020-10-12 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -50,15 +50,15 @@
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   /* Turn on LEDs                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED1);
-  HT32F_DVB_LEDOn(HT_LED2);
+  HT32_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED2);
 
   /* Configure WAKEUP button as input enable                                                                */
-  HT32F_DVB_PBInit(BUTTON_WAKEUP, BUTTON_MODE_EXTI);
+  HT32_DVB_PBInit(BUTTON_WAKEUP, BUTTON_MODE_EXTI);
 
   /* Enter sleep mode & Wait For Interrupt                                                                  */
   __WFI();

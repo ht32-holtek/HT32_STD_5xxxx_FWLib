@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/Mass_Storage/main.c
- * @version $Rev:: 9723         $
- * @date    $Date:: 2026-03-25 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The main program of USB Device Mass Storage example.
  *************************************************************************************************************
  * @attention
@@ -75,10 +75,10 @@ int main(void)
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
   USB_Configuration();                /* USB Related configuration                                          */
 
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
-  HT32F_DVB_USBConnect();
+  HT32_DVB_USBConnect();
 
   while (1)
   {
@@ -229,12 +229,12 @@ void EnumLED(void)
   {
     case USB_STATE_CONFIGURED:
     {
-      HT32F_DVB_LEDOn(HT_LED1);
+      HT32_DVB_LEDOn(HT_LED1);
       break;
     }
     default:
     {
-      HT32F_DVB_LEDOff(HT_LED1);
+      HT32_DVB_LEDOff(HT_LED1);
       break;
     }
   }

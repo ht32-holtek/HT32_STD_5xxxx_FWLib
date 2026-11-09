@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PGA/VoltageFollower/main.c
- * @version $Rev:: 8167         $
- * @date    $Date:: 2024-09-23 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -54,7 +54,7 @@ ErrStatus PGA_InputCalibration(HT_PGA0_X_TypeDef* HT_PGAn, PGA_CALIBRATION_INPUT
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   Time_Init();
 
@@ -91,14 +91,14 @@ void PGA_Configuration(void)
   AFIO_GPxConfig(HTCFG_PGA_NEG_GPIO_ID, HTCFG_PGA_NEG_AFIO_PIN, AFIO_FUN_PGA);
   AFIO_GPxConfig(HTCFG_PGA_OUT_GPIO_ID, HTCFG_PGA_OUT_AFIO_PIN, AFIO_FUN_PGA);
 
-  HT32F_DVB_LEDOn(HT_LED1); // Before calibration, turn on LED1
+  HT32_DVB_LEDOn(HT_LED1); // Before calibration, turn on LED1
 
   if(!PGA_InputCalibration(HTCFG_PGA_PORT, PGA_CALIBRATION_INPUT_NEGATIVE))
   {
     while(1){};
   }
 
-  HT32F_DVB_LEDOff(HT_LED1); //Calibration complete, turn off LED1
+  HT32_DVB_LEDOff(HT_LED1); //Calibration complete, turn off LED1
 
   /* Set Voltage Follower Mode                                                                              */
   PGA_SetModeManual(HTCFG_PGA_PORT);

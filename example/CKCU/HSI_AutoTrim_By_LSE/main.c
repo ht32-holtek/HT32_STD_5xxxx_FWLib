@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/HSI_AutoTrim_By_LSE/main.c
- * @version $Rev:: 7524         $
- * @date    $Date:: 2024-01-17 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -59,7 +59,7 @@ int main(void)
 {
   RETARGET_Configuration();
 
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   #if 0
   CKOUTConfig();
@@ -115,7 +115,7 @@ void AutoTrim_MainRoutine(void)
     if (guIsAutoTrimReady == TRUE)
     {
       #if 1
-      HT32F_DVB_LEDToggle(HT_LED1);
+      HT32_DVB_LEDToggle(HT_LED1);
       printf("HSI Auto Trim Ready!\r\n");
       #endif
     }

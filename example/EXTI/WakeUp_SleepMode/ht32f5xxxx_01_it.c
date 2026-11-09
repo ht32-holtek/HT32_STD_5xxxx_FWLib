@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/WakeUp_SleepMode/ht32f5xxxx_01_it.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -110,7 +110,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* Toggle LEDs                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED2);
+  HT32_DVB_LEDToggle(HT_LED2);
 }
 
 #if defined(USE_HT32F50030_SK)
@@ -125,7 +125,7 @@ void EXTI0_1_IRQHandler(void)
   EXTI_ClearEdgeFlag(GPIO2EXTI(WAKEUP_BUTTON_EXTI_CHANNEL));
 
   /* Toggle LED1                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #endif
 
@@ -141,7 +141,7 @@ void EXTI10_15_IRQHandler(void)
   EXTI_ClearEdgeFlag(GPIO2EXTI(WAKEUP_BUTTON_EXTI_CHANNEL));
 
   /* Toggle LED1                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #endif
 
@@ -157,7 +157,7 @@ void EXTI4_9_IRQHandler(void)
   EXTI_ClearEdgeFlag(GPIO2EXTI(WAKEUP_BUTTON_EXTI_CHANNEL));
 
   /* Toggle LED1                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #endif
 
@@ -173,7 +173,7 @@ void EXTI2_3_IRQHandler(void)
   EXTI_ClearEdgeFlag(GPIO2EXTI(WAKEUP_BUTTON_EXTI_CHANNEL));
 
   /* Toggle LED1                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #endif
 
@@ -189,7 +189,7 @@ void EXTI8_15_IRQHandler(void)
   EXTI_ClearEdgeFlag(GPIO2EXTI(WAKEUP_BUTTON_EXTI_CHANNEL));
 
   /* Toggle LED1                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #endif
 
@@ -204,7 +204,7 @@ void EXTI4_15_IRQHandler(void)
   EXTI_ClearEdgeFlag(GPIO2EXTI(WAKEUP_BUTTON_EXTI_CHANNEL));
 
   /* Toggle LED1                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #endif
 

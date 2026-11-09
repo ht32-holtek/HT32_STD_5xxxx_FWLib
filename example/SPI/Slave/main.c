@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Slave/main.c
- * @version $Rev:: 8750         $
- * @date    $Date:: 2025-05-08 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -65,7 +65,7 @@ int main(void)
 {
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
 
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_EXTI);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_EXTI);
 
   SPIINT_Configuration();             /* SPI INT Related configuration                                      */
 

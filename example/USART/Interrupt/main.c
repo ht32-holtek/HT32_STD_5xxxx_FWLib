@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/Interrupt/main.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -96,8 +96,8 @@ int main(void)
   }
   #endif
 
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   gURRx_Ptr = gRx_Buffer;
 

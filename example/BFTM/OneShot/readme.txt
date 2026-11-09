@@ -5,7 +5,7 @@
  * @file    BFTM/OneShot/readme.txt
  * @version V1.00
  * @date    2020-01-30
- * @brief   Description of BFTM repetitive toggle.
+ * @brief   Description of BFTM one shot mode.
  @endverbatim
 
 @par Example Description:

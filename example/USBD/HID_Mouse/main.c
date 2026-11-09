@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/HID_Mouse/main.c
- * @version $Rev:: 7416         $
- * @date    $Date:: 2023-12-19 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The main program of USB Device HID Mouse example.
  *************************************************************************************************************
  * @attention
@@ -71,7 +71,7 @@ int main(void)
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
   USB_Configuration();                /* USB Related configuration                                          */
 
-  HT32F_DVB_USBConnect();
+  HT32_DVB_USBConnect();
 
   while (1)
   {
@@ -105,9 +105,9 @@ void GPIO_Configuration(void)
   /*--------------------------------------------------------------------------------------------------------*/
   /* Configure GPIO as input for button                                                                     */
   /*--------------------------------------------------------------------------------------------------------*/
-  HT32F_DVB_PBInit(BUTTON_WAKEUP, BUTTON_MODE_GPIO);
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
-  HT32F_DVB_PBInit(BUTTON_KEY2, BUTTON_MODE_GPIO);
+  HT32_DVB_PBInit(BUTTON_WAKEUP, BUTTON_MODE_GPIO);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
+  HT32_DVB_PBInit(BUTTON_KEY2, BUTTON_MODE_GPIO);
 
   /*--------------------------------------------------------------------------------------------------------*/
   /* Configure EXTI for Remote Wakeup                                                                       */

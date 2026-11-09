@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_exti.c
- * @version $Rev:: 8552         $
- * @date    $Date:: 2025-04-14 #$
+ * @version $Rev:: 10076        $
+ * @date    $Date:: 2026-10-13 #$
  * @brief   This file provides all the EXTI firmware functions.
  *************************************************************************************************************
  * @attention
@@ -133,7 +133,7 @@ void EXTI_Init(EXTI_InitTypeDef* EXTI_InitStruct)
 /*********************************************************************************************************//**
  * @brief Enable or Disable the specified EXTI channelx interrupts.
  * @param EXTI_Channel: specify the EXTI channel.
- *   This parameter can be one of the following values:
+ *   This parameter can be any combination of the following values:
  *     @arg EXTI_CHANNEL_0
  *     @arg EXTI_CHANNEL_1
  *     @arg EXTI_CHANNEL_2
@@ -197,7 +197,7 @@ void EXTI_SetDebounceCounterPrescaler(EXTI_DebCntPre_TypeDef EXTI_DBCNTPRE_DIVn)
 /*********************************************************************************************************//**
  * @brief Configure the EXTI channelx event wakeup function.
  * @param EXTI_Channel: specify the EXTI channel.
- *   This parameter can be one of the following values:
+ *   This parameter can be any combination of the following values:
  *     @arg EXTI_CHANNEL_0
  *     @arg EXTI_CHANNEL_1
  *     @arg EXTI_CHANNEL_2
@@ -462,7 +462,7 @@ FlagStatus EXTI_GetWakeupFlagStatus(u32 EXTI_Channel)
 /*********************************************************************************************************//**
  * @brief Activate or Deactivate an EXTI channelx interrupt by software.
  * @param EXTI_Channel: specify the EXTI channel.
- *   This parameter can be one of the following values:
+ *   This parameter can be any combination of the following values:
  *     @arg EXTI_CHANNEL_0
  *     @arg EXTI_CHANNEL_1
  *     @arg EXTI_CHANNEL_2
@@ -490,7 +490,7 @@ void EXTI_SWIntCmd(u32 EXTI_Channel, ControlStatus NewState)
 
   if (NewState == ENABLE)
   {
-    HT_EXTI->SSCR = 1 << EXTI_Channel;
+    HT_EXTI->SSCR |= 1 << EXTI_Channel;
   }
   else
   {

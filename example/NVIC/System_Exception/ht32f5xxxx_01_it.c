@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    NVIC/System_Exception/ht32f5xxxx_01_it.c
- * @version $Rev:: 2970         $
- * @date    $Date:: 2018-08-03 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -56,7 +56,7 @@ static void Delay(vu32 count);
 void NMI_Handler(void)
 {
   /* Turn on LED1                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
   Delay(DELAY_TIME);
 }
 
@@ -111,7 +111,7 @@ void SVC_Handler(void)
 void PendSV_Handler(void)
 {
   /* Turn on LED3                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED3);
+  HT32_DVB_LEDOn(HT_LED3);
   Delay(DELAY_TIME);
 }
 
@@ -122,7 +122,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* Turn on LED2                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED2);
+  HT32_DVB_LEDOn(HT_LED2);
   Delay(DELAY_TIME);
 }
 

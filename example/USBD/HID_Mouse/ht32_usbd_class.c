@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/HID_Mouse/ht32_usbd_class.c
- * @version $Rev:: 4874         $
- * @date    $Date:: 2020-08-05 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The USB Device Class.
  *************************************************************************************************************
  * @attention
@@ -228,10 +228,10 @@ static void USBDClass_EPT1INProcess(void)
   gMouseInfo.y = 0;
   if (gIsEP1INEmpty == TRUE)
   {
-    gMouseInfo.Button.bits.B1 = !HT32F_DVB_PBGetState(BUTTON_KEY1);
-    gMouseInfo.Button.bits.B2 = !HT32F_DVB_PBGetState(BUTTON_KEY2);
+    gMouseInfo.Button.bits.B1 = !HT32_DVB_PBGetState(BUTTON_KEY1);
+    gMouseInfo.Button.bits.B2 = !HT32_DVB_PBGetState(BUTTON_KEY2);
 
-    if (HT32F_DVB_PBGetState(BUTTON_WAKEUP))
+    if (HT32_DVB_PBGetState(BUTTON_WAKEUP))
       gMouseInfo.x += CURSOR_STEP;
 
     gIsEP1INEmpty = FALSE;

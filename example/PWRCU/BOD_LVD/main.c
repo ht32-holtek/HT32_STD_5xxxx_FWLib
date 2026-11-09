@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/BOD_LVD/main.c
- * @version $Rev:: 5694         $
- * @date    $Date:: 2022-01-06 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -81,9 +81,9 @@ int main(void)
   }
   #endif
   /* Init LED1, LED2 used to output state                                                                   */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   /* Enable NVIC LVD interrupt                                                                              */
   NVIC_EnableIRQ(LVD_BOD_IRQn);
@@ -101,7 +101,7 @@ int main(void)
   /* Toggle LED1 in an infinite loop                                                                        */
   while (1)
   {
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
     delay(1000000);
   }
 }

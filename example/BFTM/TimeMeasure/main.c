@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    BFTM/TimeMeasure/main.c
- * @version $Rev:: 9309         $
- * @date    $Date:: 2025-07-17 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -76,7 +76,7 @@ s32 quo;  /* Quotient     */
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
   RETARGET_Configuration();
 
   BFTM_Configuration();
@@ -133,7 +133,7 @@ void TimeMeasureFun(void)
   /*--------------------------------------------------------------------------------------------------------*/
   MeasureStart();
   {
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
   MeasureEnd(uCount); // Time count based on the system clock, t = uCount/SystemCoreClock
 

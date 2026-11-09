@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    eeprom_emulation.c
- * @version $Rev:: 1600         $
- * @date    $Date:: 2026-09-07 #$
+ * @version $Rev:: 1620         $
+ * @date    $Date:: 2026-09-24 #$
  * @brief   The source file of EEPROM emulation APIs.
  *************************************************************************************************************
  * @attention
@@ -571,7 +571,9 @@ static EEPROM_EMU_State _EEPROM_TransferPage(void)
 {
   EEPROM_EMU_State EepromStatus;
   s8 ActivePage;
-  u32 NewPage, OldPage, i;
+  u32 NewPage = 0xFFFFFFFF;
+  u32 OldPage = 0xFFFFFFFF;
+  u32 i;
   u16 VarData;
 
   /* get NewPage & OldPage status                                                                           */
@@ -686,12 +688,14 @@ static EEPROM_EMU_State _EEPROM_IsAddrInRange(u32 uActiveAddress)
   ***********************************************************************************************************/
 static EEPROM_EMU_State _EEPROM_ErasePageHelper(u32 PageAddr)
 {
+  FLASH_State status;
+
   if (IS_PAGEADDR_OUTOFRANGE(PageAddr))
   {
     return EEPROM_EMU_ADDR_OUTOFRANGE;
   }
 
-  FLASH_State status = EEPROM_FLASH_ERASE(PageAddr);
+  status = EEPROM_FLASH_ERASE(PageAddr);
   CACHE_PROCESS();
 
   if (status != FLASH_COMPLETE)

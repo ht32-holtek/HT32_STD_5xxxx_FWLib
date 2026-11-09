@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/PDMA/main.c
- * @version $Rev:: 9705         $
- * @date    $Date:: 2026-03-18 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -73,8 +73,8 @@ u8 I2C_Slave_Buffer_Tx[BufferSize] = {0x00, 0x11, 0x22, 0x33,
 int main(void)
 {
   /* Initialize LED1 & LED2 on HT32 board                                                                   */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   PDMA_Configuration();
 
@@ -242,11 +242,11 @@ void I2C_Loopback(void)
   /* Check on validity of received data on I2C Master Buffer_Rx                                             */
   if (CmpBuffer(I2C_Master_Buffer_Rx, I2C_Slave_Buffer_Tx, BufferSize))
   {
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
   else
   {
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
 }
 

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    IP/Example/main.c
- * @version $Rev:: 7811         $
- * @date    $Date:: 2024-07-01 #$
+ * @version $Rev:: 10035        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -89,19 +89,19 @@ int main(void)
   GPIO_Configuration();               /* GPIO Related configuration                                         */
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
 
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
-  HT32F_DVB_LEDOn(HT_LED1);
-  HT32F_DVB_LEDOff(HT_LED2);
-  HT32F_DVB_LEDOn(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED2);
+  HT32_DVB_LEDOn(HT_LED3);
 
   for (input = 0; input < 10; input++)
   {
     __Delay(2000000);
-    HT32F_DVB_LEDToggle(HT_LED1);
-    HT32F_DVB_LEDToggle(HT_LED2);
-    HT32F_DVB_LEDToggle(HT_LED3);
+    HT32_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED3);
   }
 
   for (input = 0; input < 100; input++)
@@ -118,9 +118,9 @@ int main(void)
     printf("\r\nYour input is %c[0x%x]\r\n\r\n", input, input);
     SERIAL_Flush();
 
-    HT32F_DVB_LEDToggle(HT_LED1);
-    HT32F_DVB_LEDToggle(HT_LED2);
-    HT32F_DVB_LEDToggle(HT_LED3);
+    HT32_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED3);
   }
 }
 

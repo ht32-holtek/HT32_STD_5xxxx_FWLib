@@ -1,8 +1,8 @@
 REM @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _ProjectSource.bat
-REM * @version $Rev:: 9430         $
-REM * @date    $Date:: 2025-09-10 #$
+REM * @version $Rev:: 10135        $
+REM * @date    $Date:: 2026-10-29 #$
 REM * @brief   Add source file into project.
 REM *************************************************************************************************************
 REM * @attention
@@ -88,6 +88,14 @@ gsar.exe -s"<locationURI>PARENT-2-PROJECT_LOC/ht32l5xxxx_01_it.c</locationURI>:x
 gsar.exe -s"<locationURI>PARENT-2-PROJECT_LOC/ht32f7xxxx_01_it.c</locationURI>:x0a		</link>" -r"<locationURI>PARENT-2-PROJECT_LOC/ht32f7xxxx_01_it.c</locationURI>:x0a		</link>:x0a<HTGSARCONT>"  %%D\*.project -o 1> nul 2>&1
 )
 
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s":x22ht32f5xxxx_01_it.c:x22" -r":x22ht32f5xxxx_01_it.c:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+gsar.exe -s":x22ht32f1xxxx_01_it.c:x22" -r":x22ht32f1xxxx_01_it.c:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+gsar.exe -s":x22ht32f4xxxx_01_it.c:x22" -r":x22ht32f4xxxx_01_it.c:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+gsar.exe -s":x22ht32l5xxxx_01_it.c:x22" -r":x22ht32l5xxxx_01_it.c:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+gsar.exe -s":x22ht32f7xxxx_01_it.c:x22" -r":x22ht32f7xxxx_01_it.c:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+)
+
 FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
 
   IF NOT "%%i" == "REM" (
@@ -100,6 +108,8 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       SET Uk=%%k
       SET "Uk=!Uk:\=/!"
     )
+    SET "VscUk=!Uk!"
+    IF "!VscUk:~0,3!" == "../" SET "VscUk=!VscUk:~3!"
 
     SET l=%%l
     SET m=%%m
@@ -131,6 +141,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       gsar.exe -s"<HTGSARCONT>" -r"            <File>:x0a              <FileName>!l!</FileName>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>4</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>4</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
 
       REM !!! TO-DO add .a file to GNU .mk NOT WORK!!!
       gsar.exe -s"<HTGSARCONT_LIBA>" -r" !Uk!!l!<HTGSARCONT_LIBA>" GNU_ARM\!m!.mk -o 1> nul 2>&1
@@ -185,6 +198,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>1</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>1</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"SOURCE_NAME_PATH += !Uk!!l!:x0d:x0a<HTGSARCONT>" GNU_ARM\!m!.mk -o 1> nul 2>&1
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
     ) else if "%%j" == "32" (
       REM GNU .s
       gsar.exe -s"<HTGSARCONT>" -r"            <File>:x0a              <FileName>!l!</FileName>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
@@ -192,6 +208,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>2</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>2</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"SOURCE_NAME_PATH += !Uk!!l!:x0d:x0a<HTGSARCONT>" GNU_ARM\!m!.mk -o 1> nul 2>&1
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
     ) else if "%%j" == "33" (
       REM GNU .cpp
       gsar.exe -s"<HTGSARCONT>" -r"            <File>:x0a              <FileName>!l!</FileName>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
@@ -199,6 +218,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>8</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>8</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"SOURCE_NAME_PATH += !Uk!!l!:x0d:x0a<HTGSARCONT>" GNU_ARM\!m!.mk -o 1> nul 2>&1
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
     ) else if "%%j" == "41" (
       REM SES .c
       gsar.exe -s"<HTGSARCONT>" -r"      <file file_name=:x22!Uk!!l!:x22 />:x0a<HTGSARCONT>" emStudiov4\Project_!m!.emProject -o 1> nul 2>&1
@@ -265,6 +287,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       FOR /D %%D IN (HT32-IDE\Project_!m!) DO (
       gsar.exe -s"<HTGSARCONT>" -r"		<link>:x0a			<name>%%i/!FNAME!</name>:x0a			<type>1</type>:x0a			<locationURI>PARENT-!DEPTH!-PROJECT_LOC/!FOLDER!!FNAME!</locationURI>:x0a		</link>:x0a<HTGSARCONT>"  %%D\*.project -o 1> nul 2>&1
       )
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
     )
   )
 
@@ -281,6 +306,9 @@ gsar.exe -s":x0d:x0a<HTGSARCONT>" -r"" EWARM\Project_*.ewp -o 1> nul 2>&1
 gsar.exe -s":x0d:x0a<HTGSARCONT>" -r"" EWARMv8\Project_*.ewp -o 1> nul 2>&1
 
 gsar.exe -s":x0a<HTGSARCONT>" -r"" emStudiov4\Project_*.emProject -o 1> nul 2>&1
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"<HTGSARCONT>" -r"" %%D\project.meta.json -o 1> nul 2>&1
+)
 
 REM =======================
 REM Add into user defined group
@@ -300,12 +328,17 @@ FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s"						<entry flags=:x22VALUE_WORKSPACE_PATH:x22 kind=:x22sourcePath:x22 name=:x22Config:x22/>" -r"<HTGSARCONT_GROUP>:x0a						<entry flags=:x22VALUE_WORKSPACE_PATH:x22 kind=:x22sourcePath:x22 name=:x22Config:x22/>" %%D\*.cproject -o 1> nul 2>&1
 )
 
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"    :x22Config:x22:x3a" -r"<HTGSARCONT_GROUP>    :x22Config:x22:x3a" %%D\project.meta.json -o 1> nul 2>&1
+)
+
 SET CURRENT_GROUP=0
 SET CURRENT_GROUP_KEIL=0
 SET CURRENT_GROUP_IAR=0
 SET CURRENT_GROUP_GNU=0
 SET CURRENT_GROUP_SES=0
 SET CURRENT_GROUP_HT32IDE=0
+SET CURRENT_GROUP_HT32_VSCODE=0
 
 FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
 
@@ -343,6 +376,13 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
           gsar.exe -s":x0a<HTGSARCONT>" -r"" SourceryG++Lite\Project_*.uvprojx -o 1> nul 2>&1
           gsar.exe -s"<HTGSARCONT_GROUP>" -r"        <Group>:x0a          <GroupName>%%i</GroupName>:x0a          <Files>:x0a<HTGSARCONT>:x0a          </Files>:x0a        </Group>:x0a<HTGSARCONT_GROUP>" GNU_ARM\Project_*.uvprojx -o 1> nul 2>&1
           gsar.exe -s"<HTGSARCONT_GROUP>" -r"        <Group>:x0a          <GroupName>%%i</GroupName>:x0a          <Files>:x0a<HTGSARCONT>:x0a          </Files>:x0a        </Group>:x0a<HTGSARCONT_GROUP>" SourceryG++Lite\Project_*.uvprojx -o 1> nul 2>&1
+        )
+        IF NOT !CURRENT_GROUP_HT32_VSCODE! == %%i (
+          SET CURRENT_GROUP_HT32_VSCODE=%%i
+          FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+          gsar.exe -s"<HTGSARCONT>" -r"" %%D\project.meta.json -o 1> nul 2>&1
+          gsar.exe -s"<HTGSARCONT_GROUP>" -r"    :x22%%i:x22:x3a [:x0a      :x22:x22<HTGSARCONT>:x0a    ]:x2c:x0a<HTGSARCONT_GROUP>" %%D\project.meta.json -o 1> nul 2>&1
+          )
         )
       ) else if "%%j" == "8" (
         REM SES .a
@@ -391,6 +431,11 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
           FOR /D %%D IN (HT32-IDE\Project_*) DO (
           gsar.exe -s"<HTGSARCONT_GROUP>" -r"						<entry flags=:x22VALUE_WORKSPACE_PATH:x22 kind=:x22sourcePath:x22 name=:x22%%i:x22/>:x0a<HTGSARCONT_GROUP>" %%D\*.cproject -o 1> nul 2>&1
           )
+          SET CURRENT_GROUP_HT32_VSCODE=%%i
+          FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+          gsar.exe -s"<HTGSARCONT>" -r"" %%D\project.meta.json -o 1> nul 2>&1
+          gsar.exe -s"<HTGSARCONT_GROUP>" -r"    :x22%%i:x22:x3a [:x0a      :x22:x22<HTGSARCONT>:x0a    ]:x2c:x0a<HTGSARCONT_GROUP>" %%D\project.meta.json -o 1> nul 2>&1
+          )
         )
       ) else if %%j LEQ 13 (
         REM Keil .c 11
@@ -421,9 +466,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
           gsar.exe -s"<HTGSARCONT_GROUP>" -r"    <group>:x0d:x0a        <name>%%i</name>:x0d:x0a<HTGSARCONT>:x0d:x0a    </group>:x0d:x0a<HTGSARCONT_GROUP>" EWARMv8\Project_*.ewp -o 1> nul 2>&1
         )
       ) else if %%j LEQ 33 (
-        REM GNU .c 31
-        REM GNU .cpp 32
-        REM GNU .cpp 33
+        REM GNU / HT32 VS Code .c 31
+        REM GNU / HT32 VS Code .s 32
+        REM GNU / HT32 VS Code .cpp 33
         REM ECHO CURRENT_GROUP_GNU=!CURRENT_GROUP_GNU!
         IF NOT !CURRENT_GROUP_GNU! == %%i (
           SET CURRENT_GROUP_GNU=%%i
@@ -432,6 +477,13 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
           gsar.exe -s":x0a<HTGSARCONT>" -r"" SourceryG++Lite\Project_*.uvprojx -o 1> nul 2>&1
           gsar.exe -s"<HTGSARCONT_GROUP>" -r"        <Group>:x0a          <GroupName>%%i</GroupName>:x0a          <Files>:x0a<HTGSARCONT>:x0a          </Files>:x0a        </Group>:x0a<HTGSARCONT_GROUP>" GNU_ARM\Project_*.uvprojx -o 1> nul 2>&1
           gsar.exe -s"<HTGSARCONT_GROUP>" -r"        <Group>:x0a          <GroupName>%%i</GroupName>:x0a          <Files>:x0a<HTGSARCONT>:x0a          </Files>:x0a        </Group>:x0a<HTGSARCONT_GROUP>" SourceryG++Lite\Project_*.uvprojx -o 1> nul 2>&1
+        )
+        IF NOT !CURRENT_GROUP_HT32_VSCODE! == %%i (
+          SET CURRENT_GROUP_HT32_VSCODE=%%i
+          FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+          gsar.exe -s"<HTGSARCONT>" -r"" %%D\project.meta.json -o 1> nul 2>&1
+          gsar.exe -s"<HTGSARCONT_GROUP>" -r"    :x22%%i:x22:x3a [:x0a      :x22:x22<HTGSARCONT>:x0a    ]:x2c:x0a<HTGSARCONT_GROUP>" %%D\project.meta.json -o 1> nul 2>&1
+          )
         )
       ) else if %%j LEQ 43 (
         REM SES .c 41
@@ -461,6 +513,8 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       SET Uk=%%k
       SET "Uk=!Uk:\=/!"
     )
+    SET "VscUk=!Uk!"
+    IF "!VscUk:~0,3!" == "../" SET "VscUk=!VscUk:~3!"
 
     SET l=%%l
     SET m=%%m
@@ -492,6 +546,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       gsar.exe -s"<HTGSARCONT>" -r"            <File>:x0a              <FileName>!l!</FileName>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>4</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>4</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
 
       REM !!! TO-DO add .a file to GNU .mk NOT WORK!!!
       gsar.exe -s"<HTGSARCONT_LIBA>" -r" !Uk!!l!<HTGSARCONT_LIBA>" GNU_ARM\!m!.mk -o 1> nul 2>&1
@@ -546,6 +603,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>1</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>1</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"SOURCE_NAME_PATH += !Uk!!l!:x0d:x0a<HTGSARCONT>" GNU_ARM\!m!.mk -o 1> nul 2>&1
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
     ) else if "%%j" == "32" (
       REM GNU .s
       gsar.exe -s"<HTGSARCONT>" -r"            <File>:x0a              <FileName>!l!</FileName>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
@@ -553,6 +613,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>2</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>2</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"SOURCE_NAME_PATH += !Uk!!l!:x0d:x0a<HTGSARCONT>" GNU_ARM\!m!.mk -o 1> nul 2>&1
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
     ) else if "%%j" == "33" (
       REM GNU .cpp
       gsar.exe -s"<HTGSARCONT>" -r"            <File>:x0a              <FileName>!l!</FileName>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
@@ -560,6 +623,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>8</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" GNU_ARM\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"              <FileType>8</FileType>:x0a              <FilePath>!k!!l!</FilePath>:x0a            </File>:x0a<HTGSARCONT>" SourceryG++Lite\Project_!m!.uvprojx -o 1> nul 2>&1
       gsar.exe -s"<HTGSARCONT>" -r"SOURCE_NAME_PATH += !Uk!!l!:x0d:x0a<HTGSARCONT>" GNU_ARM\!m!.mk -o 1> nul 2>&1
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
     ) else if "%%j" == "41" (
       REM SES .c
       gsar.exe -s"<HTGSARCONT>" -r"      <file file_name=:x22!Uk!!l!:x22 />:x0a<HTGSARCONT>" emStudiov4\Project_!m!.emProject -o 1> nul 2>&1
@@ -626,6 +692,9 @@ FOR /F "tokens=1,2,3,4,5 delims=, " %%i IN (%PSRC_CONFIG_FILE%) DO (
       FOR /D %%D IN (HT32-IDE\Project_!m!) DO (
       gsar.exe -s"<HTGSARCONT>" -r"		<link>:x0a			<name>%%i/!FNAME!</name>:x0a			<type>1</type>:x0a			<locationURI>PARENT-!DEPTH!-PROJECT_LOC/!FOLDER!!FNAME!</locationURI>:x0a		</link>:x0a<HTGSARCONT>"  %%D\*.project -o 1> nul 2>&1
       )
+      FOR /D %%D IN (HT32_VSCode\Project_!m!) DO (
+        gsar.exe -s"<HTGSARCONT>" -r",:x0a      :x22!VscUk!!l!:x22<HTGSARCONT>" %%D\project.meta.json -o 1> nul 2>&1
+      )
     )
   )
 
@@ -657,6 +726,12 @@ gsar.exe -s":x0d:x0a<HTGSARCONT_GROUP>" -r"" EWARM\Project_*.ewp -o 1> nul 2>&1
 gsar.exe -s":x0d:x0a<HTGSARCONT_GROUP>" -r"" EWARMv8\Project_*.ewp -o 1> nul 2>&1
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s":x0a<HTGSARCONT_GROUP>" -r"" %%D\*.cproject -o 1> nul 2>&1
+)
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"<HTGSARCONT>" -r"" %%D\project.meta.json -o 1> nul 2>&1
+gsar.exe -s":x22:x22,:x0a      " -r"" %%D\project.meta.json -o 1> nul 2>&1
+gsar.exe -s":x0a      :x22:x22" -r"" %%D\project.meta.json -o 1> nul 2>&1
+gsar.exe -s"<HTGSARCONT_GROUP>" -r"" %%D\project.meta.json -o 1> nul 2>&1
 )
 
 DEL gsar.exe /Q

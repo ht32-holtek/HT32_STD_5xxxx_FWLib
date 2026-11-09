@@ -1,5 +1,5 @@
 /*********************************************************************************************************//**
- * @file    EXTI/EXTI_Key_LED/ht32_board_config.h
+ * @file    EXTI/WakeUp_DeepSleepMode1/ht32_board_config.h
  * @version $Rev:: 5805         $
  * @date    $Date:: 2022-04-12 #$
  * @brief   The header file of board configuration.

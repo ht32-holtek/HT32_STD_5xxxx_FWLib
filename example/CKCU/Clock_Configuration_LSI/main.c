@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/Clock_Configuration_LSI/main.c
- * @version $Rev:: 1396         $
- * @date    $Date:: 2017-06-21 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -60,8 +60,8 @@ void Clock_TestFun(void);
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   Clock_TestFun();
 
@@ -79,20 +79,20 @@ void Clock_TestFun(void){
   for (i = 0; i < 300; i++)
   {
     /* Toggle LED1                                                                                        */
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
     __Delay(DELAY_TIME);
   }
-  HT32F_DVB_LEDOff(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED1);
 
   SysClockConfig_LSI();
 
   for (i = 0; i < 100; i++)
   {
     /* Toggle LED2                                                                                        */
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED2);
     __Delay(DELAY_TIME_LSI);
   }
-  HT32F_DVB_LEDOff(HT_LED2);
+  HT32_DVB_LEDOff(HT_LED2);
 
 }
 

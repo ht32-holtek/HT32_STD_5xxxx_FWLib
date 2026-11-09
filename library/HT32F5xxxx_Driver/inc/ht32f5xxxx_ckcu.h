@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_ckcu.h
- * @version $Rev:: 9835         $
- * @date    $Date:: 2026-05-28 #$
+ * @version $Rev:: 9995         $
+ * @date    $Date:: 2026-09-15 #$
  * @brief   The header file of the Clock Control Unit library.
  *************************************************************************************************************
  * @attention
@@ -890,9 +890,9 @@ typedef enum
 #define IS_CKCU_HSE_MEDIUM_HIGH_GAIN_MODE(x)    (0)
 #endif
 
-#define IS_GAINMODE(GanMode)    ((GanMode == CKCU_HSE_LOW_GAIN_MODE)         || \
-                                 (IS_CKCU_HSE_MEDIUM_LOW_GAIN_MODE(GanMode)  || \
-                                 (IS_CKCU_HSE_MEDIUM_HIGH_GAIN_MODE(GanMode) || \
+#define IS_GAINMODE(GanMode)    ((GanMode == CKCU_HSE_LOW_GAIN_MODE)          || \
+                                 (IS_CKCU_HSE_MEDIUM_LOW_GAIN_MODE(GanMode))  || \
+                                 (IS_CKCU_HSE_MEDIUM_HIGH_GAIN_MODE(GanMode)) || \
                                  (GanMode == CKCU_HSE_HIGH_GAIN_MODE))
 #endif
 

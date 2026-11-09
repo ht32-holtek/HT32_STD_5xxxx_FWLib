@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/PowerDown_RTC/main.c
- * @version $Rev:: 9399         $
- * @date    $Date:: 2025-08-27 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -62,20 +62,20 @@ int main(void)
   LowPower_BootCheck();
   LowPower_RTC_Configuration();
 
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
-  HT32F_DVB_LEDOn(HT_LED1);
-  HT32F_DVB_LEDOn(HT_LED2);
-  HT32F_DVB_LEDOn(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED2);
+  HT32_DVB_LEDOn(HT_LED3);
 
   while (1)
   {
     for (i = 0; i < 40000000; i++){};
 
-    HT32F_DVB_LEDOff(HT_LED1);
-    HT32F_DVB_LEDOff(HT_LED2);
-    HT32F_DVB_LEDOff(HT_LED3);
+    HT32_DVB_LEDOff(HT_LED1);
+    HT32_DVB_LEDOff(HT_LED2);
+    HT32_DVB_LEDOff(HT_LED3);
 
     LowPower_Enter();
 

@@ -612,4 +612,17 @@
     </Target>
   </Targets>
 
+  <RTE>
+    <apis/>
+    <components>
+      <component Cclass="HT32 Stack Usage Analysis" Cgroup="HT32 Stack Usage Analysis" Cvendor="Holtek" Cversion="1.0.0">
+        <package name="HT32_DFP" schemaVersion="1.2" url="https://mcu.holtek.com.tw/pack" vendor="Holtek" version="1.0.53"/>
+        <targetInfos>
+          <targetInfo name="HT32"/>
+        </targetInfos>
+      </component>
+    </components>
+    <files/>
+  </RTE>
+
 </Project>

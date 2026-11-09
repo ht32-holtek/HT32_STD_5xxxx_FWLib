@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    RTC/Time_BackupDomain/main.c
- * @version $Rev:: 7313         $
- * @date    $Date:: 2023-10-23 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -95,7 +95,7 @@ int main(void)
   }
 
   /* Init LED1 and USART                                                                                    */
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
 

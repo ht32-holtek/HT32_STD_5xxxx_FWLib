@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    RTC/Calendar_BackupDomain/ht32f5xxxx_01_it.c
- * @version $Rev:: 7321         $
- * @date    $Date:: 2023-10-28 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -167,7 +167,7 @@ void RTC_IRQHandler(void)
   }
 
   /* Toggle LED1 each 1s                                                                                    */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 
 

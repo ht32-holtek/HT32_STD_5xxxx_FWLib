@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/USB_Video/main.c
- * @version $Rev:: 7416         $
- * @date    $Date:: 2023-12-19 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The main program of USB Device UVC example.
  *************************************************************************************************************
  * @attention
@@ -70,7 +70,7 @@ int main(void)
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
   USB_Configuration();                /* USB Related configuration                                          */
 
-  HT32F_DVB_USBConnect();
+  HT32_DVB_USBConnect();
 
   gInputDataBuffer[0] = 0x0C;
   gInputDataBuffer[1] = 0x8C;

@@ -48,10 +48,10 @@ fixed or sequential payloads). It also sets multiple receive filters and prints 
 
 @par Directory Contents:
 
-- CAN/Interactive_Demo/main.c               Main program
-- CAN/Interactive_Demo/ht32fxxxxx_nn_it.c   Interrupt handlers
-- CAN/Interactive_Demo/ht32_board_config.h  Board configuration file
-- CAN/Interactive_Demo/ht32_can_config.h    CAN configuration file
+- CAN/CAN_Interactive_Demo/main.c               Main program
+- CAN/CAN_Interactive_Demo/ht32fxxxxx_nn_it.c   Interrupt handlers
+- CAN/CAN_Interactive_Demo/ht32_board_config.h  Board configuration file
+- CAN/CAN_Interactive_Demo/ht32_can_config.h    CAN configuration file
 
 @par Hardware and Software Environment:
 

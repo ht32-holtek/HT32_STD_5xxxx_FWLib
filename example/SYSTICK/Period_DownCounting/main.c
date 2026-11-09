@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SYSTICK/Period_DownCounting/main.c
- * @version $Rev:: 4724         $
- * @date    $Date:: 2020-04-07 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -56,9 +56,9 @@ void TimingDelay(void);
 int main(void)
 {
   /* Initialize LEDs */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   /* SYSTICK configuration */
   SYSTICK_ClockSourceConfig(SYSTICK_SRC_STCLK);       // Default : CK_AHB/8
@@ -69,9 +69,9 @@ int main(void)
   while(1)
   {
     /* Toggle LEDs  */
-    HT32F_DVB_LEDToggle(HT_LED1);
-    HT32F_DVB_LEDToggle(HT_LED2);
-    HT32F_DVB_LEDToggle(HT_LED3);
+    HT32_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED3);
     Delay(500); // 1ms * 500 = 500ms
   }
 }

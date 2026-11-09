@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/GPIO_Interrupt/main.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -58,7 +58,7 @@ vu32 guKeyState[1];
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   EXTI_Configuration();
 
@@ -77,7 +77,7 @@ void Key_Process(void)
   if (guKeyState[0] == TRUE)
   {
     guKeyState[0] = FALSE;
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
   }
 }
 

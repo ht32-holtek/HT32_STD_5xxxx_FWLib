@@ -161,7 +161,7 @@ $(HT32_UTL_PATH)common/spi_lcd.c \
 #/*---------------------------------------------------------------------------------------------------------*/
 #/* MISC Setting                                                                                            */
 #/*---------------------------------------------------------------------------------------------------------*/
-LINK_NAME_PATH = linker.ld
+LINK_NAME_PATH = linker_57341.ld
 START_NAME_PATH = $(STARTUP).s
 
 C_OBJECT_OPTION = $(ARCH_OPTION) $(C_OPTION) -c

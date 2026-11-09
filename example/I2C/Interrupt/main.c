@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/Interrupt/main.c
- * @version $Rev:: 9705         $
- * @date    $Date:: 2026-03-18 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -73,8 +73,8 @@ vu32 IsMasterRxFinish = FALSE;
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   I2CMaster_Configuration();
   I2CSlave_Configuration();
@@ -188,11 +188,11 @@ void I2C_Loopback(void)
   /* Check on validity of received data on I2C Master & I2C Slave                                           */
   if (CmpBuffer(I2C_Master_Buffer_Rx, I2C_Slave_Buffer_Rx, BufferSize) == SUCCESS)
   {
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
   else
   {
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
 }
 

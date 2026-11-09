@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/InternalReferenceVoltage_SWTrigger/main.c
- * @version $Rev:: 6308         $
- * @date    $Date:: 2022-10-20 #$
+ * @version $Rev:: 10131        $
+ * @date    $Date:: 2026-10-28 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -114,15 +114,15 @@ int main(void)
 {
   RETARGET_Configuration();
 
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   ADC_Configuration();
 
   ADC_Cmd(HT_ADC0, ENABLE);
 
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 
   /* Software trigger ADC start                                                                             */
   ADC_SoftwareStartConvCmd(HT_ADC0, ENABLE);
@@ -187,8 +187,12 @@ void ADC_Configuration(void)
   #endif
 
   { /* ADC related settings                                                                                 */
-    /* CK_ADC frequency is set to (CK_AHB / 64)                                                             */
-    CKCU_SetADCnPrescaler(CKCU_ADCPRE_ADC0, CKCU_ADCPRE_DIV64);
+    /* !!! NOTICE !!!
+       CK_ADC frequency is set to (CK_AHB / n).
+       The ADC clock frequency must meet the minimum requirement.
+       Please refer to the IC Datasheet for detailed specifications.
+    */
+    CKCU_SetADCnPrescaler(CKCU_ADCPRE_ADC0, CKCU_ADCPRE_DIV8);
 
     /* One Shot mode, sequence length = 3                                                                   */
     ADC_RegularGroupConfig(HT_ADC0, ONE_SHOT_MODE, 3, 0);

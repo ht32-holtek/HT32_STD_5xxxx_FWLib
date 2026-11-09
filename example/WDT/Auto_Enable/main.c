@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    WDT/Auto_Enable/main.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -59,18 +59,18 @@ int main(void)
     while(1){};
   }
 
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   if(RSTCU_GetResetFlagStatus(RSTCU_FLAG_WDTRST) == SET)
   {
     /* WDT generates a reset request and then turns on LED2.                                                */
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
   else
   {
     /* Other functions generate a reset request and then turns on LED1.                                     */
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
   RSTCU_ClearAllResetFlag();          /* Clear reset flag                                                   */
 

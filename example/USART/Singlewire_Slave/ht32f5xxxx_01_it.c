@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/Singlewire_Slave/ht32f5xxxx_01_it.c
- * @version $Rev:: 8470         $
- * @date    $Date:: 2025-03-06 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -128,10 +128,10 @@ void HTCFG_UART_IRQHandler(void)
   extern vu32 gRx_Match_Flag;
 
 #if (DEBUG_IO == 1)
-  #define DBG_IO1_LO()    HT32F_DVB_LEDOn(HT_LED1)
-  #define DBG_IO1_HI()    HT32F_DVB_LEDOff(HT_LED1)
-  #define DBG_IO2_LO()    HT32F_DVB_LEDOn(HT_LED2)
-  #define DBG_IO2_HI()    HT32F_DVB_LEDOff(HT_LED2)
+  #define DBG_IO1_LO()    HT32_DVB_LEDOn(HT_LED1)
+  #define DBG_IO1_HI()    HT32_DVB_LEDOff(HT_LED1)
+  #define DBG_IO2_LO()    HT32_DVB_LEDOn(HT_LED2)
+  #define DBG_IO2_HI()    HT32_DVB_LEDOff(HT_LED2)
 #else
   #define DBG_IO1_LO(...)
   #define DBG_IO1_HI(...)

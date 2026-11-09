@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    NVIC/Vector_Table_Offset/main.c
- * @version $Rev:: 2925         $
- * @date    $Date:: 2018-07-27 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -63,9 +63,9 @@ u32 *RAMVector = (u32 *)VECTOR_BASED_ADDRESS;
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   InitVector();
 
@@ -101,9 +101,9 @@ void InitVector(void)
 void SysTick_HandlerExtra(void)
 {
   /* Toggle LEDs */
-  HT32F_DVB_LEDToggle(HT_LED1);
-  HT32F_DVB_LEDToggle(HT_LED2);
-  HT32F_DVB_LEDToggle(HT_LED3);
+  HT32_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED2);
+  HT32_DVB_LEDToggle(HT_LED3);
 }
 
 #if (HT32_LIB_DEBUG == 1)

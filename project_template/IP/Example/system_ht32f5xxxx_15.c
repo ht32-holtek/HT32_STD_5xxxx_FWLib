@@ -2,8 +2,8 @@
  * @file    library/Device/Holtek/HT32F5xxxx/Source/system_ht32f5xxxx_15.c
  * @brief   CMSIS Cortex-M0+ Device Peripheral Access Layer Source File
  *          for the Holtek HT32F5xxxx Device Series
- * @version $Rev:: 6777         $
- * @date    $Date:: 2023-03-06 #$
+ * @version $Rev:: 10081        $
+ * @date    $Date:: 2026-10-14 #$
  *
  * @note
  * Copyright (C) Holtek Semiconductor Inc. All rights reserved.
@@ -26,9 +26,11 @@
 // ========================================
 //   HT32F53242, HT32F53252
 //   HT32F53231, HT32F53241
+//   HT32F64951
 
 //#define USE_HT32F53242_52
 //#define USE_HT32F53231_41
+//#define USE_HT32F64951
 
 /** @addtogroup CMSIS
   * @{
@@ -124,7 +126,7 @@
    C define, "HSE_VALUE=n000000" ("n" represents n MHz) in the toolchain/IDE,
    or edit the "HSE_VALUE" in the "ht32f5xxxx_conf.h" file.
    Take Keil MDK-ARM for instance, to set HSE as 16 MHz:
-   "Option of Taret -> C/C++ > Preprocessor Symbols"
+   "Option of Target -> C/C++ > Preprocessor Symbols"
       Define: USE_HT32_DRIVER, USE_HT32Fxxxxx_SK, USE_HT32Fxxxxx_xx, USE_MEM_HT32Fxxxxx, HSE_VALUE=16000000
                                                                                          ^^ Add "HSE_VALUE"
                                                                                             define as above.
@@ -174,6 +176,21 @@
 #define WDT_RELOAD        (2000)  /*!< 0 ~ 4095, 12 bit                                                     */
 #define WDT_RESET_ENABLE  (1)     /*!< 0: No Reset, 1: Reset when WDT over flow                             */
 #define WDT_SLEEP_HALT    (2)     /*!< 0: No halt,  1: Halt in DeepSleep1, 2: Halt in Sleep & DeepSleep1    */
+
+
+/*--------------------- Load_Trim_Code Configuration -----------------------
+//
+//    <h> Load_Trim_Code Configuration
+//          <i> Notice: This Configuration only support specific MCU (EX: HT32F64041, HT32F64141...)
+//      <o0> Load_Trim_Code Retry Times Limit <1-255:1>
+//      <o1> Enable Load_Trim_Code Error Handling
+//          <0=> DISABLE
+//          <1=> ENABLE
+//          <i> Default LTC_ERRORHANDLING = DISABLE
+//    </h>
+*/
+#define ERROR_COUNTER_LIMIT (5)   /*!< Error handling retry limit                                           */
+#define LTC_ERRORHANDLING   (0)   /*!< 0: DISABLE,  1: ENABLE                                               */
 
 /**
  * @brief Check HSI frequency
@@ -309,6 +326,20 @@ __IO uint32_t SystemCoreClock = __CK_AHB;   /*!< SystemCoreClock = CK_AHB       
   * @}
   */
 
+/** @addtogroup HT32Fxxxx_Load_Trim_Code
+  * @{
+  */
+#if !defined(DISABLE_TRIMCODE) && defined(USE_HT32F64951)
+  #define TRIM_CODE
+#endif
+
+#if defined(TRIM_CODE)
+  __STATIC_FORCEINLINE void SystemLoadTrimCode(void);
+#endif
+/**
+  * @}
+  */
+
 /** @addtogroup HT32F5xxxx_System_Private_Functions
   * @{
   */
@@ -421,6 +452,10 @@ void SystemInit(void)
 #if ((HSI_ENABLE == 0) && (HCLK_SRC != 3) && ((PLL_ENABLE == 0) || (PLL_CLK_SRC == 0)))
   ResetBit_BB((u32)(&HT_CKCU->GCCR), 11);
 #endif
+
+#if defined(TRIM_CODE)
+  SystemLoadTrimCode();
+#endif
 }
 
 /**
@@ -470,6 +505,358 @@ void SystemCoreClockUpdate(void)
     SystemCoreClock = LSI_VALUE >> SystemCoreClockDiv;
   }
 }
+
+#if defined(TRIM_CODE)
+/* Trim Code definition                                                                                     */
+#define TRIM_CODE_CKCU_APBCCR0_AFIO         0x00004000 /*!< CKCU AFIO IP Clock                              */
+
+  #define TRIM_CODE_CKCU_APBCCR0_I2Cx       0x00000002 /*!< CKCU I2C IP Clock                               */
+  #define TRIM_CODE_CKCU_AHBCCR_GPIOx       0x00040000 /*!< CKCU GPIO IP Clock                              */
+  #define TRIM_CODE_RSTCU_APBPRST0_I2Cx     0x00000002 /*!< RSTCU I2C IP Reset                              */
+  #define TRIM_CODE_RSTCU_AHBPRST_GPIOx     0x00000400 /*!< RSTCU GPIO IP Reset                             */
+  #define TRIM_CODE_I2Cx                    HT_I2C1
+  #define TRIM_CODE_GPIOx                   HT_GPIOC
+  #define TRIM_CODE_GPxCFGR                 GPCCFGR
+  #define TRIM_CODE_GPIOx_SCL_PIN           (4)
+  #define TRIM_CODE_GPIOx_SDA_PIN           (5)
+
+#define TRIM_CODE_AFIO_VALUE                (0x7UL << (4 * (TRIM_CODE_GPIOx_SCL_PIN % 8)) | 0x7UL << (4 * (TRIM_CODE_GPIOx_SDA_PIN % 8)))
+#define TRIM_CODE_GPIOx_PIN                 ((1 << TRIM_CODE_GPIOx_SCL_PIN) | (1 << TRIM_CODE_GPIOx_SDA_PIN))
+
+#define TRIM_CODE_SLAVE_ADDRESS             0x1F       /*!< AFE I2C Slave Address                           */
+#define TRIM_CODE_REG_ADDRESS               0x12       /*!< AFE Register Address                            */
+
+#define TRIM_CODE_TX_LENGTH                 (3)
+#define TRIM_CODE_RX_LENGTH                 TRIM_CODE_TX_LENGTH - 1
+
+#define TRIM_CODE_ISINK_MASK                0x3F
+#define TRIM_CODE_LIRC_MASK                 0xFF
+
+/* CKCU                                                                                                     */
+#define CKCU_AHBCCR_DEFAULT                 (0x00000065)
+#define CKCU_APBCCR0_DEFAULT                (0x00000000)
+
+/* I2C                                                                                                      */
+#define I2C_WRITE                           (0x00000000)
+#define I2C_READ                            (0x00000400)
+
+#define I2C_SEND_ADDR(add_dir)              (TRIM_CODE_I2Cx->TAR = (add_dir))
+#define I2C_SEND(data)                      (TRIM_CODE_I2Cx->DR  = (data))
+#define I2C_RECV()                          (TRIM_CODE_I2Cx->DR)
+
+#define I2C_STOP()                          (TRIM_CODE_I2Cx->CR  =  0xA)
+#define I2C_ACK_EN()                        (TRIM_CODE_I2Cx->CR  =  0x9)
+#define I2C_ACK_DIS()                       (TRIM_CODE_I2Cx->CR  =  0x8)
+
+#define I2C_STATUS_TX_EMPTY                 ((u32)0x003A0000)
+#define I2C_STATUS_RX_NOT_EMPTY             ((u32)0x00190000)
+#define I2C_STATUS_STOP_FINISH              ((u32)0x00000002)
+#define I2C_STATUS_RX_NACK                  ((u32)0x00000200)
+
+#define I2C_CONFIG_CLOCK_SPEED              (100000)
+#define I2C_CONFIG_SHPG                     (((__CK_AHB * 9)  / (20 * I2C_CONFIG_CLOCK_SPEED)) - 6)
+#define I2C_CONFIG_SLPG                     (((__CK_AHB * 11) / (20 * I2C_CONFIG_CLOCK_SPEED)) - 6)
+#define I2C_CONFIG_ENABLE                   0x00000008
+
+#define I2C_WRITE_ADDR                      (TRIM_CODE_SLAVE_ADDRESS | I2C_WRITE)
+#define I2C_READ_ADDR                       (TRIM_CODE_SLAVE_ADDRESS | I2C_READ)
+
+/* SysTick                                                                                                  */
+#if (LTC_ERRORHANDLING == 1)
+  #define TICK_CTRL_DEFAULT                 0x00000000
+  #define TICK_LOAD_DEFAULT                 0x00FFFFFF
+  #define TICK_OFFSET                       (17)
+  #define TICK_US                           (__CK_AHB / 1000000)
+  #define US2TICK(us)                       (us * TICK_US - TICK_OFFSET)
+
+  #define SET_TICK_TIMEOUT(cnt)             {SysTick->LOAD = cnt; \
+                                             SysTick->VAL  = 0; \
+                                             SysTick->CTRL;}
+  #define IS_TICK_TIMEOUT()                 (SysTick->CTRL != 0x5)
+#endif
+
+#if (LTC_ERRORHANDLING == 1)
+  /* Error Handling                                                                                         */
+  #define ERROR_STATUS_SLAVE_HOLD_BUS       (1 << 0)
+  #define ERROR_STATUS_TX_EMPTY_NACK        (1 << 1)
+  #define ERROR_STATUS_TX_EMPTY_TIMEOUT     (1 << 2)
+  #define ERROR_STATUS_SEND_STOP_TIMEOUT    (1 << 3)
+  #define ERROR_STATUS_RX_NOT_EMPTY_TIMEOUT (1 << 4)
+  #define ERROR_STATUS_TRIM_CODE_FAILED     (1 << 5)
+#endif
+
+#if (LTC_ERRORHANDLING == 1)
+  #define TICK_I2C_BUS_BUSY_TIMEOUT         (30000)  /*!< Wait about 30 ms                                  */
+  #define TICK_I2C_RTX_EMPTY_TIMEOUT        (450)    /*!< Wait about 5-byte time (5 * 9 bits)               */
+  #define TICK_I2C_SEND_STOP_TIMEOUT        (180)    /*!< Wait about 2-byte time                            */
+#endif
+
+#if (LTC_ERRORHANDLING == 1)
+u32 Error_Status;
+/* Wait                                                                                                     */
+/**
+  * @brief  Wait until specified I2C status TX flag is set or timeout/error occurs
+  */
+static void WAIT_RTX(u32 flag, u32 timeout_err)
+{
+  SET_TICK_TIMEOUT(US2TICK(TICK_I2C_RTX_EMPTY_TIMEOUT));
+  while ((TRIM_CODE_I2Cx->SR & flag) != flag)
+  {
+    if (TRIM_CODE_I2Cx->SR & I2C_STATUS_RX_NACK)
+    {
+      Error_Status = ERROR_STATUS_TX_EMPTY_NACK;
+      break;
+    }
+    if (IS_TICK_TIMEOUT())
+    {
+      Error_Status = timeout_err;
+      break;
+    }
+  }
+}
+
+/**
+  * @brief  Wait until I2C STOP condition is completed
+  */
+static void WAIT_STOP(void)
+{
+  SET_TICK_TIMEOUT(US2TICK(TICK_I2C_SEND_STOP_TIMEOUT));
+  while (TRIM_CODE_I2Cx->CR & I2C_STATUS_STOP_FINISH)
+  {
+    if (IS_TICK_TIMEOUT())
+    {
+      Error_Status = ERROR_STATUS_SEND_STOP_TIMEOUT;
+      break;
+    }
+  }
+}
+
+#define WAIT_TX()          WAIT_RTX(I2C_STATUS_TX_EMPTY, ERROR_STATUS_TX_EMPTY_TIMEOUT)
+#define WAIT_RX()          WAIT_RTX(I2C_STATUS_RX_NOT_EMPTY, ERROR_STATUS_RX_NOT_EMPTY_TIMEOUT)
+
+#define ERR_CONTINUE()     if (Error_Status) continue;     
+#define ERR_BREAK()        if (Error_Status) break;  
+#else
+  #define WAIT_TX()        while ((TRIM_CODE_I2Cx->SR & I2C_STATUS_TX_EMPTY) != I2C_STATUS_TX_EMPTY) {}
+  #define WAIT_RX()        while ((TRIM_CODE_I2Cx->SR & I2C_STATUS_RX_NOT_EMPTY) != I2C_STATUS_RX_NOT_EMPTY) {}
+  #define WAIT_STOP()      while (TRIM_CODE_I2Cx->CR & I2C_STATUS_STOP_FINISH) {}
+
+  #define ERR_CONTINUE(...)  
+  #define ERR_BREAK(...)
+#endif
+
+/**
+  * @brief  Load Trim Code
+  * @note   This function uses AFIO, GPIOx, I2Cn, and SysTick peripherals.
+            After communication, it restores peripheral enable configuration and SysTick configuration,
+            resets I2Cn, and returns all involved I/O pins to their default configuration.
+  * @retval None
+  */
+__STATIC_FORCEINLINE void SystemLoadTrimCode(void)
+{
+  #if (LTC_ERRORHANDLING == 0)
+  u32 ok;                                                    /* Simple verification flag                    */
+  #endif
+
+  u32 Retry = ERROR_COUNTER_LIMIT;
+  u32 tx[TRIM_CODE_TX_LENGTH];                               /* TX buffer: [RegAddr, ISINK, LIRC]           */
+
+  /* Prepare Trim Code Data                                                                                 */
+  u32 trim = HT_FLASH->CID[3];                               /* Read trim value from FMC                    */
+  tx[0] = TRIM_CODE_REG_ADDRESS;                             /* Target register address                     */
+  tx[1] = (trim >> 8) & TRIM_CODE_ISINK_MASK;                /* Extract ISINK calibration                   */
+  tx[2] = trim & TRIM_CODE_LIRC_MASK;                        /* Extract LIRC calibration                    */
+
+  #if (LTC_ERRORHANDLING == 1)
+  /* Initialize SysTick for timeout mechanism                                                               */
+  SysTick->CTRL  = 0x4;                                      /* SysTick clock source for AHB clock          */
+  SysTick->LOAD  = TICK_LOAD_DEFAULT;                        /* Set SysTick reload value to default         */
+  SysTick->VAL   = 0;                                        /* Clear SysTick counter value to 0            */
+  SysTick->CTRL |= 0x1;                                      /* Enable SysTick counter                      */
+  SysTick->CTRL;                                             /* Fix the timing issue for timing function    */
+  #endif
+
+  /* Enable required peripheral clocks                                                                      */
+  #if (LTC_ERRORHANDLING == 1)
+  HT_CKCU->AHBCCR  = CKCU_AHBCCR_DEFAULT | TRIM_CODE_CKCU_AHBCCR_GPIOx;           /* Enable GPIOx           */
+  #endif
+  HT_CKCU->APBCCR0 = (TRIM_CODE_CKCU_APBCCR0_AFIO | TRIM_CODE_CKCU_APBCCR0_I2Cx); /* Enable AFIO + I2Cx     */
+
+  /* Configure GPIO pins to I2C function                                                                    */
+  #if (TRIM_CODE_GPIOx_SCL_PIN < 8) || (TRIM_CODE_GPIOx_SDA_PIN < 8)
+  HT_AFIO->TRIM_CODE_GPxCFGR[0] = TRIM_CODE_AFIO_VALUE;
+  #endif
+  #if (TRIM_CODE_GPIOx_SCL_PIN > 8) || (TRIM_CODE_GPIOx_SDA_PIN > 8)
+  HT_AFIO->TRIM_CODE_GPxCFGR[1] = TRIM_CODE_AFIO_VALUE;
+  #endif
+
+  #if (LTC_ERRORHANDLING == 1)
+  /* Check if I2C bus is free                                                                               */
+  TRIM_CODE_GPIOx->INER  |=  TRIM_CODE_GPIOx_PIN;
+  #endif
+
+  /* Retry loop                                                                                             */
+  do
+  {
+    #if (LTC_ERRORHANDLING == 1)
+    Error_Status = 0;
+    #else
+    ok = 1;
+    #endif
+
+    /* Initialize I2C peripheral                                                                            */
+    HT_RSTCU->APBPRST0 = TRIM_CODE_RSTCU_APBPRST0_I2Cx;      /* Reset I2Cx                                  */
+    while (HT_RSTCU->APBPRST0){};                            /* Wait reset done                             */
+
+    TRIM_CODE_I2Cx->SHPGR = I2C_CONFIG_SHPG;                 /* SCL high period                             */
+    TRIM_CODE_I2Cx->SLPGR = I2C_CONFIG_SLPG;                 /* SCL low period                              */
+    TRIM_CODE_I2Cx->CR    = I2C_CONFIG_ENABLE;               /* Enable I2C master                           */
+
+    #if (LTC_ERRORHANDLING == 1)
+    /* Check I2C Bus Status                                                                                 */
+    SET_TICK_TIMEOUT(US2TICK(TICK_I2C_BUS_BUSY_TIMEOUT));
+    while ((TRIM_CODE_GPIOx->DINR & TRIM_CODE_GPIOx_PIN) != TRIM_CODE_GPIOx_PIN)
+    {
+      if (IS_TICK_TIMEOUT())
+      {
+        Error_Status = ERROR_STATUS_SLAVE_HOLD_BUS;
+        break;
+      }
+    }
+    if (Error_Status)
+    {
+      Retry = 0;                                             /* Fatal error -> stop retry                   */
+      break;
+    }
+    #endif
+
+    /* I2C WRITE: send trim code                                                                            */
+    {
+      u32 *p = tx;
+      u32 Tx_Length = TRIM_CODE_TX_LENGTH;
+
+      I2C_SEND_ADDR(I2C_WRITE_ADDR);                         /* Send slave address (write)                  */
+
+      do
+      {
+        WAIT_TX();
+        ERR_BREAK();
+        I2C_SEND(*p++);                                      /* Send byte                                   */
+      } while (--Tx_Length);
+
+      ERR_CONTINUE();
+      WAIT_TX();
+      ERR_CONTINUE();
+
+      I2C_STOP();                                            /* Generate STOP condition                     */
+      WAIT_STOP();
+      ERR_CONTINUE();
+    }
+
+    /* I2C VERIFY: read back and compare                                                                    */
+    {
+      u32 *p = tx;
+      u32 Rx_Length = TRIM_CODE_RX_LENGTH;
+      /* Set register address                                                                               */
+      I2C_SEND_ADDR(I2C_WRITE_ADDR);                         /* Send slave address (write)                  */
+      WAIT_TX();
+      ERR_CONTINUE();
+
+      I2C_SEND(*p++);                                        /* Send register address                       */
+      WAIT_TX();
+      ERR_CONTINUE();
+
+      /* Read back data                                                                                     */
+      I2C_SEND_ADDR(I2C_READ_ADDR);                          /* Send slave address (read)                   */
+      I2C_ACK_EN();
+
+      do
+      {
+        if (Rx_Length == 1) I2C_ACK_DIS();                   /* Last byte -> NACK                           */
+        WAIT_RX();
+        ERR_BREAK();
+
+        /* Compare received data                                                                            */
+        if (I2C_RECV() != *p++)
+        {
+          #if (LTC_ERRORHANDLING == 1)
+          Error_Status = ERROR_STATUS_TRIM_CODE_FAILED;
+          #else
+          ok = 0;
+          #endif
+        }
+      } while (--Rx_Length);
+      ERR_CONTINUE();
+
+      #if (LTC_ERRORHANDLING == 0)
+      if (!ok) continue;
+      #endif
+
+      I2C_STOP();
+      WAIT_STOP();
+      ERR_CONTINUE();
+    }
+
+    break;                                                   /* Success                                     */
+  } while (--Retry);
+
+  /* Fatal failure handling                                                                                 */
+  if (!Retry)
+  {
+    while (1)
+    {
+      #if (LTC_ERRORHANDLING == 1)
+      /* !!! Notice !!!
+        Check the "Error_Status" bits to identify the Load Trim Code failure reason:
+          bit0: Slave Hold Bus - Slave does not respond within timeout period.
+          bit1: Slave Receive NACK - Slave did not acknowledge the transmitted data/address.
+          bit2: Master TX_EMPTY timeout - Master waiting for TX buffer empty event timed out.
+          bit3: Master TX_STOP timeout - Master waiting for STOP condition completion timed out.
+          bit4: Master RX_NOT_EMPTY timeout - Master waiting for RX buffer not empty event timed out.
+          bit5: Multiple comparisons of Trim Code values failed.
+      */
+      #else
+      /* !!! Notice !!!
+        Multiple comparisons of Trim Code values failed.
+      */
+      #endif
+    }
+  }
+
+  /* Restore system state                                                                                   */
+  #if (TRIM_CODE_GPIOx_SCL_PIN < 8) || (TRIM_CODE_GPIOx_SDA_PIN < 8)
+  HT_AFIO->TRIM_CODE_GPxCFGR[0] = 0;
+  #endif
+  #if (TRIM_CODE_GPIOx_SCL_PIN > 8) || (TRIM_CODE_GPIOx_SDA_PIN > 8)
+  HT_AFIO->TRIM_CODE_GPxCFGR[1] = 0;
+  #endif
+
+  #if (LTC_ERRORHANDLING == 1)
+  /* Disable SysTick                                                                                        */
+  SysTick->CTRL = TICK_CTRL_DEFAULT;
+  #endif
+
+  #if 0
+    /* !!! Notice !!!
+      Set to 1 to restore other IPs used during Trim Code transmission after completion.
+    */
+    #if (LTC_ERRORHANDLING == 1)
+    /* Reset GPIO                                                                                           */
+    HT_RSTCU->AHBPRST  = TRIM_CODE_RSTCU_AHBPRST_GPIOx;
+    while (HT_RSTCU->AHBPRST){};
+    #endif
+    /* Reset I2C                                                                                            */
+    HT_RSTCU->APBPRST0 = TRIM_CODE_RSTCU_APBPRST0_I2Cx;
+    while (HT_RSTCU->APBPRST0){};
+
+    /* Restore CKCU                                                                                         */
+    #if (LTC_ERRORHANDLING == 1)
+    HT_CKCU->AHBCCR  = CKCU_AHBCCR_DEFAULT;
+    #endif
+    HT_CKCU->APBCCR0 = CKCU_APBCCR0_DEFAULT;
+  #endif
+}
+#endif
 
 /**
   * @}

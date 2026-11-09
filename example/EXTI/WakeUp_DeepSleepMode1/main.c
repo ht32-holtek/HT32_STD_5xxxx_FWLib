@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/WakeUp_DeepSleepMode1/main.c
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -62,12 +62,12 @@ int main(void)
 
   LowPower_EXTI_Configuration();
 
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
-  HT32F_DVB_LEDOn(HT_LED1);
-  HT32F_DVB_LEDOn(HT_LED2);
-  HT32F_DVB_LEDOn(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED2);
+  HT32_DVB_LEDOn(HT_LED3);
 
   while (1)
   {
@@ -79,15 +79,15 @@ int main(void)
       continue;
     }
 
-    HT32F_DVB_LEDOff(HT_LED1);
-    HT32F_DVB_LEDOff(HT_LED2);
-    HT32F_DVB_LEDOff(HT_LED3);
+    HT32_DVB_LEDOff(HT_LED1);
+    HT32_DVB_LEDOff(HT_LED2);
+    HT32_DVB_LEDOff(HT_LED3);
 
     // You shall make sure the wakeup souce is inactive before enter the low power mode.
     LowPower_Enter();
     printf("main LOOP!\r\n");
 
-    HT32F_DVB_LEDOn(HT_LED3);
+    HT32_DVB_LEDOn(HT_LED3);
   }
 }
 

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_PWMTrigger_with_Delay/ht32f5xxxx_01_it.c
- * @version $Rev:: 7265         $
- * @date    $Date:: 2023-10-02 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -123,12 +123,12 @@ void HTCFG_ADC_IRQHandler(void)
   if (ADC_GetIntStatus(HTCFG_ADC_PORT, ADC_INT_SINGLE_EOC) == SET)
   {
     ADC_ClearIntPendingBit(HTCFG_ADC_PORT, ADC_FLAG_SINGLE_EOC);
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED2);
   }
 
   if (ADC_GetIntStatus(HTCFG_ADC_PORT, ADC_INT_CYCLE_EOC) == SET)
   {
-    HT32F_DVB_LEDToggle(HT_LED3);
+    HT32_DVB_LEDToggle(HT_LED3);
     ADC_ClearIntPendingBit(HTCFG_ADC_PORT, ADC_FLAG_CYCLE_EOC);
     gADC_CycleEndOfConversion = TRUE;
     gADC_Result[0] = HTCFG_ADC_PORT->DR[0] & 0x0FFF;
@@ -146,7 +146,7 @@ void HTCFG_PWM_IRQHandler(void)
   if (TM_GetIntStatus(HTCFG_PWM_TM_PORT, TM_INT_CH3CC) == SET)
   {
     TM_ClearIntPendingBit(HTCFG_PWM_TM_PORT, TM_INT_CH3CC);
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
   }
 }
 

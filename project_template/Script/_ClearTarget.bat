@@ -1,8 +1,8 @@
 @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _ClearTarget.bat
-REM * @version $Rev:: 9070         $
-REM * @date    $Date:: 2025-06-16 #$
+REM * @version $Rev:: 10099        $
+REM * @date    $Date:: 2026-10-22 #$
 REM * @brief   Clear Target Script.
 REM *************************************************************************************************************
 REM * @attention
@@ -36,6 +36,7 @@ ECHO .\EWARM\HT32
 ECHO .\EWARMv8\HT32
 ECHO .\GNU_ARM\HT32
 ECHO .\HT32-IDE\Project_*\HT32
+ECHO .\HT32_VSCode\Project_*\build
 ECHO .\MDK_ARM\HT32
 ECHO .\MDK_ARMv5\HT32
 ECHO .\MDK_ARMv537\HT32
@@ -65,6 +66,12 @@ FOR /d %%d IN (".\HT32-IDE\*") DO (
     ECHO %%d\Debug\* had been delete.
     DEL %%d\Debug\* /S /Q /F >nul
     FOR /D %%x IN ("%%d\Debug\*") DO RD /S /Q "%%x"
+  )
+)
+FOR /d %%d IN (".\HT32_VSCode\Project_*") DO (
+  IF EXIST %%d\build (
+    ECHO %%d\build had been delete.
+    RD /S /Q %%d\build
   )
 )
 ECHO.

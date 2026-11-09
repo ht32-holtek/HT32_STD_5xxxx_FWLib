@@ -47,7 +47,7 @@ SECTIONS
     KEEP(*(.HT32_OPTIONS))
     . = ALIGN(4);
   } >OPT_B
-  
+
   .option_byte_wdt :
   {
     . = ALIGN(4);

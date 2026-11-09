@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/EXTI_Key_LED/main.c
- * @version $Rev:: 6348         $
- * @date    $Date:: 2022-10-21 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -59,8 +59,8 @@ vu32 guKeyState[2];
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   EXTI_WAKE_Configuration();
   EXTI_KEY1_Configuration();
@@ -80,12 +80,12 @@ void Key_Process(void)
   if (guKeyState[0] == TRUE)
   {
     guKeyState[0] = FALSE;
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
   }
   if (guKeyState[1] == TRUE)
   {
     guKeyState[1] = FALSE;
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED2);
   }
 }
 

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/PowerDownMode/ht32f5xxxx_01_it.c
- * @version $Rev:: 7425         $
- * @date    $Date:: 2023-12-20 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -110,7 +110,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* Toggle LED1                                                                                            */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 
 /*********************************************************************************************************//**
@@ -135,13 +135,13 @@ void EVWUP_IRQHandler(void)
     if (wBAKSR & PWRCU_FLAG_WUP)
     {
       /* If wakeup by the WAKEUP pin : Turn on LED2                                                         */
-      HT32F_DVB_LEDOn(HT_LED2);
+      HT32_DVB_LEDOn(HT_LED2);
     }
 #ifndef USE_HT32F52230_SK
     if (wRTCSR & RTC_FLAG_CM)
     {
       /* If wakeup by the RTC Compare Match : Turn on LED3                                                  */
-      HT32F_DVB_LEDOn(HT_LED3);
+      HT32_DVB_LEDOn(HT_LED3);
     }
 #endif
   }
@@ -173,7 +173,7 @@ __STATIC_INLINE void KEY1_Button_Process(void)
     CKCU_PeripClockConfig(CKCUClock, ENABLE);
     }
     AFIO_GPxConfig(WAKEUP_BUTTON_GPIO_ID, WAKEUP_BUTTON_GPIO_PIN, AFIO_FUN_SYSTEM);
-    while (HT32F_DVB_PBGetState(BUTTON_WAKEUP));
+    while (HT32_DVB_PBGetState(BUTTON_WAKEUP));
     PWRCU_WakeupPinCmd(ENABLE);
 
     #ifndef USE_HT32F52230_SK

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/BackupData/ht32f5xxxx_01_it.c
- * @version $Rev:: 2970         $
- * @date    $Date:: 2018-08-03 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -159,7 +159,7 @@ void RTC_IRQHandler(void)
   RTC_GetFlagStatus();
 
   /* Toggle LED1 each 1s                                                                                    */
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 
 

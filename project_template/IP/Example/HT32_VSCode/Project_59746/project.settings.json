@@ -1,0 +1,53 @@
+{
+  "optimizationLevel": "Os",
+  "floatAbi": "soft",
+  "fpu": "none",
+  "useNano": true,
+  "useNosys": true,
+  "extraCFlags": "-std=gnu11",
+  "extraLDFlags": "",
+  "debugInterface": "CMSIS-DAP",
+  "adapterSerial": "",
+  "adapterSpeed": "",
+  "dfpPath": "",
+  "svdFile": "",
+  "eraseMode": "erase_sector",
+  "serverType": "pyocd",
+  "openocdDebugLevel": 1,
+  "smartFlash": false,
+  "extraLibs": [],
+  "extraLibNames": [],
+  "extraLibPaths": [],
+  "outputName": "",
+  "debugInfo": "g3",
+  "useLto": false,
+  "printfFloat": false,
+  "scanfFloat": false,
+  "postBuildCmd": "afterbuild.bat vsc HT32 HT32F59746",
+  "gcSections": true,
+  "includePaths": [
+    "../../",
+    "../GNU_ARM",
+    "../../../../../library/CMSIS/Include",
+    "../../../../../library/Device/Holtek/HT32F5xxxx/Include",
+    "../../../../../library/HT32F5xxxx_Driver/inc",
+    "../../../../../library/HT32_USBD_Library/inc",
+    "../../../../../utilities"
+  ],
+  "mcu": "cortex-m0",
+  "targetName": "HT32",
+  "ramOrigin": "0x20000000",
+  "ramLength": "0x2000",
+  "deviceName": "HT32F59746",
+  "outputType": "app",
+  "cDefs": [
+    "USE_HT32_DRIVER",
+    "USE_HT32F59746_SK",
+    "USE_HT32F59746",
+    "USE_MEM_HT32F59746"
+  ],
+  "aDefs": [
+    "USE_HT32_CHIP=13",
+    "USE_LIBCFG_RAM_SIZE=0x2000"
+  ]
+}

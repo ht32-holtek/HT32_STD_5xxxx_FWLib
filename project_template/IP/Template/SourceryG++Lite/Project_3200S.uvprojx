@@ -14,7 +14,7 @@
         <TargetCommonOption>
           <Device>HT50F3200S</Device>
           <Vendor>Holtek</Vendor>
-          <PackID>Holtek.HT32_DFP.1.0.67</PackID>
+          <PackID>Holtek.HT32_DFP.1.0.80</PackID>
           <PackURL>http://mcu.holtek.com.tw/pack</PackURL>
           <Cpu>IROM(0x00000000-0x0000FBFF) IRAM(0x20000000-0x20001FFF) CLOCK(8000000) CPUTYPE("Cortex-M0")</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -528,5 +528,18 @@
       </Groups>
     </Target>
   </Targets>
+
+  <RTE>
+    <apis/>
+    <components>
+      <component Cclass="HT32 Stack Usage Analysis" Cgroup="HT32 Stack Usage Analysis" Cvendor="Holtek" Cversion="1.0.0">
+        <package name="HT32_DFP" schemaVersion="1.2" url="https://mcu.holtek.com.tw/pack" vendor="Holtek" version="1.0.53"/>
+        <targetInfos>
+          <targetInfo name="HT32"/>
+        </targetInfos>
+      </component>
+    </components>
+    <files/>
+  </RTE>
 
 </Project>

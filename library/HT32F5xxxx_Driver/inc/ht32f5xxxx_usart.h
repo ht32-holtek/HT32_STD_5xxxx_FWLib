@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_usart.h
- * @version $Rev:: 8632         $
- * @date    $Date:: 2025-04-25 #$
+ * @version $Rev:: 10061        $
+ * @date    $Date:: 2026-10-08 #$
  * @brief   The header file of the USART library.
  *************************************************************************************************************
  * @attention
@@ -125,7 +125,9 @@ typedef struct
 
 #define IS_USART_PARITY(PARITY)       ((PARITY == USART_PARITY_NO)   || \
                                        (PARITY == USART_PARITY_EVEN) || \
-                                       (PARITY == USART_PARITY_ODD))
+                                       (PARITY == USART_PARITY_ODD)  || \
+                                       (PARITY == USART_PARITY_MARK) || \
+                                       (PARITY == USART_PARITY_SPACE))
 /**
   * @}
   */
@@ -422,7 +424,7 @@ typedef struct
 #define IS_USART_BAUDRATE(BAUDRATE)             ((BAUDRATE > 0) && (BAUDRATE < 0x0044AA21))
 #define IS_USART_DATA(DATA)                     (DATA <= 0x1FF)
 #define IS_USART_GUARD_TIME(TIME)               (TIME <= 0xFF)
-#define IS_USART_IRDA_PRESCALER(PRESCALER)      (PRESCALER <= 0xFF)
+#define IS_USART_IRDA_PRESCALER(PRESCALER)      (((PRESCALER) >= 0x01) && ((PRESCALER) <= 0xFF))
 #define IS_USART_TIMEOUT(TIMEOUT)               (TIMEOUT <= 0x7F)
 #define IS_USART_ADDRESS_MATCH_VALUE(VALUE)     (VALUE <= 0xFF)
 /**

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_config.h
- * @version $Rev:: 9990         $
- * @date    $Date:: 2026-09-14 #$
+ * @version $Rev:: 10073        $
+ * @date    $Date:: 2026-10-13 #$
  * @brief   Configuration file of HT32.
  *************************************************************************************************************
  * @attention
@@ -525,6 +525,13 @@
 #endif
 #ifdef USE_MEM_HT32F53752
   #define USE_MEM_HT32F57352
+#endif
+
+#ifdef USE_HT32F64951
+  #define USE_HT32F53242_52
+#endif
+#ifdef USE_MEM_HT32F64951
+  #define USE_MEM_HT32F53252
 #endif
 
 #ifdef __cplusplus

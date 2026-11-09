@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_cmp.h
- * @version $Rev:: 9842         $
- * @date    $Date:: 2026-06-04 #$
+ * @version $Rev:: 9997         $
+ * @date    $Date:: 2026-09-16 #$
  * @brief   The header file of the CMP library.
  *************************************************************************************************************
  * @attention
@@ -438,7 +438,7 @@ typedef enum
 #define CMP1_CVREF0_CN_IN                         ((u32)0x00000020)
 
 #define IS_CMP_InvInputSelection(x)               ((x == CMP0_CMP1N_CN_IN) || (x == CMP1_CMP1N_CN_IN)  || (x == CMP0_CMP0N_CN_IN) || \
-                                                   (x == CMP1_CMP0N_CN_IN) || (x == CMP0_CVREF0_CN_IN) || (x == CMP1_CVREF0_CN_IN)
+                                                   (x == CMP1_CMP0N_CN_IN) || (x == CMP0_CVREF0_CN_IN) || (x == CMP1_CVREF0_CN_IN))
 #elif defined(USE_HT32F66256)
 #define CMP0_CMP0N_CN_IN                          ((u32)0x00000000)
 #define CMP1_CMP0N_CN_IN                          ((u32)0x00000000)
@@ -516,14 +516,14 @@ typedef enum
 #define CMP_INT_FE                                ((u32)0x00000001)
 
 /* Check the CMP Interrupt Parameter                                                                        */
-#define IS_CMP_INT(x)                             ((x & 0xFFFFFF00) != 0x0)
+#define IS_CMP_INT(x)                             (((x) != 0) && (((x) & ~((u32)0x3)) == 0))
 
 
 /* Definitions of CMP Output Edge Detection Enable bit                                                      */
 #define CMP_RE_Detect                             ((u32)0x00000200)
 #define CMP_FE_Detect                             ((u32)0x00000100)
 
-#define IS_CMP_EdgeDetect(x)                      ((x == CMP_RE_Detect) || (x == CMP_FE_Detect))
+#define IS_CMP_EdgeDetect(x)                      (((x) != 0) && (((x) & ~((u32)0x300)) == 0))
 
 
 /* Definitions of CMP Output Edge Flag                                                                      */
@@ -531,7 +531,7 @@ typedef enum
 #define CMP_FLAG_FE                               ((u32)0x00000001)
 
 /* Check the CMP flag Parameter                                                                             */
-#define IS_CMP_FLAG(x)                            ((x & 0xFFFFFFFC) != 0x0)
+#define IS_CMP_FLAG(x)                            (((x) != 0) && (((x) & ~((u32)0x3)) == 0))
 
 
 /* Check the CMPx Parameter                                                                                 */

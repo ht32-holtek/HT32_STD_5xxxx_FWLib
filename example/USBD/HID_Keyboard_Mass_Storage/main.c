@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/HID_Keyboard_Mass_Storage/main.c
- * @version $Rev:: 7515         $
- * @date    $Date:: 2024-01-16 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The main program of USB Device HID Keyboard + Mass Storage example.
  *************************************************************************************************************
  * @attention
@@ -71,17 +71,17 @@ int main(void)
   CKCU_Configuration();               /* System Related configuration                                       */
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
 
-  HT32F_DVB_PBInit(BUTTON_WAKEUP, BUTTON_MODE_EXTI);
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_EXTI);
-  HT32F_DVB_PBInit(BUTTON_KEY2, BUTTON_MODE_EXTI);
+  HT32_DVB_PBInit(BUTTON_WAKEUP, BUTTON_MODE_EXTI);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_EXTI);
+  HT32_DVB_PBInit(BUTTON_KEY2, BUTTON_MODE_EXTI);
 
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   USB_Configuration();                /* USB Related configuration                                          */
 
-  HT32F_DVB_USBConnect();
+  HT32_DVB_USBConnect();
 
   while (1)
   {
@@ -232,12 +232,12 @@ void EnumLED(void)
   {
     case USB_STATE_CONFIGURED:
     {
-      HT32F_DVB_LEDOn(HT_LED1);
+      HT32_DVB_LEDOn(HT_LED1);
       break;
     }
     default:
     {
-      HT32F_DVB_LEDOff(HT_LED1);
+      HT32_DVB_LEDOff(HT_LED1);
       break;
     }
   }

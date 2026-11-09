@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/Software_Trigger/main.c
- * @version $Rev:: 8754         $
- * @date    $Date:: 2025-05-12 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -52,8 +52,8 @@ void EXTI_Configuration(void);
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   EXTI_Configuration();
 

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/BackupData/main.c
- * @version $Rev:: 499          $
- * @date    $Date:: 2016-05-06 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -90,9 +90,9 @@ int main(void)
     while (1);
   }
   /* Init LED1 and USART                                                                                    */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
   /* Enable NVIC RTC interrupt                                                                              */
@@ -122,7 +122,7 @@ int main(void)
     printf("\r\n\n BackupData has been configured....\r\n");
     
     /* Turn on LED2                                                                                         */
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
 
   for (i = 0; i < bDataNum; i++)
@@ -133,7 +133,7 @@ int main(void)
       printf("(Wrong! It should be 0   x%x)\r\n", (unsigned int)BackupData[i]);
 
        /* Turn on LED3                                                                                      */
-      HT32F_DVB_LEDOn(HT_LED3);
+      HT32_DVB_LEDOn(HT_LED3);
     }
   }
   printf("\r\n");

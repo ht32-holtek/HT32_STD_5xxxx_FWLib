@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Mono_LCD/Demo/main.c
- * @version $Rev:: 5250         $
- * @date    $Date:: 2021-02-04 #$
+ * @version $Rev:: 10025        $
+ * @date    $Date:: 2026-10-05 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -141,7 +141,7 @@ void LCD_Configuration(void)
   /* !!! NOTICE !!!
      Must wait until the LCDENS = 0 before change the LCD control register.
   */
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
 
   /* LCDCLK config                                                                                          */
   CKCU_LCDClockConfig(CKCU_LCDSRC_LSI);     /* Using internal 32 kHz RC oscillator clock. LCDCLK = 32 kHz.  */
@@ -158,6 +158,11 @@ void LCD_Configuration(void)
   LCD_InitStructure.LCD_Waveform = LCD_Type_B_Waveform;
   LCD_DriverInit(&LCD_InitStructure);
 
+  LCD_MuxConfig(COM7_MUXPIN_GROUP, LCD_MUX_SEL_COM, LCD_MUX_UNUSED);
+  LCD_MuxConfig(COM6_MUXPIN_GROUP, LCD_MUX_SEL_COM, LCD_MUX_UNUSED);
+  LCD_MuxConfig(COM5_MUXPIN_GROUP, LCD_MUX_SEL_COM, LCD_MUX_UNUSED);
+  LCD_MuxConfig(COM4_MUXPIN_GROUP, LCD_MUX_SEL_COM, LCD_MUX_UNUSED);
+
   /* Enable High Drive Mode                                                                                 */
   LCD_HighDriveConfig(LCD_HighDrive_Static);
 
@@ -168,7 +173,7 @@ void LCD_Configuration(void)
   LCD_ChargePumpConfig(LCD_ChargePump_3V25);
 
   /* Wait for charge pump ready                                                                             */
-  while(LCD_GetFlagStatus(LCD_FLAG_RDY) == RESET);
+  while(LCD_GetFlagStatus(LCD_FLAG_RDY) == RESET){};
 
   /* LCD Interrupt                                                                                          */
   LCD_ClearFlag(LCD_CLR_UDD | LCD_CLR_SOF);

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/DeepSleepMode2/ht32f5xxxx_01_it.c
- * @version $Rev:: 6740         $
- * @date    $Date:: 2023-02-21 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -133,13 +133,13 @@ void EVWUP_IRQHandler(void)
 #endif
   {
     /* Toggle LED2                                                                                          */
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED2);
   }
 #if (EXAMPLE_RTC_LSE == 1)
   if (RTC_GetFlagStatus() & RTC_FLAG_CM)
   {
     /* Toggle LED3                                                                                          */
-    HT32F_DVB_LEDToggle(HT_LED3);
+    HT32_DVB_LEDToggle(HT_LED3);
   }
 #endif
 }

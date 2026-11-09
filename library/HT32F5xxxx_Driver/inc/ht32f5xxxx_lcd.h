@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_lcd.h
- * @version $Rev:: 8333         $
- * @date    $Date:: 2025-01-17 #$
+ * @version $Rev:: 10026        $
+ * @date    $Date:: 2026-10-05 #$
  * @brief   The header file of the LCD library.
  *************************************************************************************************************
  * @attention
@@ -70,8 +70,6 @@ typedef enum {
  */
 typedef enum
 {
-  /*!< 57341: SEG28/COM7                                                                                    */
-  /*!< 57352: SEG36/COM7                                                                                    */
   LCD_MUXCOM7_IS_COM7  = (0x00 << 11),
   LCD_MUXCOM7_IS_SEGx = (0x01 << 11),
 } LCD_MUXCOM7_Enum;
@@ -81,8 +79,6 @@ typedef enum
  */
 typedef enum
 {
-  /*!< 57341: SEG27/COM6                                                                                    */
-  /*!< 57352: SEG35/COM6                                                                                    */
   LCD_MUXCOM6_IS_COM6  = (0x00 << 10),
   LCD_MUXCOM6_IS_SEGx = (0x01 << 10),
 } LCD_MUXCOM6_Enum;
@@ -92,8 +88,6 @@ typedef enum
  */
 typedef enum
 {
-  /*!< 57341: SEG26/COM5                                                                                    */
-  /*!< 57352: SEG34/COM5                                                                                    */
   LCD_MUXCOM5_IS_COM5  = (0x00 << 9),
   LCD_MUXCOM5_IS_SEGx = (0x01 << 9),
 } LCD_MUXCOM5_Enum;
@@ -103,11 +97,19 @@ typedef enum
  */
 typedef enum
 {
-  /*!< 57341: SEG25/COM4                                                                                    */
-  /*!< 57352: SEG33/COM4                                                                                    */
   LCD_MUXCOM4_IS_COM4  = (0x00 << 8),
   LCD_MUXCOM4_IS_SEGx = (0x01 << 8),
 } LCD_MUXCOM4_Enum;
+
+/**
+ * @brief LCD MUX selection mode
+ */
+typedef enum
+{
+    LCD_MUX_SEL_COM = 0x00,
+    LCD_MUX_SEL_SEG = 0x01,
+    LCD_MUX_UNUSED  = 0x02,
+} LCD_MUX_SEL_Enum;
 
 /**
  * @brief Enumeration of LCD waveform.
@@ -222,14 +224,14 @@ typedef enum
   */
 typedef enum
 {
-  LCD_ChargePump_2V65 = (0x00 << 10), /*!< Charge pump voltage = 2.65 V                                     */
-  LCD_ChargePump_2V75 = (0x01 << 10), /*!< Charge pump voltage = 2.75 V                                     */
-  LCD_ChargePump_2V85 = (0x02 << 10), /*!< Charge pump voltage = 2.85 V                                     */
-  LCD_ChargePump_2V95 = (0x03 << 10), /*!< Charge pump voltage = 2.95 V                                     */
-  LCD_ChargePump_3V10 = (0x04 << 10), /*!< Charge pump voltage = 3.10 V                                     */
-  LCD_ChargePump_3V25 = (0x05 << 10), /*!< Charge pump voltage = 3.25 V                                     */
-  LCD_ChargePump_3V40 = (0x06 << 10), /*!< Charge pump voltage = 3.40 V                                     */
-  LCD_ChargePump_3V55 = (0x07 << 10), /*!< Charge pump voltage = 3.55 V                                     */
+  LCD_ChargePump_LEVEL1 = (0x00 << 10), /*!< Charge pump voltage = 2.65 V                                     */
+  LCD_ChargePump_LEVEL2 = (0x01 << 10), /*!< Charge pump voltage = 2.75 V                                     */
+  LCD_ChargePump_LEVEL3 = (0x02 << 10), /*!< Charge pump voltage = 2.85 V                                     */
+  LCD_ChargePump_LEVEL4 = (0x03 << 10), /*!< Charge pump voltage = 2.95 V                                     */
+  LCD_ChargePump_LEVEL5 = (0x04 << 10), /*!< Charge pump voltage = 3.10 V                                     */
+  LCD_ChargePump_LEVEL6 = (0x05 << 10), /*!< Charge pump voltage = 3.25 V                                     */
+  LCD_ChargePump_LEVEL7 = (0x06 << 10), /*!< Charge pump voltage = 3.40 V                                     */
+  LCD_ChargePump_LEVEL8 = (0x07 << 10), /*!< Charge pump voltage = 3.55 V                                     */
 } LCD_ChargePump_Enum;
 
 /**
@@ -308,6 +310,37 @@ typedef struct
 #define LCD_CLR_SOF                          ((u32)0x00000001)
 
 #define IS_LCD_CLEAR(CLR)                    ((((CLR) & 0xFFFFFFFC) == 0) && ((CLR) != 0))
+
+#define IS_LCD_MUX_NOT_BOTH_COM(SEL1, SEL2)  (!(((SEL1) == LCD_MUX_SEL_COM) && ((SEL2) == LCD_MUX_SEL_COM)))
+
+#define IS_LCD_MUX_SEL(SEL)                  (((SEL) == LCD_MUX_SEL_COM) || \
+                                              ((SEL) == LCD_MUX_SEL_SEG) || \
+                                              ((SEL) == LCD_MUX_UNUSED))
+
+#define LCD_ChargePump_2V65                   LCD_ChargePump_LEVEL1
+#define LCD_ChargePump_2V75                   LCD_ChargePump_LEVEL2
+#define LCD_ChargePump_2V85                   LCD_ChargePump_LEVEL3
+#define LCD_ChargePump_2V95                   LCD_ChargePump_LEVEL4
+#define LCD_ChargePump_3V10                   LCD_ChargePump_LEVEL5
+#define LCD_ChargePump_3V25                   LCD_ChargePump_LEVEL6
+#define LCD_ChargePump_3V40                   LCD_ChargePump_LEVEL7
+#define LCD_ChargePump_3V55                   LCD_ChargePump_LEVEL8
+
+#if defined(USE_HT32F57331_41)
+#define COM7_SEG28                            (u16)(11 << 8) // SEG28: PC13
+#define COM6_SEG27                            (u16)(10 << 8) // SEG27: PC12
+#define COM5_SEG26                            (u16)( 9 << 8) // SEG26: PC11
+#define COM4_SEG25                            (u16)( 8 << 8) // SEG25: PC10
+#endif
+
+#if defined(USE_HT32F57342_52)
+#define COM7_SEG36                            (u16)(11 << 8) // SEG36: PC13
+#define COM6_SEG35                            (u16)(10 << 8) // SEG35: PC12
+#define COM5_SEG34                            (u16)( 9 << 8) // SEG34: PC11
+#define COM4_SEG33                            (u16)( 8 << 8) // SEG33: PC10
+#endif
+
+
 /**
   * @}
   */
@@ -327,6 +360,7 @@ typedef struct
      LCD_MuxCOM6Config()
      LCD_MuxCOM5Config()
      LCD_MuxCOM4Config()
+     LCD_MuxConfig()
      LCD_WaveformConfig()
      LCD_BiasConfig()
      LCD_DutyConfig()
@@ -344,6 +378,7 @@ void LCD_MuxCOM7Config(LCD_MUXCOM7_Enum Sel);
 void LCD_MuxCOM6Config(LCD_MUXCOM6_Enum Sel);
 void LCD_MuxCOM5Config(LCD_MUXCOM5_Enum Sel);
 void LCD_MuxCOM4Config(LCD_MUXCOM4_Enum Sel);
+void LCD_MuxConfig(u16 MuxPinGroup, LCD_MUX_SEL_Enum Sel1, LCD_MUX_SEL_Enum Sel2);
 void LCD_WaveformConfig(LCD_Waveform_Enum Sel);
 void LCD_BiasConfig(LCD_Bias_Enum Sel);
 void LCD_DutyConfig(LCD_Duty_Enum Sel);

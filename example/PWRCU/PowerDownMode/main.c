@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/PowerDownMode/main.c
- * @version $Rev:: 7265         $
- * @date    $Date:: 2023-10-02 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -75,12 +75,12 @@ void SysTick_Configuration(void);
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   /* Turn on LED1                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
 
   /* Set DISABLE_DEBUG_PIN as 1 to disable SWD debug pins as input floating. It is meaningful for measure   */
   /* more accurate power consumption since those GPIOs are used as the debug port by default.               */
@@ -130,7 +130,7 @@ int main(void)
   SysTick_Configuration();
 
   /* Configure KEY1 pin used to Enter Power Down Mode                                                       */
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_EXTI);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_EXTI);
 
   /* Infinite loop                                                                                          */
   while (1)

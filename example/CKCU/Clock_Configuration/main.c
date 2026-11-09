@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/Clock_Configuration/main.c
- * @version $Rev:: 9769         $
- * @date    $Date:: 2026-04-09 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -116,22 +116,22 @@ int main(void)
   #endif
 
   /* Initialize LEDs */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   while (1)
   {
     /* Toggle LED1 */
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
     _Delay(DELAY_TIME);
 
     /* Toggle LED2 */
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED2);
     _Delay(DELAY_TIME);
 
     /* Toggle LED3 */
-    HT32F_DVB_LEDToggle(HT_LED3);
+    HT32_DVB_LEDToggle(HT_LED3);
     _Delay(DELAY_TIME);
   }
 }

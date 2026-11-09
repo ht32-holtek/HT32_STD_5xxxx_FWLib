@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/EEPROM/main.c
- * @version $Rev:: 4444         $
- * @date    $Date:: 2019-12-25 #$
+ * @version $Rev:: 10103        $
+ * @date    $Date:: 2026-10-22 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -87,7 +87,7 @@ void EEPROM_WriteReadTest(void)
     pBuf = (u32 *)gWriteBuf;
     for (i = 0; i < (I2C_EEPROM_PAGE_SIZE / 4); i++)
     {
-      *pBuf++ = rand();
+      *pBuf++ = rand(); // GNU Compiler: rand() requires heap memory.
     }
 
     /* Clean read buffer as 0xC3C3C3C3                                                                      */

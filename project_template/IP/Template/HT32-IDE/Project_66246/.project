@@ -231,9 +231,9 @@
 			<locationURI>PARENT-2-PROJECT_LOC/readme.txt</locationURI>
 		</link>
 		<link>
-			<name>Linker/linker.ld</name>
+			<name>Linker/linker_66246.ld</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/GNU_ARM/linker.ld</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/Project_66246/linker_66246.ld</locationURI>
 		</link>	
 	</linkedResources>
 </projectDescription>

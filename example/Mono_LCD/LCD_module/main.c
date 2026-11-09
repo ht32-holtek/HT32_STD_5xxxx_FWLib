@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Mono_LCD/LCD_module/main.c
- * @version $Rev:: 9666         $
- * @date    $Date:: 2026-02-23 #$
+ * @version $Rev:: 10019        $
+ * @date    $Date:: 2026-09-24 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -28,7 +28,6 @@
 /* Includes ------------------------------------------------------------------------------------------------*/
 #include "ht32.h"
 #include "ht32_board_config.h"
-#include "_ht32_project_source.h"
 #include "lcd_ESK32_A3A31.h"
 
 /** @addtogroup HT32_Series_Peripheral_Examples HT32 Peripheral Examples

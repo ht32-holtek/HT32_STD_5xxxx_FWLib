@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/HID_Demo/main.c
- * @version $Rev:: 7416         $
- * @date    $Date:: 2023-12-19 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The main program of USB Device HID example.
  *************************************************************************************************************
  * @attention
@@ -68,7 +68,7 @@ int main(void)
 
   USB_Configuration();                /* USB Related configuration                                          */
 
-  HT32F_DVB_USBConnect();
+  HT32_DVB_USBConnect();
 
   while (1)
   {

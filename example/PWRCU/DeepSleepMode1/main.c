@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/DeepSleepMode1/main.c
- * @version $Rev:: 8380         $
- * @date    $Date:: 2025-02-05 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -89,9 +89,9 @@ void Delay(u32 nTime);
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   /* Configure RTC clock source and prescaler                                                               */
   RTC_Configuration();
@@ -103,7 +103,7 @@ int main(void)
   SysTick_Configuration();
 
   /* Turn on LED1                                                                                           */
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
 
   /* Set DISABLE_DEBUG_PIN as 1 to disable SWD debug pins as input floating. It is meaningful for measure   */
   /* more accurate power consumption since those GPIOs are used as the debug port by default.               */
@@ -120,7 +120,7 @@ int main(void)
 #endif
 
   /* Check KEY1 button. If pressed, enter the infinite loop                                                 */
-  while (HT32F_DVB_PBGetState(BUTTON_KEY1) == 0x1);
+  while (HT32_DVB_PBGetState(BUTTON_KEY1) == 0x1);
 
   /* Infinite loop                                                                                          */
   while (1)
@@ -129,7 +129,7 @@ int main(void)
     Delay(500);
 
     /* Check the KEY1 button to prevent EXTI from waking the system up continuously.                        */
-    while (HT32F_DVB_PBGetState(BUTTON_KEY1) == 0x0){};
+    while (HT32_DVB_PBGetState(BUTTON_KEY1) == 0x0){};
 
     #if (EXAMPLE_RTC_LSE == 1)
     {
@@ -147,15 +147,15 @@ int main(void)
     EXTI_WakeupEventConfig(KEY1_BUTTON_EXTI_CHANNEL, EXTI_WAKEUP_LOW_LEVEL, ENABLE);
 
     /* Turn off LEDs                                                                                        */
-    HT32F_DVB_LEDOff(HT_LED1);
-    HT32F_DVB_LEDOff(HT_LED2);
-    HT32F_DVB_LEDOff(HT_LED3);
+    HT32_DVB_LEDOff(HT_LED1);
+    HT32_DVB_LEDOff(HT_LED2);
+    HT32_DVB_LEDOff(HT_LED3);
 
     /* Request to enter Deep Sleep mode 1 (The LDO in low power mode)                                       */
     PWRCU_DeepSleep1(PWRCU_SLEEP_ENTRY_WFI);
 
     /* Turn on LED1 when the system has resumed from Deep Sleep mode 1                                      */
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
 }
 
@@ -194,7 +194,7 @@ void EXTI_Configuration(void)
   CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
   /* Configure Button pin as input floating                                                                 */
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
 
   /* Connect Button EXTI Channel to Button GPIO Pin                                                         */
   AFIO_EXTISourceConfig(KEY1_BUTTON_EXTI_CHANNEL, KEY1_BUTTON_GPIO_ID);

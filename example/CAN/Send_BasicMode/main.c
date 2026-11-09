@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CAN/Send_BasicMode/main.c
- * @version $Rev:: 9515         $
- * @date    $Date:: 2025-11-05 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -65,7 +65,7 @@ u8 gTxMsgData[8];
 int main(void)
 {
   RETARGET_Configuration();
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   #if (HTCFG_CAN_CONF_CHECK_ENABLE == 1)
   CAN_Config0_Check();
@@ -74,7 +74,7 @@ int main(void)
   CAN_Configuration();
   CAN_MsgTx();
 
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
 
   while (1)
   {

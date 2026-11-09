@@ -1,7 +1,7 @@
 REM /*********************************************************************************************************//**
 REM * @file    _ProjectConfig.bat
-REM * @version $Rev:: 9096         $
-REM * @date    $Date:: 2025-06-17 #$
+REM * @version $Rev:: 10099        $
+REM * @date    $Date:: 2026-10-22 #$
 REM * @brief   Project configure file.
 REM *************************************************************************************************************
 
@@ -26,6 +26,7 @@ rmdir /S /Q "EWARM"
 rmdir /S /Q "EWARMv8"
 rmdir /S /Q "GNU_ARM"
 rmdir /S /Q "HT32-IDE"
+rmdir /S /Q "HT32_VSCode"
 rem rmdir /S /Q "MDK_ARM"
 rem rmdir /S /Q "MDK_ARMv5"
 rem rmdir /S /Q "MDK_ARMv537"
@@ -87,6 +88,7 @@ SET HT_LINKER_NAME_KEIL=..\linker.lin
 SET HT_LINKER_NAME_IAR=
 SET HT_LINKER_NAME_GNU=
 SET HT_LINKER_NAME_HT32_IDE=
+SET HT_LINKER_NAME_HT32_VSCODE=
 SET HT_LINKER_NAME_SES=
 SET HT_LINKER_NAME_SourceryG=
 REM ============================================================================

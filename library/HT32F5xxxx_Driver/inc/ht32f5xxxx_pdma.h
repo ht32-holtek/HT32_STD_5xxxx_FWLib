@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_pdma.h
- * @version $Rev:: 9842         $
- * @date    $Date:: 2026-06-04 #$
+ * @version $Rev:: 10061        $
+ * @date    $Date:: 2026-10-08 #$
  * @brief   The header file of the PDMA library.
  *************************************************************************************************************
  * @attention
@@ -106,7 +106,10 @@ typedef struct
 #define WIDTH_16BIT               (1UL << 2)                    /*!< 16-bit transfer width                  */
 #define WIDTH_32BIT               (2UL << 2)                    /*!< 32-bit transfer width                  */
 
-#define IS_PDMA_WIDTH(WIDTH)      ((WIDTH >> 2) < 3)            /*!< check transfer width parameter         */
+/* check transfer width parameter                                                                           */
+#define IS_PDMA_WIDTH(WIDTH)      ((WIDTH == WIDTH_8BIT)  || \
+                                   (WIDTH == WIDTH_16BIT) || \
+                                   (WIDTH == WIDTH_32BIT))
 
 /* channel number                                                                                           */
 #define PDMA_CH0                  (0)                           /*!< channel 0 number                       */

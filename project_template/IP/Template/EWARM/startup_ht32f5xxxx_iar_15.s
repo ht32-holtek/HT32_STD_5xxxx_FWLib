@@ -6,8 +6,8 @@
 ;/*                                                                                                         */
 ;/*-----------------------------------------------------------------------------------------------------------
 ;  File Name        : startup_ht32f5xxxx_iar_15.s
-;  Version          : $Rev:: 6902         $
-;  Date             : $Date:: 2023-05-08 #$
+;  Version          : $Rev:: 10063        $
+;  Date             : $Date:: 2026-10-13 #$
 ;  Description      : Startup code.
 ;-----------------------------------------------------------------------------------------------------------*/
 
@@ -15,6 +15,7 @@
 ;  ========================================
 ;   HT32F53242, HT32F53252
 ;   HT32F53231, HT32F53241
+;   HT32F64951
 
 ;/* <<< Use Configuration Wizard in Context Menu >>>                                                        */
 
@@ -22,6 +23,7 @@
 ;//      <0=> By Project Asm Define
 ;//      <28=> HT32F53242_52
 ;//      <29=> HT32F53231_41
+;//      <28=> HT32F64951
 USE_HT32_CHIP_SET   EQU     0
 
 _HT32FWID           EQU     0xFFFFFFFF
@@ -29,9 +31,11 @@ _HT32FWID           EQU     0xFFFFFFFF
 ;_HT32FWID           EQU     0x00053252
 ;_HT32FWID           EQU     0x00053231
 ;_HT32FWID           EQU     0x00053241
+;_HT32FWID           EQU     0x00064951
 
 HT32F53242_52       EQU     28
 HT32F53231_41       EQU     29
+HT32F64951          EQU     28
 
   IF USE_HT32_CHIP_SET=0
   ELSE

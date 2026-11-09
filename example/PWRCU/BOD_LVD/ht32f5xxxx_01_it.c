@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    PWRCU/BOD_LVD/ht32f5xxxx_01_it.c
- * @version $Rev:: 3961         $
- * @date    $Date:: 2019-06-05 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -154,13 +154,13 @@ void SysTick_Handler(void)
  ************************************************************************************************************/
 void LVD_BOD_IRQHandler(void)
 {
-  HT32F_DVB_LEDOff(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED1);
   /* Wait till the VDD33 above HTCFG_PWRCU_LVDS */
   while (PWRCU_GetLVDFlagStatus() != RESET)
   {
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
     delay(3000000);
-    HT32F_DVB_LEDOff(HT_LED2);
+    HT32_DVB_LEDOff(HT_LED2);
     delay(3000000);
   }
 }

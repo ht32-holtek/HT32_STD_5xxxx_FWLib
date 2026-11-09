@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_can_config0_calc.h
- * @version $Rev:: 9869         $
- * @date    $Date:: 2026-06-11 #$
+ * @version $Rev:: 10014        $
+ * @date    $Date:: 2026-09-23 #$
  * @brief   The CAN config calculation features.
  *************************************************************************************************************
  * @attention
@@ -74,7 +74,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -112,7 +112,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -150,7 +150,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -188,7 +188,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -226,7 +226,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -264,7 +264,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -302,7 +302,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -340,7 +340,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -378,7 +378,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -416,7 +416,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -454,7 +454,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -492,7 +492,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -530,7 +530,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -568,7 +568,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -606,7 +606,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -644,7 +644,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -682,7 +682,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)
@@ -720,7 +720,7 @@
       /* Otherwise, calculate the error as the difference in the opposite case */
       #define _TMP_CF0_ERR_PPM (((HTCFG_CAN_CF0_BAUDRATE - _TMP_CF0_BAUD_ACT)      * 10000) / HTCFG_CAN_CF0_BAUDRATE)
     #endif
- 
+
     /* Check if the error is within the allowed error rate (HTCFG_CAN_CF0_ERROR_RATE)                       */
     /* If the error is within the range, set the nominal bit time to the current value (_TMP_CF0_NBT)       */
     #if (_TMP_CF0_ERR_PPM <= HTCFG_CAN_CF0_ERROR_RATE_PERCENT)

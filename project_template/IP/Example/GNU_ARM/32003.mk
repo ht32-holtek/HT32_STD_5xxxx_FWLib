@@ -164,7 +164,7 @@ $(HT32_UTL_PATH)common/spi_flash.c \
 #/*---------------------------------------------------------------------------------------------------------*/
 #/* MISC Setting                                                                                            */
 #/*---------------------------------------------------------------------------------------------------------*/
-LINK_NAME_PATH = linker.ld
+LINK_NAME_PATH = linker_32003.ld
 START_NAME_PATH = $(STARTUP).s
 
 C_OBJECT_OPTION = $(ARCH_OPTION) $(C_OPTION) -c

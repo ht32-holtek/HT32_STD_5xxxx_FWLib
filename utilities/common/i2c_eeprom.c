@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    i2c_eeprom.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 10037        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The source file of i2c_eeprom.
  *************************************************************************************************************
  * @attention
@@ -70,8 +70,8 @@ void I2C_EEPROM_Init(void)
   CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
   /* Configure I2C SCL pin, I2C SDA pin                                                                     */
-  HT32F_DVB_GPxConfig(EEPROM_I2C_SCL_GPIO_ID, EEPROM_I2C_SCL_AFIO_PIN, EEPROM_I2C_SCL_AFIO_MODE);
-  HT32F_DVB_GPxConfig(EEPROM_I2C_SDA_GPIO_ID, EEPROM_I2C_SDA_AFIO_PIN, EEPROM_I2C_SDA_AFIO_MODE);
+  HT32_DVB_GPxConfig(EEPROM_I2C_SCL_GPIO_ID, EEPROM_I2C_SCL_AFIO_PIN, EEPROM_I2C_SCL_AFIO_MODE);
+  HT32_DVB_GPxConfig(EEPROM_I2C_SDA_GPIO_ID, EEPROM_I2C_SDA_AFIO_PIN, EEPROM_I2C_SDA_AFIO_MODE);
 
   /* I2C configuration                                                                                      */
   I2C_InitStructure.I2C_GeneralCall = I2C_GENERALCALL_DISABLE;

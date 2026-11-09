@@ -1,0 +1,71 @@
+{
+  "projectName": "project_template_61357",
+  "groups": {
+    "User": [
+      "main.c",
+      "ht32f5xxxx_01_it.c"
+    ],
+    "Config": [
+      "_ht32_project_source.h",
+      "ht32_board_config.h",
+      "ht32f5xxxx_conf.h",
+      "ht32f5xxxx_01_usbdconf.h",
+      "HT32_VSCode/GNU_ARM/ht32_op.c"
+    ],
+    "CMSIS": [
+      "system_ht32f5xxxx_07.c"
+    ],
+    "GNU_ARM": [
+      "HT32_VSCode/GNU_ARM/startup_ht32f5xxxx_gcc_07.S"
+    ],
+    "USBD_Library": [
+      "../../../library/HT32_USBD_Library/src/ht32_usbd_core.c"
+    ],
+    "Library": [
+      "../../../library/HT32F5xxxx_Driver/src/ht32_cm0plus_misc.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_adc.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_bftm.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_ckcu.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_crc.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_dac_dual16.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_div.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_exti.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_flash.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_gpio.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_i2c.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_i2s.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_midi.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_pdma.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_pwrcu.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_rstcu.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_rtc.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_spi.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_tm.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_usart.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_usbd.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32f5xxxx_wdt.c"
+    ],
+    "Retarget": [
+      "../../../library/HT32F5xxxx_Driver/src/ht32_retarget.c",
+      "../../../library/HT32F5xxxx_Driver/src/ht32_serial.c",
+      "../../../library/HT32F5xxxx_Driver/src/printf.c",
+      "../../../library/HT32F5xxxx_Driver/src/syscalls.c"
+    ],
+    "Utilities": [
+      "../../../utilities/ht32_board.c",
+      "../../../utilities/common/i2c_eeprom.c",
+      "../../../utilities/common/spi_flash.c",
+      "../../../utilities/common/spi_lcd.c"
+    ],
+    "Doc": [
+      "readme.txt"
+    ],
+    "Linker": [
+      "HT32_VSCode/Project_61357/linker_61357.ld"
+    ]
+  },
+  "linkerScripts": [
+    "linker_61357.ld"
+  ],
+  "metaVersion": "0.3.1"
+}

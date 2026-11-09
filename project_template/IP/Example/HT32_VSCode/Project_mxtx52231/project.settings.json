@@ -1,0 +1,53 @@
+{
+  "optimizationLevel": "Os",
+  "floatAbi": "soft",
+  "fpu": "none",
+  "useNano": true,
+  "useNosys": true,
+  "extraCFlags": "-std=gnu11",
+  "extraLDFlags": "",
+  "debugInterface": "CMSIS-DAP",
+  "adapterSerial": "",
+  "adapterSpeed": "",
+  "dfpPath": "",
+  "svdFile": "",
+  "eraseMode": "erase_sector",
+  "serverType": "pyocd",
+  "openocdDebugLevel": 1,
+  "smartFlash": false,
+  "extraLibs": [],
+  "extraLibNames": [],
+  "extraLibPaths": [],
+  "outputName": "",
+  "debugInfo": "g3",
+  "useLto": false,
+  "printfFloat": false,
+  "scanfFloat": false,
+  "postBuildCmd": "afterbuild.bat vsc HT32 MXTX52231",
+  "gcSections": true,
+  "includePaths": [
+    "../../",
+    "../GNU_ARM",
+    "../../../../../library/CMSIS/Include",
+    "../../../../../library/Device/Holtek/HT32F5xxxx/Include",
+    "../../../../../library/HT32F5xxxx_Driver/inc",
+    "../../../../../library/HT32_USBD_Library/inc",
+    "../../../../../utilities"
+  ],
+  "mcu": "cortex-m0",
+  "targetName": "HT32",
+  "ramOrigin": "0x20000000",
+  "ramLength": "0x1000",
+  "deviceName": "MXTX52231",
+  "outputType": "app",
+  "cDefs": [
+    "USE_HT32_DRIVER",
+    "USE_MXTX52231_SK",
+    "USE_MXTX52231",
+    "USE_MEM_MXTX52231"
+  ],
+  "aDefs": [
+    "USE_HT32_CHIP=2",
+    "USE_LIBCFG_RAM_SIZE=0x1000"
+  ]
+}

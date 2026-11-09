@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/Discontinuous_EXTITrigger/main.c
- * @version $Rev:: 4826         $
- * @date    $Date:: 2020-07-21 #$
+ * @version $Rev:: 10131        $
+ * @date    $Date:: 2026-10-28 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -119,8 +119,12 @@ void ADC_Configuration(void)
   AFIO_GPxConfig(HTCFG_AD3_GPIO_ID, HTCFG_AD3_AFIO_PIN, HTCFG_ADC_AFIO_MODE);
 
   { /* ADC related settings                                                                                 */
-    /* CK_ADC frequency is set to (CK_AHB / 64)                                                             */
-    CKCU_SetADCnPrescaler(HTCFG_ADC_CKCU_ADCPRE, CKCU_ADCPRE_DIV64);
+    /* !!! NOTICE !!!
+       CK_ADC frequency is set to (CK_AHB / n).
+       The ADC clock frequency must meet the minimum requirement.
+       Please refer to the IC Datasheet for detailed specifications.
+    */
+    CKCU_SetADCnPrescaler(HTCFG_ADC_CKCU_ADCPRE, CKCU_ADCPRE_DIV8);
 
     /* Discontinuous mode, sequence length = 3, subgroup length = 2                                         */
     ADC_RegularGroupConfig(HTCFG_ADC_PORT, DISCONTINUOUS_MODE, 3, 2);

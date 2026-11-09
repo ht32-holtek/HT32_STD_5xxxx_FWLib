@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    FMC/FLASH_Security/main.c
- * @version $Rev:: 7265         $
- * @date    $Date:: 2023-10-02 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -60,12 +60,12 @@ int main(void)
   */
   EnableSecurity();
 
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   while (1)
   {
     for (i = 0; i < 10000000; i++);
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
   }
 }
 

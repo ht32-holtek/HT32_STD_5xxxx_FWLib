@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_TempSensor_Interrupt/main.c
- * @version $Rev:: 9771         $
- * @date    $Date:: 2026-04-16 #$
+ * @version $Rev:: 10131        $
+ * @date    $Date:: 2026-10-28 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -57,8 +57,8 @@ extern bool bIsAvgTempReady;
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
   ADC_TempSensor_Configuration();     /* ADC and Temperature Sensor configuration                           */
   ADC_Cmd(HTCFG_ADC_PORT, ENABLE);    /* ADC Enable                                                         */
@@ -97,7 +97,11 @@ void ADC_TempSensor_Configuration(void)
   CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
   /* ADC related settings                                                                                   */
-  /* CK_ADC frequency is set to (CK_AHB / HTCFG_ADC_CKCU_ADCPRE_DIV)                                        */
+  /* !!! NOTICE !!!
+     CK_ADC frequency is set to (CK_AHB / n).
+     The ADC clock frequency must meet the minimum requirement.
+     Please refer to the IC Datasheet for detailed specifications.
+  */
   CKCU_SetADCnPrescaler(HTCFG_ADC_CKCU_ADCPRE, HTCFG_ADC_CKCU_ADCPRE_DIV);
 
   /* One Shot mode, sequence length = 1                                                                     */

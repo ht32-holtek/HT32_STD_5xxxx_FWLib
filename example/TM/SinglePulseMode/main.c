@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/SinglePulseMode/main.c
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -54,12 +54,12 @@ void TM_Configuration(void);
 int main(void)
 {
   /* Configure KEY1 used to start TM                                                                        */
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
 
   TM_Configuration();
 
   /* Waiting for KEY1 pressed to start the TM                                                               */
-  while (HT32F_DVB_PBGetState(BUTTON_KEY1));
+  while (HT32_DVB_PBGetState(BUTTON_KEY1));
   TM_Cmd(HTCFG_PULSE_PORT, ENABLE);
 
   while (1)

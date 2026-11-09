@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/VREFP_Powered_by_Internal_VREF/ht32f5xxxx_01_it.c
- * @version $Rev:: 9599         $
- * @date    $Date:: 2025-12-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -124,12 +124,12 @@ void ADC0_IRQHandler(void)
   if (ADC_GetIntStatus(HT_ADC0, ADC_INT_SINGLE_EOC) == SET)
   {
     ADC_ClearIntPendingBit(HT_ADC0, ADC_FLAG_SINGLE_EOC);
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
 
   if (ADC_GetIntStatus(HT_ADC0, ADC_INT_CYCLE_EOC) == SET)
   {
-    HT32F_DVB_LEDOn(HT_LED3);
+    HT32_DVB_LEDOn(HT_LED3);
     ADC_ClearIntPendingBit(HT_ADC0, ADC_FLAG_CYCLE_EOC);
     gADC_CycleEndOfConversion = TRUE;
     gADC_Result[0] = HT_ADC0->DR[0] & 0x0FFF;    /* MVDDA Conversion Result                                 */

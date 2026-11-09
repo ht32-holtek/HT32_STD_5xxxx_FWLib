@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USBD/HID_Keyboard/ht32_usbd_class.c
- * @version $Rev:: 4874         $
- * @date    $Date:: 2020-08-05 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The USB Device Class.
  *************************************************************************************************************
  * @attention
@@ -229,9 +229,9 @@ static void USBDClass_ReportProcess(void)
   if (gIsSetOutputReport == TRUE)
   {
     gIsSetOutputReport = FALSE;
-    (gOutputReportBuffer & HID_LED_1_MASK) ? HT32F_DVB_LEDOn(HT_LED1) : HT32F_DVB_LEDOff(HT_LED1);
-    (gOutputReportBuffer & HID_LED_2_MASK) ? HT32F_DVB_LEDOn(HT_LED2) : HT32F_DVB_LEDOff(HT_LED2);
-    (gOutputReportBuffer & HID_LED_3_MASK) ? HT32F_DVB_LEDOn(HT_LED3) : HT32F_DVB_LEDOff(HT_LED3);
+    (gOutputReportBuffer & HID_LED_1_MASK) ? HT32_DVB_LEDOn(HT_LED1) : HT32_DVB_LEDOff(HT_LED1);
+    (gOutputReportBuffer & HID_LED_2_MASK) ? HT32_DVB_LEDOn(HT_LED2) : HT32_DVB_LEDOff(HT_LED2);
+    (gOutputReportBuffer & HID_LED_3_MASK) ? HT32_DVB_LEDOn(HT_LED3) : HT32_DVB_LEDOff(HT_LED3);
   }
 
   return;

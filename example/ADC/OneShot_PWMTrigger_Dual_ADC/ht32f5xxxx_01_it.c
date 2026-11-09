@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_PWMTrigger_Dual_ADC/ht32f5xxxx_01_it.c
- * @version $Rev:: 5008         $
- * @date    $Date:: 2020-10-28 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -123,7 +123,7 @@ void ADC0_IRQHandler(void)
 
   if (ADC_GetIntStatus(HT_ADC0, ADC_INT_CYCLE_EOC) == SET)
   {
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED2);
     ADC_ClearIntPendingBit(HT_ADC0, ADC_FLAG_CYCLE_EOC);
     gADC0_CycleEndOfConversion = TRUE;
     gADC0_Result[0] = HT_ADC0->DR[0] & 0x0FFF;
@@ -141,7 +141,7 @@ void ADC1_IRQHandler(void)
   extern vu32 gADC1_CycleEndOfConversion;
   if (ADC_GetIntStatus(HT_ADC1, ADC_INT_CYCLE_EOC) == SET)
   {
-    HT32F_DVB_LEDToggle(HT_LED3);
+    HT32_DVB_LEDToggle(HT_LED3);
     ADC_ClearIntPendingBit(HT_ADC1, ADC_FLAG_CYCLE_EOC);
     gADC1_CycleEndOfConversion = TRUE;
     gADC1_Result[0] = HT_ADC1->DR[0] & 0x0FFF;
@@ -158,7 +158,7 @@ void GPTM0_IRQHandler(void)
   if (TM_GetIntStatus(HT_GPTM0, TM_INT_CH3CC) == SET)
   {
     TM_ClearIntPendingBit(HT_GPTM0, TM_INT_CH3CC);
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
   }
 }
 

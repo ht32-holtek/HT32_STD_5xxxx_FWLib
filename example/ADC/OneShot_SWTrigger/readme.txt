@@ -38,9 +38,9 @@ If the USART/UART is connected to PC, the ADC result will be printed on the term
 
 @par Directory Contents:
 
-- ADC/ADC_OneShot_SWTrigger/main.c                     Main program
-- ADC/ADC_OneShot_SWTrigger/ht32fxxxxx_nn_it.c         Interrupt handlers
-- ADC/ADC_OneShot_SWTrigger/ht32_board_config.h        Board configuration file
+- ADC/OneShot_SWTrigger/main.c                     Main program
+- ADC/OneShot_SWTrigger/ht32fxxxxx_nn_it.c         Interrupt handlers
+- ADC/OneShot_SWTrigger/ht32_board_config.h        Board configuration file
 
 @par Hardware and Software Environment:
 

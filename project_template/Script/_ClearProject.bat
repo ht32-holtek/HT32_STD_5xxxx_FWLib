@@ -1,8 +1,8 @@
 @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _ClearProject.bat
-REM * @version $Rev:: 9171         $
-REM * @date    $Date:: 2025-06-23 #$
+REM * @version $Rev:: 10099        $
+REM * @date    $Date:: 2026-10-22 #$
 REM * @brief   Clear Project Script.
 REM *************************************************************************************************************
 REM * @attention
@@ -69,6 +69,7 @@ ECHO .\EWARM
 ECHO .\EWARMv8
 ECHO .\GNU_ARM
 ECHO .\HT32-IDE
+ECHO .\HT32_VSCode
 ECHO .\MDK_ARM
 ECHO .\MDK_ARMv5
 ECHO .\MDK_ARMv537
@@ -85,6 +86,7 @@ IF %USBDCONF_ORI%==0 (
 REM ===========================================================================
 ECHO ht32??xxxx_conf.h
 ECHO system_ht32??xxxx_nn.c
+ECHO .clangd
 
 ECHO.
 
@@ -117,6 +119,8 @@ FOR /d %%d IN ("%CurrentDir%\*") DO (
     RD /s /q %%d
   ) ELSE IF "%%~nxd"=="HT32-IDE" (
     RD /s /q %%d
+  ) ELSE IF "%%~nxd"=="HT32_VSCode" (
+    RD /s /q %%d
   ) ELSE IF "%%~nxd"=="MDK_ARM" (
     RD /s /q %%d
   ) ELSE IF "%%~nxd"=="MDK_ARMv5" (
@@ -133,6 +137,8 @@ IF %USBDCONF_ORI%==0 (
     del "%%f" /s /Q /F >nul
   )
 )
+REM Delete VSCode Clangd Config File
+del .\.clangd /Q /F 1> nul 2>&1
 REM Delete Batch File
 del .\_CreateProjectScript.bat /s /Q /F 1> nul 2>&1
 del .\_ProjectSource.bat /s /Q /F 1> nul 2>&1

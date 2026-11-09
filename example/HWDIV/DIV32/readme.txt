@@ -16,7 +16,6 @@ This example shows how to use the Hardware Divider.
 
 - HWDIV/DIV32/main.c                                        Main program
 - HWDIV/DIV32/ht32fxxxx_it.c                                Interrupt handlers
-- HWDIV/DIV32/ht32_board_config.h                           Board configuration file
 
 @par Hardware and Software Environment:
 

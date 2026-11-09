@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/I2C_NoStretch_Tester/main.c
- * @version $Rev:: 9565         $
- * @date    $Date:: 2025-11-18 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -76,8 +76,8 @@ u8 I2C_Master_MultiData[3] = {0xD1, 0xD2, 0xD3};
 int main(void)
 {
   /* Initialize LED1 & LED2 on HT32 board                                                                   */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   /* I2C configuration                                                                                      */
   I2C_Master_Configuration();
@@ -176,11 +176,11 @@ void I2C_Master_SingleRead(void)
   /* Check on validity of received data on I2Cx.                                                            */
   if (CmpBuffer(I2C_Master_Rx_Buffer, &I2C_Master_SingleData, sizeof(I2C_Master_Rx_Buffer)))
   {
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
   else
   {
-    HT32F_DVB_LEDOff(HT_LED1);
+    HT32_DVB_LEDOff(HT_LED1);
   }
 }
 
@@ -227,11 +227,11 @@ void I2C_Master_MultiRead(void)
   /* Check on validity of received data on I2Cx.                                                            */
   if (CmpBuffer(I2C_Master_Rx_Buffer, I2C_Master_MultiData, sizeof(I2C_Master_Rx_Buffer)))
   {
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
   else
   {
-    HT32F_DVB_LEDOff(HT_LED2);
+    HT32_DVB_LEDOff(HT_LED2);
   }
 }
 

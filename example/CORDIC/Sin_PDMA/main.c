@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CORDIC/Sin_PDMA/main.c
- * @version $Rev:: 9820         $
- * @date    $Date:: 2026-05-27 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -111,8 +111,8 @@ int main(void)
   RETARGET_Configuration();
 
   /* Initialize LED1 & LED2 on HT32 board                                                                   */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   PDMA_Configuration();
 
@@ -229,14 +229,14 @@ void CORDIC_Test(void)
 
   if (err != 0)
   {
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
 
     printf("Result: Unexpected result.\r\n");
     printf("Check residual error on aCalculatedSin vs. aRefSin fail.\r\n");
   }
   else
   {
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
 
     printf("Result: Success.\r\n");
     printf("\r\n");

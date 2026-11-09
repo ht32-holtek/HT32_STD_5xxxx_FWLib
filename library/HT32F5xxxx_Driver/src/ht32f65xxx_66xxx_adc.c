@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f65xxx_66xxx_adc.c
- * @version $Rev:: 9814         $
- * @date    $Date:: 2026-05-26 #$
+ * @version $Rev:: 10142        $
+ * @date    $Date:: 2026-11-02 #$
  * @brief   This file provides all the ADC firmware functions.
  *************************************************************************************************************
  * @attention
@@ -1246,16 +1246,23 @@ ErrStatus ADC_TempSensorGetTemp(HT_ADC_TypeDef* HT_ADCn, ADC_TempSensorParam_Typ
  ************************************************************************************************************/
 s32 ADC_TempSensorGetCalTempPoint(HT_ADC_TypeDef* HT_ADCn)
 {
-  /* Check the parameters                                                                                    */
+  /* Check the parameters                                                                                   */
   Assert_Param(IS_ADC(HT_ADCn));
-  #if ADC_CAL_TEMP_POINT_SORUCE
-  /* Get calibration temperature point from factory trim code                                                */
-  /* To Do... */
-   #error "Trim code feature is not yet implemented."
+
+  #if ADC_CAL_TEMP_POINT_SOURCE
+    /* Get calibration temperature point from factory trim code                                             */
+    /* To Do...                                                                                             */
+    #error "Trim code feature is not yet implemented."
   #else
-  /* Return fixed default calibration temperature point                                                      */
-  HT_ADCn->TSCALR; /* Used only to avoid "unused parameter" compiler warning.                                */
-  return  ADC_FIXED_CAL_TEMP_mC;
+    (void)HT_ADCn; /* Used only to avoid "unused parameter" compiler warning.                               */
+
+    /* Return fixed default calibration temperature point                                                   */
+    #if defined(ADC_FIXED_CAL_TEMP_mC)
+      return  ADC_FIXED_CAL_TEMP_mC;
+    #else
+      #warning "The 'ht32Xxxxxx_conf.h' file (usually located in the same directory as main.c) is outdated. Please update it to the latest version."
+      while (1){};
+    #endif
   #endif
 }
 #endif

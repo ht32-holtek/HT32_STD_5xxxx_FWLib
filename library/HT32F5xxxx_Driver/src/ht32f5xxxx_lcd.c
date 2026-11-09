@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_lcd.c
- * @version $Rev:: 9753         $
- * @date    $Date:: 2026-04-02 #$
+ * @version $Rev:: 10027        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all the LCD firmware functions.
  *************************************************************************************************************
  * @attention
@@ -63,16 +63,18 @@ void LCD_DriverInit(LCD_InitTypeDef* LCD_InitStruct)
      Must wait until the LCDENS = 0 before change the LCD control register.
   */
   #if 0
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
   #endif
 
-  HT_LCD->FCR = (u32)(LCD_InitStruct->LCD_Prescaler) |
-                (u32)(LCD_InitStruct->LCD_Divider);
+  HT_LCD->FCR = (HT_LCD->FCR & 0xFC03FFFF) |
+                (u32)LCD_InitStruct->LCD_Prescaler |
+                (u32)LCD_InitStruct->LCD_Divider;
 
-  HT_LCD->CR = (u32)(LCD_InitStruct->LCD_Waveform) |
-               (u32)(LCD_InitStruct->LCD_Bias) |
-               (u32)(LCD_InitStruct->LCD_Duty) |
-               (u32)(LCD_InitStruct->LCD_VoltageSource);
+  HT_LCD->CR = (HT_LCD->CR & 0xFFFFFF01) |
+               (u32)LCD_InitStruct->LCD_Waveform |
+               (u32)LCD_InitStruct->LCD_Bias |
+               (u32)LCD_InitStruct->LCD_Duty |
+               (u32)LCD_InitStruct->LCD_VoltageSource;
 }
 
 /*********************************************************************************************************//**
@@ -89,7 +91,7 @@ void LCD_MaskTimeConfig(LCD_MaskTime_Enum Sel)
      Must wait until the LCDENS = 0 before change the LCD control register.
   */
   #if 0
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
   #endif
 
   HT_LCD->CR = (HT_LCD->CR & ~(1ul << 24)) | Sel;
@@ -129,7 +131,7 @@ void LCD_StaticSwitchConfig(LCD_StaticSwitch_Enum Sel)
      Must wait until the LCDENS = 0 before change the LCD control register.
   */
   #if 0
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
   #endif
 
   HT_LCD->CR = (HT_LCD->CR & ~(1ul << 14)) | Sel;
@@ -140,7 +142,7 @@ void LCD_StaticSwitchConfig(LCD_StaticSwitch_Enum Sel)
  * @param Sel: Specify the MuxSEG.
  *   This parameter can be one of the following values:
  *     @arg LCD_MUXCOM7_IS_COM7  :
- *     @arg LCD_MUXCOM7_IS_SEGx  :(57341: SEG28, 57352: SEG36)
+ *     @arg LCD_MUXCOM7_IS_SEGx  :
  * @retval None
  ************************************************************************************************************/
 void LCD_MuxCOM7Config(LCD_MUXCOM7_Enum Sel)
@@ -160,7 +162,7 @@ void LCD_MuxCOM7Config(LCD_MUXCOM7_Enum Sel)
  * @param Sel: Specify the MuxSEG.
  *   This parameter can be one of the following values:
  *     @arg LCD_MUXCOM6_IS_COM6  :
- *     @arg LCD_MUXCOM6_IS_SEGx  :(57341: SEG27, 57352: SEG35)
+ *     @arg LCD_MUXCOM6_IS_SEGx  :
  * @retval None
  ************************************************************************************************************/
 void LCD_MuxCOM6Config(LCD_MUXCOM6_Enum Sel)
@@ -180,7 +182,7 @@ void LCD_MuxCOM6Config(LCD_MUXCOM6_Enum Sel)
  * @param Sel: Specify the MuxSEG.
  *   This parameter can be one of the following values:
  *     @arg LCD_MUXCOM5_IS_COM5  :
- *     @arg LCD_MUXCOM5_IS_SEGx  :(57341: SEG26, 57352: SEG34)
+ *     @arg LCD_MUXCOM5_IS_SEGx  :
  * @retval None
  ************************************************************************************************************/
 void LCD_MuxCOM5Config(LCD_MUXCOM5_Enum Sel)
@@ -200,7 +202,7 @@ void LCD_MuxCOM5Config(LCD_MUXCOM5_Enum Sel)
  * @param Sel: Specify the MuxSEG.
  *   This parameter can be one of the following values:
  *     @arg LCD_MUXCOM4_IS_COM4  :
- *     @arg LCD_MUXCOM4_IS_SEGx  :(57341: SEG25, 57352: SEG33)
+ *     @arg LCD_MUXCOM4_IS_SEGx  :
  * @retval None
  ************************************************************************************************************/
 void LCD_MuxCOM4Config(LCD_MUXCOM4_Enum Sel)
@@ -213,6 +215,59 @@ void LCD_MuxCOM4Config(LCD_MUXCOM4_Enum Sel)
   #endif
 
   HT_LCD->CR = (HT_LCD->CR & ~(1ul << 8)) | Sel;
+}
+
+/*********************************************************************************************************//**
+ * @brief Configure the two MUX pins in one COM group to be COM or SEG.
+ * @param MuxPinGroup: Specify the COM group
+ * @param Sel1: Mux mode of the first SEG.
+ * @param Sel2: Mux mode of the second SEG.
+ *   This parameter can be one of the following values:
+ *     @arg LCD_MUX_SEL_COM
+ *     @arg LCD_MUX_SEL_SEG
+ *     @arg LCD_MUX_UNUSED
+ * @retval None
+ ************************************************************************************************************/
+void LCD_MuxConfig(u16 MuxPinGroup, LCD_MUX_SEL_Enum Sel1, LCD_MUX_SEL_Enum Sel2)
+{
+  u32 seg_bit;
+  /* Check the parameters                                                                                   */
+  Assert_Param(IS_LCD_MUX_SEL(Sel1));
+  Assert_Param(IS_LCD_MUX_SEL(Sel2));
+  Assert_Param(IS_LCD_MUX_NOT_BOTH_COM(Sel1, Sel2));
+  (void)Sel2;
+  /* !!! NOTICE !!!
+     Must wait until the LCDENS = 0 before change the LCD settings.
+  */
+  #if 0
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
+  #endif
+
+  #if (HT32_LIB_LITE == 0)
+  if(Sel1 == LCD_MUX_SEL_COM && Sel2 == LCD_MUX_SEL_COM)
+  {
+    /*
+      ERROR: Both MUX pins in the same COM group are configured as COM.
+      Selecting both pins as COM is not allowed,
+      because a COM group supports only one COM pin.
+    */
+    while (1){};
+  }
+  #endif
+
+  if (Sel1 != LCD_MUX_UNUSED)
+  {
+    seg_bit = (u32)((MuxPinGroup >> 8) & 0x001F);
+    HT_LCD->CR = (HT_LCD->CR & ~(1ul << seg_bit)) | ((u32)Sel1 << seg_bit);
+  }
+
+  #if(LIBCFG_LCD_MULTI_MUXCOM)
+  if (Sel2 != LCD_MUX_UNUSED)
+  {
+    seg_bit = (u32)(MuxPinGroup & 0x001F);
+    HT_LCD->CR = (HT_LCD->CR & ~(1ul << seg_bit)) | ((u32)Sel2 << seg_bit);
+  }
+  #endif
 }
 
 /*********************************************************************************************************//**
@@ -229,7 +284,7 @@ void LCD_WaveformConfig(LCD_Waveform_Enum Sel)
      Must wait until the LCDENS = 0 before change the LCD settings.
   */
   #if 0
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
   #endif
 
   HT_LCD->CR = (HT_LCD->CR & ~(1ul << 7)) | Sel;
@@ -251,7 +306,7 @@ void LCD_BiasConfig(LCD_Bias_Enum Sel)
      Must wait until the LCDENS = 0 before change the LCD settings.
   */
   #if 0
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
   #endif
 
   HT_LCD->CR = (HT_LCD->CR & ~(3ul << 5)) | Sel;
@@ -274,7 +329,7 @@ void LCD_DutyConfig(LCD_Duty_Enum Sel)
      Must wait until the LCDENS = 0 before change the LCD settings.
   */
   #if 0
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
   #endif
 
   HT_LCD->CR = (HT_LCD->CR & ~(7ul << 2)) | Sel;
@@ -294,7 +349,7 @@ void LCD_VoltageSourceConfig(LCD_VoltageSource_Enum Sel)
      Must wait until the LCDENS = 0 before change the LCD settings.
   */
   #if 0
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
   #endif
 
   HT_LCD->CR = (HT_LCD->CR & ~(1ul << 1)) | Sel;
@@ -344,7 +399,7 @@ void LCD_Cmd(ControlStatus NewState)
  ************************************************************************************************************/
 void LCD_PrescalerConfig(LCD_Prescaler_Enum Sel)
 {
-  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET);
+  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET){};
   HT_LCD->FCR = (HT_LCD->FCR & ~(15ul << 22)) | Sel;
 }
 
@@ -372,7 +427,7 @@ void LCD_PrescalerConfig(LCD_Prescaler_Enum Sel)
  ************************************************************************************************************/
 void LCD_DividerConfig(LCD_Divider_Enum Sel)
 {
-  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET);
+  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET){};
   HT_LCD->FCR = (HT_LCD->FCR & ~(15ul << 18)) | Sel;
 }
 
@@ -387,7 +442,7 @@ void LCD_DividerConfig(LCD_Divider_Enum Sel)
  ************************************************************************************************************/
 void LCD_BlinkModeConfig(LCD_BlinkMode_Enum Sel)
 {
-  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET);
+  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET){};
   HT_LCD->FCR = (HT_LCD->FCR & ~(3ul << 16)) | Sel;
 }
 
@@ -406,7 +461,7 @@ void LCD_BlinkModeConfig(LCD_BlinkMode_Enum Sel)
  ************************************************************************************************************/
 void LCD_BlinkFrequencyConfig(LCD_BlinkFrequency_Enum Sel)
 {
-  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET);
+  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET){};
   HT_LCD->FCR = (HT_LCD->FCR & ~(7ul << 13)) | Sel;
 }
 
@@ -414,14 +469,14 @@ void LCD_BlinkFrequencyConfig(LCD_BlinkFrequency_Enum Sel)
  * @brief Configure the LCD Charge Pump Voltage Selection.
  * @param Sel: Specify LCD Charge Pump Voltage Selection.
  *   This parameter can be one of the following values:
- *     @arg LCD_ChargePump_2V65 : Charge pump voltage = 2.65 V
- *     @arg LCD_ChargePump_2V75 : Charge pump voltage = 2.75 V
- *     @arg LCD_ChargePump_2V85 : Charge pump voltage = 2.85 V
- *     @arg LCD_ChargePump_2V95 : Charge pump voltage = 2.95 V
- *     @arg LCD_ChargePump_3V10 : Charge pump voltage = 3.10 V
- *     @arg LCD_ChargePump_3V25 : Charge pump voltage = 3.25 V
- *     @arg LCD_ChargePump_3V40 : Charge pump voltage = 3.40 V
- *     @arg LCD_ChargePump_3V55 : Charge pump voltage = 3.55 V
+ *     @arg LCD_ChargePump_LEVEL1
+ *     @arg LCD_ChargePump_LEVEL2
+ *     @arg LCD_ChargePump_LEVEL3
+ *     @arg LCD_ChargePump_LEVEL4
+ *     @arg LCD_ChargePump_LEVEL5
+ *     @arg LCD_ChargePump_LEVEL6
+ *     @arg LCD_ChargePump_LEVEL7
+ *     @arg LCD_ChargePump_LEVEL8
  ************************************************************************************************************/
 void LCD_ChargePumpConfig(LCD_ChargePump_Enum Sel)
 {
@@ -429,10 +484,10 @@ void LCD_ChargePumpConfig(LCD_ChargePump_Enum Sel)
      Must wait until the LCDENS = 0 before change the LCD settings.
   */
   #if 0
-  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == 1);
+  while (LCD_GetFlagStatus(LCD_FLAG_ENS) == SET){};
   #endif
 
-  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF));
+  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF)){};
   HT_LCD->FCR = (HT_LCD->FCR & ~(7ul << 10)) | Sel;
 }
 
@@ -451,7 +506,7 @@ void LCD_ChargePumpConfig(LCD_ChargePump_Enum Sel)
  ************************************************************************************************************/
 void LCD_DeadTimeConfig(LCD_DeadTime_Enum Sel)
 {
-  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET);
+  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF) == SET){};
   HT_LCD->FCR = (HT_LCD->FCR & ~(7ul << 7)) | Sel;
 }
 
@@ -483,7 +538,7 @@ void LCD_HighDriveConfig(LCD_HighDrive_Enum Sel)
     FCR = (FCR & ~(7ul << 4)) | Sel;
   }
 
-  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF));
+  while (LCD_GetFlagStatus(LCD_FLAG_FCRSF)){};
   HT_LCD->FCR = FCR;
 }
 

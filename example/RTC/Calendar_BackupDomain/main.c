@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    RTC/Calendar_BackupDomain/main.c
- * @version $Rev:: 6853         $
- * @date    $Date:: 2023-04-11 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -117,7 +117,7 @@ int main(void)
   }
 
   /* Initialize LED1                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
 

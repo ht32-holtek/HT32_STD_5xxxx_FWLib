@@ -1,8 +1,8 @@
 REM @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _ProjectConfigScript.bat
-REM * @version $Rev:: 9344         $
-REM * @date    $Date:: 2025-07-29 #$
+REM * @version $Rev:: 10099        $
+REM * @date    $Date:: 2026-10-22 #$
 REM * @brief   Delete unsupport project related files.
 REM *************************************************************************************************************
 REM * @attention
@@ -117,6 +117,8 @@ IF !%1!==0 (
   REM echo DEL %2
   del /S Project_%2*.* %2.mk 1> nul 2>&1
   rmdir /s /q HT32-IDE\Project_%2 1> nul 2>&1
+  rmdir /s /q HT32_VSCode\Project_%2 1> nul 2>&1
+  del /q HT32_VSCode\Project_%2.ht32vs 1> nul 2>&1
 )
 exit /b
 

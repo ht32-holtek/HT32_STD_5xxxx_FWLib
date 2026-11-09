@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CMP/ComparatorInterrupt/ht32f5xxxx_01_it.c
- * @version $Rev:: 5611         $
- * @date    $Date:: 2021-10-19 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -121,13 +121,13 @@ void HTCFG_CMP_IRQHandler(void)
   if (CMP_GetFlagStatus(HTCFG_CP_PORT, CMP_FLAG_RE))
   {
     CMP_ClearFlag(HTCFG_CP_PORT, CMP_FLAG_RE);
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
 
   if (CMP_GetFlagStatus(HTCFG_CP_PORT, CMP_FLAG_FE))
   {
     CMP_ClearFlag(HTCFG_CP_PORT, CMP_FLAG_FE);
-    HT32F_DVB_LEDOff(HT_LED1);
+    HT32_DVB_LEDOff(HT_LED1);
   }
 }
 

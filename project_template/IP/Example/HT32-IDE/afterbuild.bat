@@ -1,8 +1,8 @@
 @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    afterbuild.bat
-REM * @version $Rev:: 435          $
-REM * @date    $Date:: 2025-06-17 #$
+REM * @version $Rev:: 688          $
+REM * @date    $Date:: 2026-10-28 #$
 REM * @brief   After build script.
 REM *************************************************************************************************************
 REM * @attention
@@ -32,22 +32,23 @@ REM                    %1   %2          %3      %4
 REM     afterbuild.bat MODE OUTPUT_NAME IC_NAME "KEIL_PATH"
 REM
 REM   Parameter:      Keil Symbol HT32-IDE Symbol              Example         Description
-REM                   =========== ============================ =============== ===============                 
-REM     MODE        : -           -                            (*1)            Script Mode for Keil, Keil + GNU, or HT32-IDE 
+REM                   =========== ============================ =============== ==========================================
+REM     MODE        : -           -                            (*1)            Script Mode for Keil, Keil + GNU, HT32-IDE, or HT32 VSCode
 REM     OUTPUT_NAME : @L          ${BuildArtifactFileBaseName} (*2)            Build output name
 REM     IC_NAME     : $D          ${IC_NAME}                   (*3)            IC name
-REM     KEIL_PATH   : "$J"        -                            (*4)            Keil include path for locate fromelf 
+REM     KEIL_PATH   : "$J"        -                            (*4)            Keil include path for locating fromelf
 REM
 REM     Note:
-REM     *1. keil, keilgnu, ht32ide 
+REM     *1. keil, keilgnu, ht32ide, vsc
 REM     *2. HT32, IAP, or IAP_AP
 REM     *3. HT32F52352 or 52352
-REM     *4. C:\Keil\ARM\ARMCC\include" or "C:\Keil\ARM\ARMCLANG\include" or "C:\Keil\ARM\Inc"  
+REM     *4. "C:\Keil\ARM\ARMCC\include" or "C:\Keil\ARM\ARMCLANG\include" or "C:\Keil\ARM\Inc"
 REM
 REM   Start Path:
-REM     Keil       : __CODE_TYPE__\__APP_NAME__\__CODE_NAME__\__MDK_ARMTYPE__\
-REM     Keil + GNU : __CODE_TYPE__\__APP_NAME__\__CODE_NAME__\GNU_ARM\
-REM     HT32-IDE   : __CODE_TYPE__\__APP_NAME__\__CODE_NAME__\HT32-IDE\__PROJECT_NAME__\HT32\
+REM     Keil        : __CODE_TYPE__\__APP_NAME__\__CODE_NAME__\__MDK_ARMTYPE__\
+REM     Keil + GNU  : __CODE_TYPE__\__APP_NAME__\__CODE_NAME__\GNU_ARM\
+REM     HT32-IDE    : __CODE_TYPE__\__APP_NAME__\__CODE_NAME__\HT32-IDE\__PROJECT_NAME__\HT32\
+REM     HT32 VSCode : __CODE_TYPE__\__APP_NAME__\__CODE_NAME__\HT32_VSCode\__PROJECT_NAME__\
 REM
 REM [Example - Keil]
 REM   Command:
@@ -66,10 +67,23 @@ REM   Command:
 REM     ..\..\afterbuild.bat ht32ide ${BuildArtifactFileBaseName} ${IC_NAME}
 REM     ..\..\afterbuild.bat ht32ide HT32 HT32F52352
 REM     ..\..\afterbuild.bat ht32ide IAP_AP 52352
-REM 
+REM
 REM   Start Path:
 REM     example\GPIO\Input\HT32-IDE\Project_52352\HT32
 REM     application\IAP_HID\IAP_HID_III\HT32-IDE\Project_52352_AP\HT32
+REM
+REM [Example - HT32 VSCode]
+REM   Command:
+REM     afterbuild.bat vsc HT32 HT32F52352
+REM     afterbuild.bat vsc IAP_AP 52352
+REM
+REM   Start Path:
+REM     example\GPIO\Input\HT32_VSCode\Project_52352
+REM     application\IAP_HID\IAP_HID_III\HT32_VSCode\Project_52352_AP
+REM
+REM   Project / Output Path:
+REM     Project : .\Project_<IC_NAME>\
+REM     Output  : .\Project_<IC_NAME>\build\
 
 
 REM Prepare Variable
@@ -104,6 +118,13 @@ SET MID_NAME=
 SET TOOL_PATH=
 SET DESC_PATH=
 )
+IF %VAR_MODE% EQU vsc (
+SET IN_PROJECT_PATH=
+SET IN_OBJ_PATH=build
+SET MID_NAME=
+SET TOOL_PATH=
+SET DESC_PATH=
+)
 
 
 REM Find the correct IC Name (Example: HT32F52352 to 52352)
@@ -131,6 +152,11 @@ IF EXIST ..\..\Project_!VAR_IC_NAME!%IN_PROJECT_PATH%\%IN_OBJ_PATH%\%VAR_OUTPUT_
 SET "VAR_IC_NAME=!VAR_IC_NAME:~-4!"
 IF EXIST ..\..\Project_!VAR_IC_NAME!%IN_PROJECT_PATH%\%IN_OBJ_PATH%\%VAR_OUTPUT_NAME%.elf GOTO SKIP_NAME_PRCESS1
 )
+IF %VAR_MODE% EQU vsc (
+SET "VSC_FOUND_DIR="
+FOR /D %%D IN (*) DO IF EXIST "%%D\!IN_OBJ_PATH!\!VAR_OUTPUT_NAME!.elf" SET "VSC_FOUND_DIR=%%D"
+IF DEFINED VSC_FOUND_DIR GOTO SKIP_NAME_PRCESS1
+)
 setlocal DisableDelayedExpansion
 ECHO --------------------------------------------------------------------------------
 ECHO   !!!  ERROR:
@@ -148,6 +174,9 @@ SET SRC_PATH=.\HT32\%VAR_IC_NAME%\%IN_OBJ_PATH%
 )
 IF %VAR_MODE% EQU ht32ide (
 SET SRC_PATH=.
+)
+IF %VAR_MODE% EQU vsc (
+SET SRC_PATH=!VSC_FOUND_DIR!\%IN_OBJ_PATH%
 )
 setlocal DisableDelayedExpansion
 
@@ -186,6 +215,18 @@ REM Generate text file
 REM ==================================================================================================
 ECHO Creating disassemble/text file...
 arm-none-eabi-objdump.exe -S "%VAR_OUTPUT_NAME%.elf"  > "%VAR_OUTPUT_NAME%.text"
+)
+
+IF %VAR_MODE% EQU vsc (
+REM Generate binary
+REM ==================================================================================================
+ECHO Creating binary file... ^(bin/hex already produced by Makefile^)
+REM arm-none-eabi-objcopy.exe -O binary "%SRC_PATH%\%VAR_OUTPUT_NAME%.elf" "%SRC_PATH%\%VAR_OUTPUT_NAME%.bin"
+
+REM Generate text file
+REM ==================================================================================================
+ECHO Creating disassemble/text file... ^(disassemble/text already produced by Makefile^)
+REM arm-none-eabi-objdump.exe -S "%SRC_PATH%\%VAR_OUTPUT_NAME%.elf"  > "%SRC_PATH%\%VAR_OUTPUT_NAME%.text"
 )
 
 

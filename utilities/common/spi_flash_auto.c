@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    spi_flash_auto.c
- * @version $Rev:: 4832         $
- * @date    $Date:: 2020-07-27 #$
+ * @version $Rev:: 10037        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The SPI Flash Driver with auto detection function.
  *************************************************************************************************************
  * @attention
@@ -100,9 +100,9 @@ u32 SPI_FLASH_Init(void)
   #endif
 
   /*  Configure SPI SCK pin, SPI MISO pin, SPI MOSI pin                                                     */
-  HT32F_DVB_GPxConfig(FLASH_SPI_SCK_GPIO_ID, FLASH_SPI_SCK_AFIO_PIN, FLASH_SPI_SCK_AFIO_MODE);
-  HT32F_DVB_GPxConfig(FLASH_SPI_MISO_GPIO_ID, FLASH_SPI_MISO_AFIO_PIN, FLASH_SPI_MISO_AFIO_MODE);
-  HT32F_DVB_GPxConfig(FLASH_SPI_MOSI_GPIO_ID, FLASH_SPI_MOSI_AFIO_PIN, FLASH_SPI_MOSI_AFIO_MODE);
+  HT32_DVB_GPxConfig(FLASH_SPI_SCK_GPIO_ID, FLASH_SPI_SCK_AFIO_PIN, FLASH_SPI_SCK_AFIO_MODE);
+  HT32_DVB_GPxConfig(FLASH_SPI_MISO_GPIO_ID, FLASH_SPI_MISO_AFIO_PIN, FLASH_SPI_MISO_AFIO_MODE);
+  HT32_DVB_GPxConfig(FLASH_SPI_MOSI_GPIO_ID, FLASH_SPI_MOSI_AFIO_PIN, FLASH_SPI_MOSI_AFIO_MODE);
 
   /*  SPI Configuration                                                                                     */
   SPI_InitStructure.SPI_Mode = SPI_MASTER;

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    BFTM/RepetitiveToggle/ht32f5xxxx_01_it.c
- * @version $Rev:: 6403         $
- * @date    $Date:: 2022-10-28 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -133,7 +133,7 @@ void BFTM0_IRQHandler(void)
 
   if (gBFTMSWCounter == BFTM_SW_COUNTER)
   {
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
     gBFTMSWCounter = 0;
   }
 }
@@ -141,7 +141,7 @@ void BFTM0_IRQHandler(void)
 void BFTM0_IRQHandler(void)
 {
   BFTM_ClearFlag(HT_BFTM0);
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #endif
 

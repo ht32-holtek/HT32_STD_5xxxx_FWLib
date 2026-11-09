@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Flash/ht32_board_config.h
- * @version $Rev:: 8284         $
- * @date    $Date:: 2024-11-22 #$
+ * @version $Rev:: 10104        $
+ * @date    $Date:: 2026-10-27 #$
  * @brief   The header file of board configuration.
  *************************************************************************************************************
  * @attention
@@ -42,6 +42,7 @@
    3. Using extra jumper/wired may affect the maximum speed and quality of the signal. For communication interface
       such as SPI/EBI/..., it may be necessary to appropriately reduce the speed by AHB/APB clock prescaler settings.
 */
+
 
 #ifdef __cplusplus
 }

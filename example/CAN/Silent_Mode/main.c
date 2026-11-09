@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CAN/Silent_Mode/main.c
- * @version $Rev:: 9426         $
- * @date    $Date:: 2025-09-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -69,7 +69,7 @@ u8 gRxMsgBuffer[CAN_RECV_BUFFER_SIZE];
 int main(void)
 {
   RETARGET_Configuration();
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   #if (HTCFG_CAN_CONF_CHECK_ENABLE == 1)
   CAN_Config0_Check();

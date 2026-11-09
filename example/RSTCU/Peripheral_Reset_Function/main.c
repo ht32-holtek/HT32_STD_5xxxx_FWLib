@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    RSTCU/Peripheral_Reset_Function/main.c
- * @version $Rev:: 5575         $
- * @date    $Date:: 2021-08-18 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -50,17 +50,17 @@
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   /* Set Key1 Button as EXTI Trigger Source                                                                 */
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
 
   /* Configure SysTick in order to toggle LEDs                                                              */
   SysTick_Config(0xFFFFFF);
 
   while (1)
   {
-    if (!HT32F_DVB_PBGetState(BUTTON_KEY1))
+    if (!HT32_DVB_PBGetState(BUTTON_KEY1))
     {
       /* Generate GPIO peripheral Reset                                                                     */
       RSTCU_PeripReset_TypeDef RSTCUReset = {{0}};

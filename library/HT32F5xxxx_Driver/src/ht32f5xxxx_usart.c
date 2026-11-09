@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_usart.c
- * @version $Rev:: 8430         $
- * @date    $Date:: 2025-03-03 #$
+ * @version $Rev:: 10077        $
+ * @date    $Date:: 2026-10-13 #$
  * @brief   This file provides all the USART firmware functions.
  *************************************************************************************************************
  * @attention
@@ -748,8 +748,8 @@ void USART_IrDAInvtCmd(HT_USART_TypeDef* USARTx, u32 inout, ControlStatus NewSta
  * @param USARTx: Parameter to select the USART peripheral.
  * @param USART_RS485Polarity: Specify the polarity of USART RS485 Tx enable signal.
  *   This parameter can be one of the following values:
- *     @arg USART_RS485POL_LOW
- *     @arg USART_RS485POL_HIGH
+ *     @arg USART_RS485POLARITY_LOW
+ *     @arg USART_RS485POLARITY_HIGH
  * @retval None
  ************************************************************************************************************/
 void USART_RS485TxEnablePolarityConfig(HT_USART_TypeDef* USARTx, u32 USART_RS485Polarity)

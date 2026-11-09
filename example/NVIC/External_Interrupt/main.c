@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    NVIC/External_Interrupt/main.c
- * @version $Rev:: 9766         $
- * @date    $Date:: 2026-04-08 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -52,9 +52,9 @@ void NVIC_Configuration(void);
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   NVIC_Configuration();
 

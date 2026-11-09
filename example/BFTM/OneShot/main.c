@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    BFTM/OneShot/main.c
- * @version $Rev:: 6400         $
- * @date    $Date:: 2022-10-28 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -77,7 +77,7 @@ void OneShotFun2(void);
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   BFTM_Configuration();
 
@@ -116,20 +116,20 @@ void BFTM_Configuration(void)
   ***********************************************************************************************************/
 void OneShotFun1(void)
 {
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
 
   /* !!! NOTICE !!!
      The actually delay will be large then the (SystemCoreClock / n) calculation result
      since the code execution overhead.
   */
   OneShot_Delay(48000);         // T = (cnt + 1) * (1 / BFTM PCLK)
-  HT32F_DVB_LEDOff(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED1);
 
   OneShot_Delay(720);
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
 
   OneShot_Delay(48);
-  HT32F_DVB_LEDOff(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED1);
 }
 
 
@@ -147,13 +147,13 @@ void OneShotFun2(void)
     OneShot_Delay(0xFFFF);
   }
 
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #else
 void OneShotFun2(void)
 {
   OneShot_Delay(SystemCoreClock);
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 #endif
 

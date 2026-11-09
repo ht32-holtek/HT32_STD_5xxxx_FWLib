@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    QSPI/Flash_Quad_Mode/main.c
- * @version $Rev:: 4907         $
- * @date    $Date:: 2020-08-11 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -64,9 +64,9 @@ __ALIGN4 u8 gRead_Buffer[FLASH_TEST_SIZE];
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   Flash_Test();
 
@@ -109,7 +109,7 @@ void Flash_Test(void)
     while (1); /* Should not reach here, which means the Serial Flash does not support Quad Enable (QE) bit */
   }
 
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
 
   /* Sector Erase                                                                                           */
   SPI_FLASH_SectorErase(FLASH_TEST_ADDR);
@@ -147,7 +147,7 @@ void Flash_Verify(void)
 
   if (err == 0)
   {
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
 }
 
@@ -171,7 +171,7 @@ void Flash_BlankCheck(void)
 
   if (err == 0)
   {
-    HT32F_DVB_LEDOn(HT_LED3);
+    HT32_DVB_LEDOn(HT_LED3);
   }
 }
 

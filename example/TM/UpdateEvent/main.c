@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    TM/UpdateEvent/main.c
- * @version $Rev:: 8260         $
- * @date    $Date:: 2024-11-05 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -62,7 +62,7 @@ s32 gTimeCount;
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   TM_Configuration();
 
@@ -88,7 +88,7 @@ void TM_MainRoutine(void)
       gTimeCount--;
       if (gTimeCount == 0)
       {
-        HT32F_DVB_LEDToggle(HT_LED1);
+        HT32_DVB_LEDToggle(HT_LED1);
         gTimeCount = TM_TIME_DELAY;
       }
     }

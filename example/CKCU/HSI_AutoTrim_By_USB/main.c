@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CKCU/HSI_AutoTrim_By_USB/main.c
- * @version $Rev:: 9837         $
- * @date    $Date:: 2026-06-01 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The main program of USB Device HID example.
  *************************************************************************************************************
  * @attention
@@ -95,7 +95,7 @@ int main(void)
   CKOUTConfig();
   #endif
 
-  HT32F_DVB_USBConnect();
+  HT32_DVB_USBConnect();
   while (1)
   {
     USBDCore_MainRoutine(&gUSBCore);  /* USB core main routine                                              */
@@ -277,7 +277,7 @@ void CKCU_Configuration(void)
   ***********************************************************************************************************/
 void GPIO_Configuration(void)
 {
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
   /*--------------------------------------------------------------------------------------------------------*/
   /* Configure EXTI for Remote Wakeup                                                                       */
   /*--------------------------------------------------------------------------------------------------------*/

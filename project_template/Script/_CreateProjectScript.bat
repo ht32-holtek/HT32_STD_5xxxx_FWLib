@@ -1,8 +1,8 @@
 rem @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _CreateProjectScript.bat
-REM * @version $Rev:: 9430         $
-REM * @date    $Date:: 2025-09-10 #$
+REM * @version $Rev:: 10140        $
+REM * @date    $Date:: 2026-11-02 #$
 REM * @brief   Create Project Script.
 REM *************************************************************************************************************
 REM * @attention
@@ -65,6 +65,7 @@ SET IDE5=-
 SET IDE6=-
 SET IDE7=-
 SET IDE8=-
+SET IDE9=-
 
 IF (%IDE_KEILv5%) == (Y) SET IDE1=Y
 IF (%IDE_KEIL%) == (Y) SET IDE2=Y
@@ -78,6 +79,10 @@ IF "%CHECK_HT32IDE%"=="" GOTO SKIP_HT32_IDE1
 IF (%IDE_HT32%) == (Y) SET IDE8=Y
 
 :SKIP_HT32_IDE1
+SET CHECK_VSCODE=%IDE_VSCODE%
+IF "%CHECK_VSCODE%"=="" GOTO SKIP_VSCODE1
+IF (%IDE_VSCODE%) == (Y) SET IDE9=Y
+:SKIP_VSCODE1
 IF EXIST %CREATE_CONF_FILE% (
 ECHO.
 ECHO Create Project Settings:
@@ -89,6 +94,7 @@ ECHO   [%IDE5%] SEGGER Embedded Studio
 ECHO   [%IDE6%] GNU [with Keil and GNU make]
 ECHO   [%IDE7%] SourceryG++Lite [with Keil]
 ECHO   [%IDE8%] HT32-IDE
+ECHO   [%IDE9%] HT32 VS Code
 ECHO   Y: Enable, -: Disable
 ECHO.
 ECHO   IC Name: %IC_NAME% [* for all models, XXX* for series]
@@ -270,6 +276,22 @@ XCOPY /-Y /S /Q "..\..\..\project_template\IP\%PRO_TYPE%\HT32-IDE\afterbuild.bat
 )
 :SKIP_HT32_IDE2
 
+SET CHECK_VSCODE=%IDE_VSCODE%
+IF "%CHECK_VSCODE%"=="" GOTO SKIP_VSCODE2
+IF %IDE_VSCODE% == Y (
+FOR /d %%d IN ("..\..\..\project_template\IP\%PRO_TYPE%\HT32_VSCode\%IC_NAME%") DO (
+  XCOPY /E /I /Y /Q "%%d" ".\HT32_VSCode\%%~nxd\" < dummyn.txt 1> nul 2>&1
+)
+FOR /L %%x IN (1, 1, %NUM_OF_SYSTEM_STARTUP_SERIES_COMBINE%) DO (
+  XCOPY /-Y /S /Q "..\..\..\project_template\IP\%PRO_TYPE%\HT32_VSCode\GNU_ARM\!STARTUP_FILE_PREFIX%%x!gcc_!STARTUP_FILE_NUM%%x!.s"  ".\HT32_VSCode\GNU_ARM\" < dummyn.txt 1> nul 2>&1
+)
+XCOPY /-Y /S /Q "..\..\..\project_template\IP\%PRO_TYPE%\HT32_VSCode\GNU_ARM\ht32_op.c"  ".\HT32_VSCode\GNU_ARM\" < dummyn.txt 1> nul 2>&1
+XCOPY /-Y /S /Q "..\..\..\project_template\IP\%PRO_TYPE%\HT32_VSCode\GNU_ARM\linker.ld"  ".\HT32_VSCode\GNU_ARM\" < dummyn.txt 1> nul 2>&1
+XCOPY /-Y /S /Q "..\..\..\project_template\IP\%PRO_TYPE%\HT32_VSCode\afterbuild.bat"  ".\HT32_VSCode\" < dummyn.txt 1> nul 2>&1
+XCOPY /-Y /Q "..\..\..\project_template\IP\%PRO_TYPE%\HT32_VSCode\%IC_NAME%.ht32vs"  ".\HT32_VSCode\" < dummyn.txt 1> nul 2>&1
+)
+:SKIP_VSCODE2
+
 SETLOCAL DISABLEDELAYEDEXPANSION
 
 :COPY_FINISH
@@ -299,6 +321,10 @@ SET "HT32IDE_PNAME=!dir%idx1%!_!dir%idx2%!"
 
 FOR /d %%d IN (".\HT32-IDE\*") DO (
 gsar.exe -s"project_template_" -r"!HT32IDE_PNAME!_" HT32-IDE\%%~nxd\*.project -o 1> nul 2>&1
+)
+
+FOR /d %%d IN (".\HT32_VSCode\Project_*") DO (
+gsar.exe -s"project_template_" -r"!HT32IDE_PNAME!_" HT32_VSCode\%%~nxd\project.meta.json -o 1> nul 2>&1
 )
 
 COPY /Y "..\..\..\project_template\Script\_ProjectConfigScript.bat"  "." 1> nul 2>&1
@@ -376,11 +402,28 @@ gsar.exe -s"define symbol __ICFEDIT_region_RAM_start__ = 0x20000000;" -r"define 
 
 gsar.exe -s"ORIGIN = 0x00000000" -r"ORIGIN = %HT_RO_ADDR%" GNU_ARM\*.ld -o 1> nul 2>&1
 gsar.exe -s"ORIGIN = 0x00000000" -r"ORIGIN = %HT_RO_ADDR%" HT32-IDE\GNU_ARM\*.ld -o 1> nul 2>&1
+FOR /D %%D IN (HT32-IDE\Project_*) DO (
+gsar.exe -s"ORIGIN = 0x00000000" -r"ORIGIN = %HT_RO_ADDR%" %%D\*.ld -o 1> nul 2>&1
+)
+gsar.exe -s"ORIGIN = 0x00000000" -r"ORIGIN = %HT_RO_ADDR%" HT32_VSCode\GNU_ARM\*.ld -o 1> nul 2>&1
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"ORIGIN = 0x00000000" -r"ORIGIN = %HT_RO_ADDR%" %%D\*.ld -o 1> nul 2>&1
+)
 gsar.exe -s"ORIGIN = 0x00000000" -r"ORIGIN = %HT_RO_ADDR%" SourceryG++Lite\*.ld -o 1> nul 2>&1
 
 gsar.exe -s"ORIGIN = 0x20000000" -r"ORIGIN = %HT_RW_ADDR%" GNU_ARM\*.ld -o 1> nul 2>&1
 gsar.exe -s"ORIGIN = 0x20000000" -r"ORIGIN = %HT_RW_ADDR%" HT32-IDE\GNU_ARM\*.ld -o 1> nul 2>&1
+FOR /D %%D IN (HT32-IDE\Project_*) DO (
+gsar.exe -s"ORIGIN = 0x20000000" -r"ORIGIN = %HT_RW_ADDR%" %%D\*.ld -o 1> nul 2>&1
+)
+gsar.exe -s"ORIGIN = 0x20000000" -r"ORIGIN = %HT_RW_ADDR%" HT32_VSCode\GNU_ARM\*.ld -o 1> nul 2>&1
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"ORIGIN = 0x20000000" -r"ORIGIN = %HT_RW_ADDR%" %%D\*.ld -o 1> nul 2>&1
+)
 gsar.exe -s"ORIGIN = 0x20000000" -r"ORIGIN = %HT_RW_ADDR%" SourceryG++Lite\*.ld -o 1> nul 2>&1
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s":x22ramOrigin:x22:x3A:x20:x220x20000000:x22" -r":x22ramOrigin:x22:x3A:x20:x22%HT_RW_ADDR%:x22" %%D\project.settings.json -o 1> nul 2>&1
+)
 
 gsar.exe -s"RAM RWX 0x20000000" -r"RAM RWX %HT_RW_ADDR%" emStudiov4\Project_*.emProject -o 1> nul 2>&1
 
@@ -452,6 +495,9 @@ gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      
 gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    HT32-IDE\GNU_ARM\startup_ht32*.s -o 1> nul 2>&1
 gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      HT32-IDE\GNU_ARM\startup_ht32*.s -o 1> nul 2>&1
 
+gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    HT32_VSCode\GNU_ARM\startup_ht32*.s -o 1> nul 2>&1
+gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      HT32_VSCode\GNU_ARM\startup_ht32*.s -o 1> nul 2>&1
+
 gsar.exe -s".equ    Stack_Size, 512" -r".equ    Stack_Size, %HT_STACK_SIZE%"    SourceryG++Lite\startup_ht32*.s -o 1> nul 2>&1
 gsar.exe -s".equ    Heap_Size, 0"    -r".equ    Heap_Size, %HT_HEAP_SIZE%"      SourceryG++Lite\startup_ht32*.s -o 1> nul 2>&1
 
@@ -483,6 +529,9 @@ gsar.exe -s"INCLUDE_PATH += -I./../../../../utilities" -r"INCLUDE_PATH += -I./..
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s"<listOptionValue builtIn=:x22false:x22 value=:x22../../../../../../utilities:x22/>" -r"<listOptionValue builtIn=:x22false:x22 value=:x22../../../../../../utilities:x22/>:x0a_IAR_INCLUDE_REPLACE_" %%D\*.cproject  -o 1> nul 2>&1
 )
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s":x22../../../../../utilities:x22" -r":x22../../../../../utilities:x22<HTGSARCONT>" %%D\project.settings.json -o 1> nul 2>&1
+)
 
 SET "HT_EXTRA_INCLUDE2=!HT_EXTRA_INCLUDE:;= !"
 for %%I in (!HT_EXTRA_INCLUDE2!) do (
@@ -494,12 +543,18 @@ gsar.exe -s"_IAR_INCLUDE_REPLACE_" -r"INCLUDE_PATH += -I./!UNIX_PATH!:x0d:x0a_IA
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s"_IAR_INCLUDE_REPLACE_" -r"									<listOptionValue builtIn=:x22false:x22 value=:x22../../!UNIX_PATH!:x22/>:x0a_IAR_INCLUDE_REPLACE_" %%D\*.cproject  -o 1> nul 2>&1
 )
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"<HTGSARCONT>" -r",:x0a    :x22../!UNIX_PATH!:x22<HTGSARCONT>" %%D\project.settings.json -o 1> nul 2>&1
+)
 )
 gsar.exe -s"_IAR_INCLUDE_REPLACE_:x0d:x0a" -r"" EWARM\*.ewp -o 1> nul 2>&1
 gsar.exe -s"_IAR_INCLUDE_REPLACE_:x0d:x0a" -r"" EWARMv8\*.ewp -o 1> nul 2>&1
 gsar.exe -s"_IAR_INCLUDE_REPLACE_:x0d:x0a" -r"" GNU_ARM\*.mk -o 1> nul 2>&1
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s"_IAR_INCLUDE_REPLACE_:x0a" -r"" %%D\*.cproject  -o 1> nul 2>&1
+)
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"<HTGSARCONT>" -r"" %%D\project.settings.json -o 1> nul 2>&1
 )
 
 SETLOCAL ENABLEDELAYEDEXPANSION
@@ -535,6 +590,9 @@ gsar.exe -s"C_OPTION += -DUSE_HT32_DRIVER" -r"C_OPTION += -DUSE_HT32_DRIVER:x0d:
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s"<listOptionValue builtIn=:x22false:x22 value=:x22USE_HT32_DRIVER:x22/>" -r"<listOptionValue builtIn=:x22false:x22 value=:x22USE_HT32_DRIVER:x22/>:x0a_IAR_CDEFINE_REPLACE_" %%D\*.cproject -o 1> nul 2>&1
 )
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s":x22USE_HT32_DRIVER:x22," -r":x22USE_HT32_DRIVER:x22,<HTGSARCONT>" %%D\project.settings.json -o 1> nul 2>&1
+)
 SET "HT_EXTRA_CDEFINE2=!HT_EXTRA_CDEFINE: =!"
 SET "HT_EXTRA_CDEFINE2=!HT_EXTRA_CDEFINE2:,= !"
 for %%I in (!HT_EXTRA_CDEFINE2!) do (
@@ -544,6 +602,9 @@ gsar.exe -s"_IAR_CDEFINE_REPLACE_" -r"C_OPTION += -D%%I:x0d:x0a_IAR_CDEFINE_REPL
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s"_IAR_CDEFINE_REPLACE_" -r"									<listOptionValue builtIn=:x22false:x22 value=:x22%%I:x22/>:x0a_IAR_CDEFINE_REPLACE_" %%D\*.cproject -o 1> nul 2>&1
 )
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"<HTGSARCONT>" -r":x0a    :x22%%I:x22,<HTGSARCONT>" %%D\project.settings.json -o 1> nul 2>&1
+)
 )
 
 gsar.exe -s"_IAR_CDEFINE_REPLACE_:x0d:x0a" -r"" EWARM\*.ewp -o 1> nul 2>&1
@@ -551,6 +612,9 @@ gsar.exe -s"_IAR_CDEFINE_REPLACE_:x0d:x0a" -r"" EWARMv8\*.ewp -o 1> nul 2>&1
 gsar.exe -s"_IAR_CDEFINE_REPLACE_:x0d:x0a" -r"" GNU_ARM\*.mk -o 1> nul 2>&1
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
 gsar.exe -s"_IAR_CDEFINE_REPLACE_:x0a" -r"" %%D\*.cproject -o 1> nul 2>&1
+)
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+gsar.exe -s"<HTGSARCONT>" -r"" %%D\project.settings.json -o 1> nul 2>&1
 )
 
 SETLOCAL ENABLEDELAYEDEXPANSION
@@ -584,6 +648,12 @@ SET "HT_LINKER_NAME_GNU2=%HT_LINKER_NAME_GNU%"
 SET "HT_LINKER_NAME_GNU2=!HT_LINKER_NAME_GNU2:\=/!"
 gsar.exe -s"LINK_NAME_PATH = linker.ld" -r"LINK_NAME_PATH = %HT_LINKER_NAME_GNU2%" GNU_ARM\*.mk -o 1> nul 2>&1
 gsar.exe -s"<ScatterFile>.\linker.ld</ScatterFile>" -r"<ScatterFile>%HT_LINKER_NAME_GNU%</ScatterFile>" GNU_ARM\*.uvprojx -o 1> nul 2>&1
+FOR %%F IN (GNU_ARM\linker_*.ld) DO (
+  IF EXIST "%%~fF" (
+    gsar.exe -s"LINK_NAME_PATH = %%~nxF" -r"LINK_NAME_PATH = %HT_LINKER_NAME_GNU2%" GNU_ARM\*.mk -o 1> nul 2>&1
+    gsar.exe -s"<ScatterFile>.\%%~nxF</ScatterFile>" -r"<ScatterFile>%HT_LINKER_NAME_GNU%</ScatterFile>" GNU_ARM\*.uvprojx -o 1> nul 2>&1
+  )
+)
 
 SET "HT_LINKER_NAME_HT32_IDE2=%HT_LINKER_NAME_HT32_IDE%"
 SET "HT_LINKER_NAME_HT32_IDE2=!HT_LINKER_NAME_HT32_IDE2:\=/!"
@@ -593,13 +663,30 @@ CALL :ProcessPath "%HT_LINKER_NAME_HT32_IDE%" DEPTH FOLDER
 FOR %%F IN ("!FOLDER!") DO SET "FILENAME=%%~nxF"
 
 FOR /D %%D IN (HT32-IDE\Project_*) DO (
-gsar.exe -s"<name>Linker/linker.ld</name>" -r"<name>Linker/!FILENAME!</name>" %%D\*.project -o 1> nul 2>&1
-gsar.exe -s"<locationURI>PARENT-1-PROJECT_LOC/GNU_ARM/linker.ld</locationURI>" -r"<locationURI>PARENT-!DEPTH!-PROJECT_LOC/!FOLDER!</locationURI>" %%D\*.project -o 1> nul 2>&1
+  gsar.exe -s"<name>Linker/linker.ld</name>" -r"<name>Linker/!FILENAME!</name>" "%%D\*.project" -o 1> nul 2>&1
+  gsar.exe -s"<locationURI>PARENT-1-PROJECT_LOC/GNU_ARM/linker.ld</locationURI>" -r"<locationURI>PARENT-!DEPTH!-PROJECT_LOC/!FOLDER!</locationURI>" "%%D\*.project" -o 1> nul 2>&1
+  gsar.exe -s"<listOptionValue builtIn=:x22false:x22 value=:x22../../GNU_ARM/linker.ld:x22/>" -r"<listOptionValue builtIn=:x22false:x22 value=:x22../../%HT_LINKER_NAME_HT32_IDE2%:x22/>" "%%D\*.cproject" -o 1> nul 2>&1
+  FOR %%F IN ("%%D\linker_*.ld") DO (
+    IF EXIST "%%~fF" (
+      gsar.exe -s"<name>Linker/%%~nxF</name>" -r"<name>Linker/!FILENAME!</name>" "%%D\*.project" -o 1> nul 2>&1
+      gsar.exe -s"<locationURI>PARENT-1-PROJECT_LOC/%%~nxD/%%~nxF</locationURI>" -r"<locationURI>PARENT-!DEPTH!-PROJECT_LOC/!FOLDER!</locationURI>" "%%D\*.project" -o 1> nul 2>&1
+      gsar.exe -s"<listOptionValue builtIn=:x22false:x22 value=:x22../../%%~nxD/%%~nxF:x22/>" -r"<listOptionValue builtIn=:x22false:x22 value=:x22../../%HT_LINKER_NAME_HT32_IDE2%:x22/>" "%%D\*.cproject" -o 1> nul 2>&1
+    )
+  )
 )
 
-FOR /D %%D IN (HT32-IDE\Project_*) DO (
-gsar.exe -s"<listOptionValue builtIn=:x22false:x22 value=:x22../../GNU_ARM/linker.ld:x22/>" -r"<listOptionValue builtIn=:x22false:x22 value=:x22../../%HT_LINKER_NAME_HT32_IDE2%:x22/>" %%D\*.cproject -o 1> nul 2>&1
+SET "HT_LINKER_NAME_HT32_VSCODE2=%HT_LINKER_NAME_HT32_VSCODE%"
+SET "HT_LINKER_NAME_HT32_VSCODE2=!HT_LINKER_NAME_HT32_VSCODE2:\=/!"
+
+FOR /D %%D IN (HT32_VSCode\Project_*) DO (
+  FOR %%F IN ("%%D\linker_*.ld") DO (
+    IF EXIST "%%~fF" (
+      gsar.exe -s":x22HT32_VSCode/%%~nxD/%%~nxF:x22" -r":x22HT32_VSCode/%HT_LINKER_NAME_HT32_VSCODE2%:x22" "%%D\project.meta.json" -o >NUL 2>&1
+      gsar.exe -s":x22%%~nxF:x22" -r":x22../%HT_LINKER_NAME_HT32_VSCODE2%:x22" "%%D\project.meta.json" -o >NUL 2>&1
+    )
+  )
 )
+
 :LinkerScriptSET_End
 
 :CREATE_PROJECT_END

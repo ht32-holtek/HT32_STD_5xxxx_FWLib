@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Release_Notes.txt
- * @version V1.21.2
- * @date    2026-09-14
+ * @version V1.22.1
+ * @date    2026-11-03
  * @brief   The Release notes of HT32 Firmware Library.
  *************************************************************************************************************
  * @attention
@@ -68,6 +68,7 @@
 //   HT32F61940
 //   HT32F62030, HT32F62040, HT32F62050
 //   HT32F62132
+//   HT32F64951
 //   HT32F65230, HT32F65240
 //   HT32F65232
 //   HT32F65233
@@ -88,6 +89,62 @@
 //   HT32F59740, HT32F59750
 //   MXTX5030
 //   HT32F61031
+
+/*----------------------------------------------------------------------------------------------------------*/
+/* HT32_STD_5xxxx_FWLib_V1.22.1_10147                                                                       */
+/*----------------------------------------------------------------------------------------------------------*/
+  Release Date: 2026-11-03
+  Main Changes
+  + Add new device support.
+    - HT32F64951
+  + Add new example.
+    - "example/SPI/Flash_Auto"
+  + Add HT32_VSCode Project support of example codes.
+  + Rename "HT32F_DVB_xxx()" to "HT32_DVB_xxx()" to improve naming consistency and maintainability.
+    - Keep the legacy API names as macro aliases for backward compatibility.
+  + Update ADC examples to ensure the ADC clock frequency meets the minimum operating requirement.
+    - Change the ADC clock prescaler from DIV64 to DIV8.
+  + Update HT32 Stack Usage Analysis feature.
+    - Update "ht32_cm0plus_misc.c/.h" to improve stack boundary handling and support "USE_IAP_SCVD".
+    - Add the weak attribute to "StackUsageAnalysisInit()" for Arm Compiler V6 and GNU Compiler.
+    - Update "utilities/keil_scvd/StackUsageAnalysis.scvd" to improve display and naming consistency.
+    - Add "utilities/keil_scvd/StackUsageAnalysis_iap.scvd" to support IAP stack usage analysis.
+    - Update project files to support the corresponding HT32 Stack Usage Analysis component viewer.
+  + Update GNU_ARM and HT32-IDE linker scripts to ensure accurate Flash and RAM usage calculation.
+    - Create individual "linker_xxxxx.ld" files for each MCU instead of using a shared linker script.
+    - Configure FLASH and RAM memory sizes according to each MCU's specifications.
+  + Update LCD driver:
+    - Add "LCD_MuxConfig()" API to configure shared SEG/COM pins.
+    - Update charge-pump enumerator names to generalized level-based identifiers and retain compatibility macros for the original names.
+    - Update "LCD_DriverInit()" to preserve unrelated FCR and CR bit configurations.
+  + Update Mono_LCD examples to use the new "LCD_MuxConfig()" API.
+    - "example/Mono_LCD/Demo"
+    - "example/Mono_LCD/LCD_module"
+  + Update "ADC_TempSensorGetCalTempPoint()".
+    - Replace the dummy "TSCALR" access with "(void)HT_ADCn" to avoid the unused parameter warning.
+    - Add "#warning" when "ADC_FIXED_CAL_TEMP_mC" is not defined, to remind the user to update "ht32f5xxxx_conf.h".
+  + Update "EXTI_SWIntCmd()" API to prevent clearing other EXTI channel settings.
+  + Update "RTC_GetPrescaler()" API to fix incorrect prescaler values caused by unmasked register bits.
+  + Update "I2C/EEPROM" example to increase the heap size from 0 to 512 bytes.
+    - For GNU Compiler, the rand() function requires heap memory.
+  + Update EEPROM Emulation middleware, fix GNU Compiler warnings.
+    "utilities/middleware/eeprom_emulation.c"
+
+  Others
+  + Update comment, format, typing error, and coding style.
+  + Update and sync "ht32f5xxxx_conf.h".
+  + Update "afterbuild.bat" functions of the GNU_ARM project.
+  + Update Create Project script to support HT32_VSCode.
+  + Update content of "project_template/IP/Example/readme.txt", add HT32_VSCode related information.
+  + Update "SCI_SetGuardTimeValue" API to check the minimum Guard Time when automatic character repetition (CREP) is enabled.
+  + Update "DIV_uDiv32()" API to add a divide-by-zero check when both the dividend and divisor are zero.
+  + Update "IS_SCI_WAITING_TIME" macro to remove the minimum waiting time restriction.
+  + Update "IS_CAN_FLAG" macro to fix the incorrect CAN error warning flag definition.
+  + Update "IS_USART_PARITY" macro to support MARK and SPACE parity modes.
+  + Update "IS_USART_IRDA_PRESCALER" macro to validate the IrDA prescaler range (0x01 to 0xFF).
+  + Update "IS_CMP_INT", "IS_CMP_EdgeDetect", and "IS_CMP_FLAG" macros to fix parameter validation issues.
+  + Update "IS_GAINMODE" macro to fix incorrect parentheses in gain mode parameter validation.
+  + Update "IS_PDMA_WIDTH" macro to fix transfer width parameter validation.
 
 /*----------------------------------------------------------------------------------------------------------*/
 /* HT32_STD_5xxxx_FWLib_V1.21.2_9994                                                                        */

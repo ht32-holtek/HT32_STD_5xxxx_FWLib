@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_SWTrigger_ByTM/main.c
- * @version $Rev:: 6365         $
- * @date    $Date:: 2022-10-21 #$
+ * @version $Rev:: 10131        $
+ * @date    $Date:: 2026-10-28 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -130,11 +130,12 @@ void ADC_Configuration(void)
   AFIO_GPxConfig(GPIO_PA, AFIO_PIN_1, AFIO_FUN_ADC0);
 
   { /* ADC related settings                                                                                 */
-    /* CK_ADC frequency is set to (CK_AHB / 64)                                                             */
-    #if defined(USE_HT32F50020_30)
-    #else
-    CKCU_SetADCnPrescaler(CKCU_ADCPRE_ADC0, CKCU_ADCPRE_DIV64);
-    #endif
+    /* !!! NOTICE !!!
+       CK_ADC frequency is set to (CK_AHB / n).
+       The ADC clock frequency must meet the minimum requirement.
+       Please refer to the IC Datasheet for detailed specifications.
+    */
+    CKCU_SetADCnPrescaler(CKCU_ADCPRE_ADC0, CKCU_ADCPRE_DIV8);
 
     /* One Shot mode, sequence length = 2                                                                   */
     ADC_RegularGroupConfig(HT_ADC0, ONE_SHOT_MODE, 2, 0);

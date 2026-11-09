@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/PDMA/main.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -80,7 +80,7 @@ u8 SPI_Slave_Buffer_Rx[BUF_SIZE] = {0};
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   SPI_Slave_Configuration();
   SPI_Master_Configuration();
@@ -265,21 +265,21 @@ void SPI_Loopback_Test(void)
   /* Wait for transmission finished                                                                         */
   while (!PDMA_GetFlagStatus(HTCFG_SPIS_PDMA_RX, PDMA_FLAG_TC))
   {
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
   }
-  HT32F_DVB_LEDOff(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED1);
 
   /* Check on validity of received data on Master & Slave                                                   */
   if (CmpBuffer(SPI_Master_Buffer_Tx, SPI_Slave_Buffer_Rx, BUF_SIZE) == SUCCESS &&
       CmpBuffer(SPI_Slave_Buffer_Tx, SPI_Master_Buffer_Rx, BUF_SIZE) == SUCCESS)
   {
     /* Turn on LED1 if the transmitted and received data are equal                                          */
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
   else
   {
     /* Turn off LED1 if the transmitted and received data are different                                     */
-    HT32F_DVB_LEDOff(HT_LED1);
+    HT32_DVB_LEDOff(HT_LED1);
   }
 }
 

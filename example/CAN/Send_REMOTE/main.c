@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CAN/Send_REMOTE/main.c
- * @version $Rev:: 9426         $
- * @date    $Date:: 2025-09-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -81,7 +81,7 @@ bool gbRx2MsgCompareResult;
 int main(void)
 {
   RETARGET_Configuration();
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   #if (HTCFG_CAN_CONF_CHECK_ENABLE == 1)
   CAN_Config0_Check();
@@ -257,7 +257,7 @@ void CAN_SendRemoteFrame(void)
     }
     printf("Finish\r\n");
   }
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 }
 
 #if (HT32_LIB_DEBUG == 1)

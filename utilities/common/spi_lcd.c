@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    spi_lcd.c
- * @version $Rev:: 9842         $
- * @date    $Date:: 2026-06-04 #$
+ * @version $Rev:: 10037        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides a set of functions needed to manage the
  *          communication between SPI peripheral and LCD.
  *************************************************************************************************************
@@ -120,19 +120,19 @@ void LCD_Init(void)
   #endif
 
   /* Configure SPI pins, SEL, SCK, MISO ,MOSI, BL & RESET                                                   */
-  HT32F_DVB_GPxConfig(LCD_SPI_SEL_GPIO_ID, LCD_SPI_SEL_AFIO_PIN, LCD_SPI_SEL_AFIO_MODE);
+  HT32_DVB_GPxConfig(LCD_SPI_SEL_GPIO_ID, LCD_SPI_SEL_AFIO_PIN, LCD_SPI_SEL_AFIO_MODE);
   #if (LCD_SPI_SEL_GPIO_ENABLE == 1)
   GPIO_SetOutBits(GPIO_PORT[LCD_SPI_SEL_GPIO_ID], LCD_SPI_SEL_AFIO_PIN);
   GPIO_DirectionConfig(GPIO_PORT[LCD_SPI_SEL_GPIO_ID], LCD_SPI_SEL_AFIO_PIN, GPIO_DIR_OUT);
   #endif
-  HT32F_DVB_GPxConfig(LCD_SPI_SCK_GPIO_ID, LCD_SPI_SCK_AFIO_PIN, LCD_SPI_SCK_AFIO_MODE);
-  HT32F_DVB_GPxConfig(LCD_SPI_MISO_GPIO_ID, LCD_SPI_MISO_AFIO_PIN, LCD_SPI_MISO_AFIO_MODE);
-  HT32F_DVB_GPxConfig(LCD_SPI_MOSI_GPIO_ID, LCD_SPI_MOSI_AFIO_PIN, LCD_SPI_MOSI_AFIO_MODE);
+  HT32_DVB_GPxConfig(LCD_SPI_SCK_GPIO_ID, LCD_SPI_SCK_AFIO_PIN, LCD_SPI_SCK_AFIO_MODE);
+  HT32_DVB_GPxConfig(LCD_SPI_MISO_GPIO_ID, LCD_SPI_MISO_AFIO_PIN, LCD_SPI_MISO_AFIO_MODE);
+  HT32_DVB_GPxConfig(LCD_SPI_MOSI_GPIO_ID, LCD_SPI_MOSI_AFIO_PIN, LCD_SPI_MOSI_AFIO_MODE);
   #if (LCD_SPI_BL_ENABLE == 1)
-  HT32F_DVB_GPxConfig(LCD_SPI_BL_GPIO_ID, LCD_SPI_BL_GPIO_PIN, LCD_SPI_BL_AFIO_MODE);
+  HT32_DVB_GPxConfig(LCD_SPI_BL_GPIO_ID, LCD_SPI_BL_GPIO_PIN, LCD_SPI_BL_AFIO_MODE);
   #endif
   #if (LCD_SPI_RST_UNUSE == 0)
-  HT32F_DVB_GPxConfig(LCD_SPI_RST_GPIO_ID, LCD_SPI_RST_GPIO_PIN, LCD_SPI_RST_AFIO_MODE);
+  HT32_DVB_GPxConfig(LCD_SPI_RST_GPIO_ID, LCD_SPI_RST_GPIO_PIN, LCD_SPI_RST_AFIO_MODE);
   #endif
 
   /* Set output data of BL & RESET as high                                                                  */
@@ -768,7 +768,7 @@ u16 LCD_ReadReg(u32 LCD_Reg_Index)
   SPI_ReceiveData(LCD_SPI);
 
   /* Release the control of MOSI in order to receive data in 3 wire mode                                    */
-  HT32F_DVB_GPxConfig(LCD_SPI_MOSI_GPIO_ID, LCD_SPI_MOSI_AFIO_PIN, AFIO_MODE_DEFAULT);
+  HT32_DVB_GPxConfig(LCD_SPI_MOSI_GPIO_ID, LCD_SPI_MOSI_AFIO_PIN, AFIO_MODE_DEFAULT);
 
   /* Send dummy data in order to receive the data we want                                                   */
   SPI_SendData(LCD_SPI, 0xFF);
@@ -779,7 +779,7 @@ u16 LCD_ReadReg(u32 LCD_Reg_Index)
   LCD_SEL_CMD_INACTIVE();
 
   /* Recover the control of MOSI                                                                            */
-  HT32F_DVB_GPxConfig(LCD_SPI_MOSI_GPIO_ID, LCD_SPI_MOSI_AFIO_PIN , LCD_SPI_MOSI_AFIO_MODE);
+  HT32_DVB_GPxConfig(LCD_SPI_MOSI_GPIO_ID, LCD_SPI_MOSI_AFIO_PIN , LCD_SPI_MOSI_AFIO_MODE);
 
   return tmp;
 }

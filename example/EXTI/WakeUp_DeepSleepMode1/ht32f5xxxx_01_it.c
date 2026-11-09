@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/WakeUp_DeepSleepMode1/ht32f5xxxx_01_it.c
- * @version $Rev:: 6382         $
- * @date    $Date:: 2022-10-25 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -124,8 +124,8 @@ void EVWUP_IRQHandler(void)
   /* Clear the specified EXTI channel wakeup flag                                                           */
   EXTI_ClearWakeupFlag(HTCFG_WAKE_EXTI_CHANNEL); // Note: The clear operation may not work since the IO still active
 
-  HT32F_DVB_LEDOn(HT_LED1);
-  HT32F_DVB_LEDOn(HT_LED2);
+  HT32_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED2);
 
   printf("WAKEUP!\r\n");
 }

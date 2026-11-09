@@ -1,8 +1,8 @@
 /***************************************************************************//**
  * @file    ht32f5xxxx_01.h
  * @brief   CMSIS Cortex-M0+ Device Peripheral Access Layer Header File
- * @version $Rev:: 9924         $
- * @date    $Date:: 2026-07-30 #$
+ * @version $Rev:: 10034        $
+ * @date    $Date:: 2026-10-06 #$
  *
  * @note
  * Copyright (C) Holtek Semiconductor Inc. All rights reserved.
@@ -3357,6 +3357,27 @@ typedef struct
 #endif
 
 #define AFIO_ESS_Enum            u32
+
+// ht32f5xxxx_board_01.c
+#define HT32F_DVB_USBConnect                HT32_DVB_USBConnect
+#define HT32F_DVB_USBDisConnect             HT32_DVB_USBDisConnect
+
+#define HT32F_DVB_GPxConfig                 HT32_DVB_GPxConfig
+
+#define HT32F_DVB_BuzzerInit                HT32_DVB_BuzzerInit
+#define HT32F_DVB_BuzzerConfig              HT32_DVB_BuzzerConfig
+#define HT32F_DVB_LEDInit                   HT32_DVB_LEDInit
+#define HT32F_DVB_LEDOn                     HT32_DVB_LEDOn
+#define HT32F_DVB_LEDOff                    HT32_DVB_LEDOff
+#define HT32F_DVB_LEDToggle                 HT32_DVB_LEDToggle
+
+#define HT32F_DVB_PBInit                    HT32_DVB_PBInit
+#define HT32F_DVB_PBGetState                HT32_DVB_PBGetState
+
+#define HT32F_DVB_COMInit                   HT32_DVB_COMInit
+
+#define HT32F_DVB_BuzzerFun                 HT32_DVB_BuzzerFun
+#define HT32F_DVB_BuzzerOutputCmd           HT32_DVB_BuzzerOutputCmd
 
 #if 0 // Set as 1 for backward compatibility
 #if defined(USE_HT32F50020_30)

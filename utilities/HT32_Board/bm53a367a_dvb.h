@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    bm53a367a_dvb.h
- * @version $Rev:: 8284         $
- * @date    $Date:: 2024-11-22 #$
+ * @version $Rev:: 10034        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   The header file of BM53A367A Development Board.
  *************************************************************************************************************
  * @attention
@@ -362,26 +362,26 @@ typedef enum
 /** @defgroup BM53A367A_DVB_Exported_Functions BM53A367A Development Board exported functions
   * @{
   */
-#define HT32F_DVB_USBConnect()      USBD_DPpullupCmd(ENABLE)
-#define HT32F_DVB_USBDisConnect()   USBD_DPpullupCmd(DISABLE)
-#define HT32F_DVB_GPxConfig         AFIO_GPxConfig
+#define HT32_DVB_USBConnect()      USBD_DPpullupCmd(ENABLE)
+#define HT32_DVB_USBDisConnect()   USBD_DPpullupCmd(DISABLE)
+#define HT32_DVB_GPxConfig         AFIO_GPxConfig
 
-#define HT32F_DVB_BuzzerInit(hFreq, bDuty)    HT32F_DVB_BuzzerFun(hFreq, bDuty, 0);
-#define HT32F_DVB_BuzzerConfig(hFreq, bDuty)  HT32F_DVB_BuzzerFun(hFreq, bDuty, 1);
+#define HT32_DVB_BuzzerInit(hFreq, bDuty)    HT32_DVB_BuzzerFun(hFreq, bDuty, 0);
+#define HT32_DVB_BuzzerConfig(hFreq, bDuty)  HT32_DVB_BuzzerFun(hFreq, bDuty, 1);
 
 
-void HT32F_DVB_LEDInit(LED_TypeDef HT_LEDn);
-void HT32F_DVB_LEDOn(LED_TypeDef HT_LEDn);
-void HT32F_DVB_LEDOff(LED_TypeDef HT_LEDn);
-void HT32F_DVB_LEDToggle(LED_TypeDef HT_LEDn);
+void HT32_DVB_LEDInit(LED_TypeDef HT_LEDn);
+void HT32_DVB_LEDOn(LED_TypeDef HT_LEDn);
+void HT32_DVB_LEDOff(LED_TypeDef HT_LEDn);
+void HT32_DVB_LEDToggle(LED_TypeDef HT_LEDn);
 
-void HT32F_DVB_PBInit(BUTTON_TypeDef BUTTON_x, BUTTON_MODE_TypeDef BUTTON_MODE_x);
-u32 HT32F_DVB_PBGetState(BUTTON_TypeDef BUTTON_x);
+void HT32_DVB_PBInit(BUTTON_TypeDef BUTTON_x, BUTTON_MODE_TypeDef BUTTON_MODE_x);
+u32 HT32_DVB_PBGetState(BUTTON_TypeDef BUTTON_x);
 
-void HT32F_DVB_COMInit(COM_TypeDef COMn, USART_InitTypeDef* USART_InitStructure);
+void HT32_DVB_COMInit(COM_TypeDef COMn, USART_InitTypeDef* USART_InitStructure);
 
-void HT32F_DVB_BuzzerFun(u16 hFreq, u8 bDuty, u32 mode);
-void HT32F_DVB_BuzzerOutputCmd(ControlStatus Control);
+void HT32_DVB_BuzzerFun(u16 hFreq, u8 bDuty, u32 mode);
+void HT32_DVB_BuzzerOutputCmd(ControlStatus Control);
 /**
   * @}
   */

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_board_01.c
- * @version $Rev:: 9787         $
- * @date    $Date:: 2026-04-27 #$
+ * @version $Rev:: 10034        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides firmware functions to manage LEDs, push-buttons
  *          and COM ports and is available on HT32F5xxxx board.
  *************************************************************************************************************
@@ -25,17 +25,6 @@
  *
  * <h2><center>Copyright (C) Holtek Semiconductor Inc. All rights reserved</center></h2>
  ************************************************************************************************************/
-
-// Supported Device
-// ========================================
-//   HT32F52220, HT32F52230
-//   HT32F52231, HT32F52241
-//   HT32F52331, HT32F52341
-//   HT32F52342, HT32F52352
-//   HT32F52243, HT32F52253
-//   HT32F0008
-//   HT32F50220, HT32F50230
-//   HT32F50231, HT32F50241
 
 /* Includes ------------------------------------------------------------------------------------------------*/
 #include "ht32_board.h"
@@ -79,7 +68,7 @@ typedef struct
   */
 
 /* Private function prototypes -----------------------------------------------------------------------------*/
-static void _HT32F_DVB_ClockConfig(u32 GpioId);
+static void _HT32_DVB_ClockConfig(u32 GpioId);
 
 /* Global variables ----------------------------------------------------------------------------------------*/
 /** @defgroup HT32F5xxxx_BOARD_Global_Variable HT32F5xxxx Board global variables
@@ -150,7 +139,7 @@ static void _HT32F_DVB_ClockConfig(u32 GpioId);
  *    @arg HT_LED3
  * @retval None
  ************************************************************************************************************/
-void HT32F_DVB_LEDInit(LED_TypeDef HT_LEDn)
+void HT32_DVB_LEDInit(LED_TypeDef HT_LEDn)
 {
   u32 bGpioId = LED_GPIO_ID[HT_LEDn];
   u32 uGPIOPin = LED_GPIO_PIN[HT_LEDn];
@@ -159,13 +148,13 @@ void HT32F_DVB_LEDInit(LED_TypeDef HT_LEDn)
 
   /* Enable the GPIO_LED Clock                                                                              */
   /* Enable the AFIO Clock                                                                                  */
-  _HT32F_DVB_ClockConfig(bGpioId);
+  _HT32_DVB_ClockConfig(bGpioId);
 
   /* Configure the AFIO mode                                                                                */
-  HT32F_DVB_GPxConfig(bGpioId, uGPIOPin, uGPIOMode);
+  HT32_DVB_GPxConfig(bGpioId, uGPIOPin, uGPIOMode);
 
   /* LED is off by default                                                                                  */
-  HT32F_DVB_LEDOff(HT_LEDn);
+  HT32_DVB_LEDOff(HT_LEDn);
 
   /* Configure the GPIO pin                                                                                 */
   GPIO_PullResistorConfig(GPIOx, uGPIOPin, GPIO_PR_DISABLE);
@@ -182,7 +171,7 @@ void HT32F_DVB_LEDInit(LED_TypeDef HT_LEDn)
  *    @arg HT_LED3
  * @retval None
  ************************************************************************************************************/
-void HT32F_DVB_LEDOn(LED_TypeDef HT_LEDn)
+void HT32_DVB_LEDOn(LED_TypeDef HT_LEDn)
 {
   GPIO_PORT[LED_GPIO_ID[HT_LEDn]]->SRR = LED_GPIO_PIN[HT_LEDn];
 }
@@ -195,7 +184,7 @@ void HT32F_DVB_LEDOn(LED_TypeDef HT_LEDn)
  *    @arg HT_LED3
  * @retval None
  ************************************************************************************************************/
-void HT32F_DVB_LEDOff(LED_TypeDef HT_LEDn)
+void HT32_DVB_LEDOff(LED_TypeDef HT_LEDn)
 {
   GPIO_PORT[LED_GPIO_ID[HT_LEDn]]->RR = LED_GPIO_PIN[HT_LEDn];
 }
@@ -208,7 +197,7 @@ void HT32F_DVB_LEDOff(LED_TypeDef HT_LEDn)
  *    @arg HT_LED3
  * @retval None
  ************************************************************************************************************/
-void HT32F_DVB_LEDOn(LED_TypeDef HT_LEDn)
+void HT32_DVB_LEDOn(LED_TypeDef HT_LEDn)
 {
   GPIO_PORT[LED_GPIO_ID[HT_LEDn]]->RR = LED_GPIO_PIN[HT_LEDn];
 }
@@ -221,7 +210,7 @@ void HT32F_DVB_LEDOn(LED_TypeDef HT_LEDn)
  *    @arg HT_LED3
  * @retval None
  ************************************************************************************************************/
-void HT32F_DVB_LEDOff(LED_TypeDef HT_LEDn)
+void HT32_DVB_LEDOff(LED_TypeDef HT_LEDn)
 {
   GPIO_PORT[LED_GPIO_ID[HT_LEDn]]->SRR = LED_GPIO_PIN[HT_LEDn];
 }
@@ -235,7 +224,7 @@ void HT32F_DVB_LEDOff(LED_TypeDef HT_LEDn)
  *    @arg HT_LED3
  * @retval None
  ************************************************************************************************************/
-void HT32F_DVB_LEDToggle(LED_TypeDef HT_LEDn)
+void HT32_DVB_LEDToggle(LED_TypeDef HT_LEDn)
 {
   GPIO_PORT[LED_GPIO_ID[HT_LEDn]]->DOUTR ^= LED_GPIO_PIN[HT_LEDn];
 }
@@ -253,7 +242,7 @@ void HT32F_DVB_LEDToggle(LED_TypeDef HT_LEDn)
  *     @arg BUTTON_MODE_EXTI: Button will be connected to EXTI channel with interrupt generation capability
  * @retval None
  ************************************************************************************************************/
-void HT32F_DVB_PBInit(BUTTON_TypeDef BUTTON_x, BUTTON_MODE_TypeDef BUTTON_MODE_x)
+void HT32_DVB_PBInit(BUTTON_TypeDef BUTTON_x, BUTTON_MODE_TypeDef BUTTON_MODE_x)
 {
   u32 bGpioId  = BUTTON_GPIO_ID[BUTTON_x];
   u32 uGpioPin = BUTTON_GPIO_PIN[BUTTON_x];
@@ -262,10 +251,10 @@ void HT32F_DVB_PBInit(BUTTON_TypeDef BUTTON_x, BUTTON_MODE_TypeDef BUTTON_MODE_x
 
   /* Enable the GPIO Clock                                                                                  */
   /* Enable the AFIO Clock                                                                                  */
-  _HT32F_DVB_ClockConfig(bGpioId);
+  _HT32_DVB_ClockConfig(bGpioId);
 
   /* Configure Button pin as input floating                                                                 */
-  HT32F_DVB_GPxConfig(bGpioId, uGpioPin, BUTTON_AFIO_MODE[BUTTON_x]);
+  HT32_DVB_GPxConfig(bGpioId, uGpioPin, BUTTON_AFIO_MODE[BUTTON_x]);
   GPIO_PullResistorConfig(GPIOx, uGpioPin, GPIO_PR_DISABLE);
   GPIO_DirectionConfig(GPIOx, uGpioPin, GPIO_DIR_IN);
   GPIO_InputConfig(GPIOx, uGpioPin, ENABLE);
@@ -309,7 +298,7 @@ void HT32F_DVB_PBInit(BUTTON_TypeDef BUTTON_x, BUTTON_MODE_TypeDef BUTTON_MODE_x
  *     @arg BUTTON_KEY2: Key2 Push Button
  * @return The Button GPIO pin value.
  ************************************************************************************************************/
-u32 HT32F_DVB_PBGetState(BUTTON_TypeDef BUTTON_x)
+u32 HT32_DVB_PBGetState(BUTTON_TypeDef BUTTON_x)
 {
   return GPIO_ReadInBit(GPIO_PORT[BUTTON_GPIO_ID[BUTTON_x]], BUTTON_GPIO_PIN[BUTTON_x]);
 }
@@ -324,7 +313,7 @@ u32 HT32F_DVB_PBGetState(BUTTON_TypeDef BUTTON_x)
  *        information for the specified USART peripheral.
  * @return None
  ************************************************************************************************************/
-void HT32F_DVB_COMInit(COM_TypeDef COMn, USART_InitTypeDef* USART_InitStructure)
+void HT32_DVB_COMInit(COM_TypeDef COMn, USART_InitTypeDef* USART_InitStructure)
 {
   const HT32_Board_COM_TypeDef *COMInfo = &gCOMInfo[COMn];
   CKCU_PeripClockConfig_TypeDef CKCUClock = {{0}};
@@ -336,8 +325,8 @@ void HT32F_DVB_COMInit(COM_TypeDef COMn, USART_InitTypeDef* USART_InitStructure)
   CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
   /* Configure USART Tx/Rx as alternate function                                                            */
-  HT32F_DVB_GPxConfig(COMInfo->Tx_IO.ID, COMInfo->Tx_IO.Pin, COMInfo->Tx_IO.Mode);
-  HT32F_DVB_GPxConfig(COMInfo->Rx_IO.ID, COMInfo->Rx_IO.Pin, COMInfo->Rx_IO.Mode);
+  HT32_DVB_GPxConfig(COMInfo->Tx_IO.ID, COMInfo->Tx_IO.Pin, COMInfo->Tx_IO.Mode);
+  HT32_DVB_GPxConfig(COMInfo->Rx_IO.ID, COMInfo->Rx_IO.Pin, COMInfo->Rx_IO.Mode);
 
   /* USART configuration                                                                                    */
   USART_Init(COMInfo->USARTx, USART_InitStructure);
@@ -361,7 +350,7 @@ void HT32F_DVB_COMInit(COM_TypeDef COMn, USART_InitTypeDef* USART_InitStructure)
  * @param  mode: 0 for init, 1 for config.
  * @return None
  ************************************************************************************************************/
-void HT32F_DVB_BuzzerFun(u16 hFreq, u8 bDuty, u32 mode)
+void HT32_DVB_BuzzerFun(u16 hFreq, u8 bDuty, u32 mode)
 {
   /* !!! NOTICE !!!
      Notice that the local variable (structure) did not have an initial value.
@@ -396,7 +385,7 @@ void HT32F_DVB_BuzzerFun(u16 hFreq, u8 bDuty, u32 mode)
     CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
     /* Configure the BUZZER_GPIO_PIN as Timer channel output AFIO function                                  */
-    HT32F_DVB_GPxConfig(BUZZER_GPIO_ID, BUZZER_AFIO_PIN, BUZZER_AFIO_MODE);
+    HT32_DVB_GPxConfig(BUZZER_GPIO_ID, BUZZER_AFIO_PIN, BUZZER_AFIO_MODE);
     GPIO_DriveConfig(GPIO_PORT[BUZZER_GPIO_ID], BUZZER_AFIO_PIN, GPIO_DV_8MA);
 
     /* Init BUZZER Timer time-base                                                                          */
@@ -449,7 +438,7 @@ void HT32F_DVB_BuzzerFun(u16 hFreq, u8 bDuty, u32 mode)
  * @param Control: This parameter can be ENABLE or DISABLE.
  * @return None
  ************************************************************************************************************/
-void HT32F_DVB_BuzzerOutputCmd(ControlStatus Control)
+void HT32_DVB_BuzzerOutputCmd(ControlStatus Control)
 {
   TM_ChannelConfig(BUZZER_TM, BUZZER_TM_CHANNEL, (TM_CHCTL_Enum) Control);
 }
@@ -466,7 +455,7 @@ void HT32F_DVB_BuzzerOutputCmd(ControlStatus Control)
  * @param  GpioId: Specifies the GPIO ID.
  * @retval None
  ************************************************************************************************************/
-static void _HT32F_DVB_ClockConfig(u32 GpioId)
+static void _HT32_DVB_ClockConfig(u32 GpioId)
 {
   CKCU_PeripClockConfig_TypeDef CKCUClock = {{0}};
   u8 RegCK[GPIO_PORT_NUM] = {0};

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/Continuous_Potentiometer/main.c
- * @version $Rev:: 4646         $
- * @date    $Date:: 2020-03-04 #$
+ * @version $Rev:: 10131        $
+ * @date    $Date:: 2026-10-28 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -93,8 +93,12 @@ void ADC_Configuration(void)
   AFIO_GPxConfig(HTCFG_VR_GPIO_ID, HTCFG_VR_AFIO_PIN, HTCFG_ADC_AFIO_MODE);
 
   { /* ADC related settings                                                                                 */
-    /* CK_ADC frequency is set to (CK_AHB / 64)                                                             */
-    CKCU_SetADCnPrescaler(HTCFG_ADC_CKCU_ADCPRE, CKCU_ADCPRE_DIV64);
+    /* !!! NOTICE !!!
+       CK_ADC frequency is set to (CK_AHB / n).
+       The ADC clock frequency must meet the minimum requirement.
+       Please refer to the IC Datasheet for detailed specifications.
+    */
+    CKCU_SetADCnPrescaler(HTCFG_ADC_CKCU_ADCPRE, CKCU_ADCPRE_DIV8);
 
     /* Continuous mode, sequence length = 1                                                                 */
     ADC_RegularGroupConfig(HTCFG_ADC_PORT, CONTINUOUS_MODE, 1, 0);

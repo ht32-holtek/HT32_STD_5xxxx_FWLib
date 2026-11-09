@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    RTC/Time/main.c
- * @version $Rev:: 5072         $
- * @date    $Date:: 2020-11-08 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -91,7 +91,7 @@ int main(void)
   }
   #endif
   /* Init LED1 and USART                                                                                    */
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   RETARGET_Configuration();           /* Retarget Related configuration                                     */
 

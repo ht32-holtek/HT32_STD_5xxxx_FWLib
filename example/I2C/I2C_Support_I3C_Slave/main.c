@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/I2C_Support_I3C_Slave/main.c
- * @version $Rev:: 9863         $
- * @date    $Date:: 2026-06-09 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -81,8 +81,8 @@ vu32 IsSlaveTxFinish = FALSE;
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   I2C_Slave_Configuration();
 
@@ -122,18 +122,18 @@ int main(void)
 
     if (CmpBuffer(I2C_Master_Setting_Addr, &I2C_Master_SingleData, sizeof(I2C_Master_SingleData)))
     {
-      HT32F_DVB_LEDOn(HT_LED1);
-      HT32F_DVB_LEDOff(HT_LED2);
+      HT32_DVB_LEDOn(HT_LED1);
+      HT32_DVB_LEDOff(HT_LED2);
     }
     else if  (CmpBuffer(I2C_Master_Setting_Addr, I2C_Master_MultiData, sizeof(I2C_Master_MultiData)))
     {
-      HT32F_DVB_LEDOff(HT_LED1);
-      HT32F_DVB_LEDOn(HT_LED2);
+      HT32_DVB_LEDOff(HT_LED1);
+      HT32_DVB_LEDOn(HT_LED2);
     }
     else
     {
-      HT32F_DVB_LEDOff(HT_LED1);
-      HT32F_DVB_LEDOff(HT_LED2);
+      HT32_DVB_LEDOff(HT_LED1);
+      HT32_DVB_LEDOff(HT_LED2);
     }
   }
 }

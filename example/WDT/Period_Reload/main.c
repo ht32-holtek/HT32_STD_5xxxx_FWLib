@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    WDT/Period_Reload/main.c
- * @version $Rev:: 9723         $
- * @date    $Date:: 2026-03-25 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -53,8 +53,8 @@ void WDT_Configuration(void);
 int main(void)
 {
   /* Initialize LEDs                                                                                        */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   SysTick_Configuration();
 
@@ -66,16 +66,16 @@ int main(void)
     if (WDT_GetFlagStatus(WDT_FLAG_UNDERFLOW))
     {
       SYSTICK_IntConfig(DISABLE);                    // Disable SysTick Interrupt
-      HT32F_DVB_LEDOn(HT_LED1);
-      HT32F_DVB_LEDOff(HT_LED2);
+      HT32_DVB_LEDOn(HT_LED1);
+      HT32_DVB_LEDOff(HT_LED2);
       while (1);
     }
     /*A Watchdog timer error has occurred                                                                  */
     else if (WDT_GetFlagStatus(WDT_FLAG_ERROR))
     {
       SYSTICK_IntConfig(DISABLE);                    // Disable SysTick Interrupt
-      HT32F_DVB_LEDOff(HT_LED1);
-      HT32F_DVB_LEDOn(HT_LED2);
+      HT32_DVB_LEDOff(HT_LED1);
+      HT32_DVB_LEDOn(HT_LED2);
       while (1);
     }
   }

@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Flash/main.c
- * @version $Rev:: 6386         $
- * @date    $Date:: 2022-10-27 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -67,9 +67,9 @@ __ALIGN4 u8 gRead_Buffer[FLASH_TEST_SIZE];
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   Flash_Test();
 
@@ -97,7 +97,7 @@ void Flash_Test(void)
   gFLASH_ID = SPI_FLASH_ReadJEDECID();        /* Read and check SPI Flash ID                                */
   if ((gFLASH_ID & FLASH_ID_MASK) == FLASH_ID)
   {
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
 
   /* Must clear the Block Protection bit before write or erase operation                                    */
@@ -143,7 +143,7 @@ void Flash_Verify(void)
 
   if (err == 0)
   {
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
 }
 
@@ -167,7 +167,7 @@ void Flash_BlankCheck(void)
 
   if (err == 0)
   {
-    HT32F_DVB_LEDOn(HT_LED3);
+    HT32_DVB_LEDOn(HT_LED3);
   }
 }
 

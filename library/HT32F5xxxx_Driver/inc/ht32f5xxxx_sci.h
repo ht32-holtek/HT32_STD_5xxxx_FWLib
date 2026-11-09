@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_sci.h
- * @version $Rev:: 9723         $
- * @date    $Date:: 2026-03-25 #$
+ * @version $Rev:: 10016        $
+ * @date    $Date:: 2026-09-23 #$
  * @brief   The header file of the SCI library.
  *************************************************************************************************************
  * @attention
@@ -71,7 +71,7 @@ typedef struct
 #define IS_SCI_MODE(MODE)                           ((MODE == SCI_MODE_MANUAL) || \
                                                      (MODE == SCI_MODE_SCI))
 
-
+#define SCI_CREP                                    (1 << 1)
 #define SCI_RETRY_NO                                ((u32)0x00000000)
 #define SCI_RETRY_4                                 ((u32)0x00000012)
 #define SCI_RETRY_5                                 ((u32)0x00000002)
@@ -235,7 +235,7 @@ typedef struct
 
 #define IS_SCI_GUARDTIME(GUARDTIME)                 ((GUARDTIME >= 11) & (GUARDTIME <= 511))
 
-#define IS_SCI_WAITING_TIME(TIME)                   ((TIME >= 372) & (TIME <= 16777215))
+#define IS_SCI_WAITING_TIME(TIME)                   (TIME <= 16777215)
 /**
   * @}
   */

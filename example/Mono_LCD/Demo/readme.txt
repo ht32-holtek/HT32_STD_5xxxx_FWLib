@@ -41,6 +41,7 @@ A3A31_PIN | 1       2       3       4       5       6       7       8       9   
 - This example can be run on the HT32 series development kit.
 - The expansion board such as ESK32-2x001 is required, refer to the user manual for the jumper settings.
 - The LCD module such as ESK32-A3A31 is required, refer to the user manual for the jumper settings.
+- All 0-ohm Opt resistors on the backplane must be set to #2 to display the LCD content completely.
 
 @par Firmware Disclaimer Information
 

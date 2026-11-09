@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    Time/TimeFun_UserConf/main.c
- * @version $Rev:: 8753         $
- * @date    $Date:: 2025-05-12 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -64,8 +64,8 @@ u32 guTimeOut_ms = 100;
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
   RETARGET_Configuration();
 
   Time_Init();
@@ -74,7 +74,7 @@ int main(void)
 
   Test_Time_Measure();
 
-  HT32F_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED1);
 
   while (1)
   {
@@ -88,14 +88,14 @@ int main(void)
   ***********************************************************************************************************/
 void Test_Time_Delay(void)
 {
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
   Time_Delay(TIME_MS2TICK(500));
-  HT32F_DVB_LEDOff(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED1);
   Time_Delay(TIME_MS2TICK(500));
 
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
   Time_Delay(TIME_MS2TICK(100));
-  HT32F_DVB_LEDOff(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED1);
   Time_Delay(TIME_MS2TICK(100));
 }
 
@@ -111,9 +111,9 @@ void Test_Time_Measure(void)
 
   uStart = Time_GetTick();
 
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
   Test_Fun();
-  HT32F_DVB_LEDOff(HT_LED1);
+  HT32_DVB_LEDOff(HT_LED1);
 
   uEnd = Time_GetTick();
 
@@ -153,12 +153,12 @@ void Test_Fun(void)
   ***********************************************************************************************************/
 void Test_Time_Out(void)
 {
-  HT32F_DVB_LEDToggle(HT_LED2);
+  HT32_DVB_LEDToggle(HT_LED2);
 
   if (IsTimeOut() == TRUE)
   {
     guTimeOut_ms += 10;
-    HT32F_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED1);
   }
 }
 

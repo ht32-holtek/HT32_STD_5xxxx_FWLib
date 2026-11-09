@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    GPIO/Input/main.c
- * @version $Rev:: 6306         $
- * @date    $Date:: 2022-10-20 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -53,8 +53,8 @@ void GPIO_InputReadData(void);
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   GPIO_Configuration();
 
@@ -109,11 +109,11 @@ void GPIO_InputReadBit(void)
 
   if (InputStatus == SET)
   {
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
   else
   {
-    HT32F_DVB_LEDOff(HT_LED1);
+    HT32_DVB_LEDOff(HT_LED1);
   }
 }
 
@@ -129,11 +129,11 @@ void GPIO_InputReadData(void)
 
   if (uInputData & GPIO_PIN_1)
   {
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
   }
   else
   {
-    HT32F_DVB_LEDOff(HT_LED2);
+    HT32_DVB_LEDOff(HT_LED2);
   }
 }
 

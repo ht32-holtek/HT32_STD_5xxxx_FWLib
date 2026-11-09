@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    USART/Singlewire_Master/main.c
- * @version $Rev:: 8470         $
- * @date    $Date:: 2025-03-06 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -72,9 +72,9 @@ u32 gURSlave_Length = sizeof(gSlaveString) - 1;
   ***********************************************************************************************************/
 int main(void)
 {
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
-  HT32F_DVB_LEDInit(HT_LED3);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED3);
 
   gURRx_Ptr = gRx_Buffer;
 
@@ -88,15 +88,15 @@ int main(void)
     {
       if(buffer_compare(gSlaveString ,gRx_Buffer ,gURSlave_Length))
       {
-        HT32F_DVB_LEDOn(HT_LED1);
-        HT32F_DVB_LEDOn(HT_LED2);
-        HT32F_DVB_LEDOn(HT_LED3);
+        HT32_DVB_LEDOn(HT_LED1);
+        HT32_DVB_LEDOn(HT_LED2);
+        HT32_DVB_LEDOn(HT_LED3);
       }
       else
       {
-        HT32F_DVB_LEDOff(HT_LED1);
-        HT32F_DVB_LEDOff(HT_LED2);
-        HT32F_DVB_LEDOff(HT_LED3);
+        HT32_DVB_LEDOff(HT_LED1);
+        HT32_DVB_LEDOff(HT_LED2);
+        HT32_DVB_LEDOff(HT_LED3);
       }
       __Delay(SystemCoreClock/10);
       UxART_Master_Tx();

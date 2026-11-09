@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32_cm0plus_misc.c
- * @version $Rev:: 9590         $
- * @date    $Date:: 2025-12-02 #$
+ * @version $Rev:: 10062        $
+ * @date    $Date:: 2026-10-12 #$
  * @brief   This file provides all the miscellaneous firmware functions.
  *************************************************************************************************************
  * @attention
@@ -253,12 +253,11 @@ u32 RBIT(u32 in)
 // END
 #endif
 
+#if !defined(USE_IAP_SCVD)
 #if (HTCFG_STACK_USAGE_ANALYSIS == 1)
+u32 _StackLimit = HT_SRAM_BASE + LIBCFG_RAM_SIZE; // Stack Top Address
+u32 _StackStart = HT_SRAM_BASE;                   // Stack Bottom Address
 #if defined (__CC_ARM)
-#define STACKLIMITADDR  0x20000010
-#define STACKSTART      0x20000014
-u32 _StackLimit __attribute__((at(STACKLIMITADDR)))= HT_SRAM_BASE + LIBCFG_RAM_SIZE;
-u32 _StackStart __attribute__((at(STACKSTART)))= HT_SRAM_BASE;
 /*********************************************************************************************************//**
   * @brief  Stack Usage Analysis Init
   * @retval None
@@ -290,20 +289,11 @@ Loop_Check
   ALIGN
 }
 #elif (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || defined (__GNUC__)
-#define STACKLIMITADDR  "0x20000010"
-#define STACKSTART      "0x20000014"
-#if (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
-u32 _StackLimit __attribute__((section(".ARM.__at_"STACKLIMITADDR))) = HT_SRAM_BASE + LIBCFG_RAM_SIZE;
-u32 _StackStart __attribute__((section(".ARM.__at_"STACKSTART))) = HT_SRAM_BASE;
-#else
-__ASM (".global _StackLimit\n\t.set _StackLimit, " STACKLIMITADDR);
-__ASM (".global _StackStart\n\t.set _StackStart, " STACKSTART);
-#endif
 /*********************************************************************************************************//**
   * @brief  Stack Usage Analysis Init
   * @retval None
   ***********************************************************************************************************/
-__attribute__((noinline)) void StackUsageAnalysisInit(u32 addr)
+__attribute__((weak, noinline)) void StackUsageAnalysisInit(u32 addr)
 {
   __ASM volatile (".syntax unified");
   __ASM volatile ("  LDR R0, [r0]");
@@ -326,6 +316,56 @@ __attribute__((noinline)) void StackUsageAnalysisInit(u32 addr)
   __ASM volatile ("  BLT Loop");
   __ASM volatile ("  BX LR");
 }
+#endif
+#endif
+#else
+#if (HTCFG_STACK_USAGE_ANALYSIS == 1)
+#if defined (__CC_ARM)
+/*********************************************************************************************************//**
+  * @brief  Stack Usage Analysis Init
+  * @retval None
+  ***********************************************************************************************************/
+__ASM void StackUsageAnalysisInit(u32 addr) /* addr is unused under USE_IAP_SCVD */
+{
+  extern __HT_check_sp;
+  LDR R0, =__HT_check_sp
+  MOV R1, SP
+  LDR R2, =0xCDCDCDCD
+  LDR R3, =0xABABABAB
+  STR R3, [ R0 ]
+  B Loop_Check
+Loop
+  STR R2, [ R0 ]
+Loop_Check
+  ADDS R0, R0, #0x04
+  CMP R0, R1
+  BLT Loop
+  BX LR
+  ALIGN
+}
+#elif (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)) || defined (__GNUC__)
+/*********************************************************************************************************//**
+  * @brief  Stack Usage Analysis Init
+  * @retval None
+  ***********************************************************************************************************/
+__attribute__((weak, noinline)) void StackUsageAnalysisInit(u32 addr) /* addr is unused under USE_IAP_SCVD */
+{
+  __ASM volatile (".syntax unified");
+  __ASM volatile ("  LDR R0, =__HT_check_sp");
+  __ASM volatile ("  MOV R1, SP");
+  __ASM volatile ("  LDR R2, =0xCDCDCDCD");
+  __ASM volatile ("  LDR R3, =0xABABABAB");
+  __ASM volatile ("  STR R3, [ R0 ]");
+  __ASM volatile ("  B Loop_Check");
+  __ASM volatile ("Loop:");
+  __ASM volatile ("  STR R2, [ R0 ]");
+  __ASM volatile ("Loop_Check:");
+  __ASM volatile ("  ADDS R0, R0, #0x04");
+  __ASM volatile ("  CMP R0, R1");
+  __ASM volatile ("  BLT Loop");
+  __ASM volatile ("  BX LR");
+}
+#endif
 #endif
 #endif
 /**

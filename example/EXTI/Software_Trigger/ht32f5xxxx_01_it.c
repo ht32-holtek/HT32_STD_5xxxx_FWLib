@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    EXTI/Software_Trigger/ht32f5xxxx_01_it.c
- * @version $Rev:: 9671         $
- * @date    $Date:: 2026-03-04 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -127,8 +127,8 @@ void EXTI0_1_IRQHandler(void)
 
     EXTI_ClearEdgeFlag(EXTI_CHANNEL_0);
 
-    HT32F_DVB_LEDToggle(HT_LED1);
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED2);
   }
 }
 
@@ -147,8 +147,8 @@ void EXTI0_7_IRQHandler(void)
 
     EXTI_ClearEdgeFlag(EXTI_CHANNEL_0);
 
-    HT32F_DVB_LEDToggle(HT_LED1);
-    HT32F_DVB_LEDToggle(HT_LED2);
+    HT32_DVB_LEDToggle(HT_LED1);
+    HT32_DVB_LEDToggle(HT_LED2);
   }
 }
 

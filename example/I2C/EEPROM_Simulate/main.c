@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    I2C/EEPROM_Simulate/main.c
- * @version $Rev:: 9705         $
- * @date    $Date:: 2026-03-18 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -66,11 +66,11 @@ u8 ReadBuffer[16];
 int main(void)
 {
   /* Initialize LED1 & LED2 on HT32 board                                                                   */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   /*Init Key 1                                                                                              */
-  HT32F_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
+  HT32_DVB_PBInit(BUTTON_KEY1, BUTTON_MODE_GPIO);
 
 #ifdef LOOP_BACK
   /* Configure I2C Slave as an EEPROM simulation                                                            */
@@ -83,7 +83,7 @@ int main(void)
 
 #else
   /* Read the Key1 state to select either I2C master or EEPROM function                                     */
-  if (!HT32F_DVB_PBGetState(BUTTON_KEY1))
+  if (!HT32_DVB_PBGetState(BUTTON_KEY1))
   {
     /* Configure I2C Slave as an EEPROM simulation                                                          */
     I2CS_EEPROMsim_Init();
@@ -97,7 +97,7 @@ int main(void)
   }
 #endif
 
-  HT32F_DVB_LEDOn(HT_LED1);
+  HT32_DVB_LEDOn(HT_LED1);
 
   /* Infinite loop                                                                                          */
   while (1);
@@ -260,13 +260,13 @@ void EEPROM_WriteReadTest(void)
   if (I2CM_BufferWrite(EEPROM_ADDRESS, 0x00, (u8*)TestData, 16) != I2CM_OK)
   {
     /* Write fail                                                                                           */
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
     while (1);
   }
   if (I2CM_BufferRead(EEPROM_ADDRESS, 0x00, ReadBuffer, 16) != I2CM_OK)
   {
     /* Read fail                                                                                            */
-    HT32F_DVB_LEDOn(HT_LED2);
+    HT32_DVB_LEDOn(HT_LED2);
     while (1);
   }
 }

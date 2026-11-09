@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    WDT/Period_Reload/ht32f5xxxx_01_it.c
- * @version $Rev:: 5899         $
- * @date    $Date:: 2022-05-24 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   This file provides all interrupt service routine.
  *************************************************************************************************************
  * @attention
@@ -115,8 +115,8 @@ void SysTick_Handler(void)
   #endif
 
   /* Toggle LEDs */
-  HT32F_DVB_LEDToggle(HT_LED1);
-  HT32F_DVB_LEDToggle(HT_LED2);
+  HT32_DVB_LEDToggle(HT_LED1);
+  HT32_DVB_LEDToggle(HT_LED2);
 
 }
 

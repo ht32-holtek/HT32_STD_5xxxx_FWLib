@@ -1,8 +1,8 @@
 REM @ECHO OFF
 REM /*********************************************************************************************************//**
 REM * @file    _CreateProjectConfScript.bat
-REM * @version $Rev:: 9070         $
-REM * @date    $Date:: 2025-06-16 #$
+REM * @version $Rev:: 10099        $
+REM * @date    $Date:: 2026-10-22 #$
 REM * @brief   Create Project Configure Script.
 REM *************************************************************************************************************
 REM * @attention
@@ -43,6 +43,7 @@ SET IDE5=-
 SET IDE6=-
 SET IDE7=-
 SET IDE8=-
+SET IDE9=-
 REM SET IDEALL=-
 
 IF EXIST %CREATE_CONF_FILE% GOTO CONFIG_MENU_FINISH
@@ -64,10 +65,11 @@ ECHO  # %IDE5% [5] SEGGER Embedded Studio
 ECHO  # %IDE6% [6] GNU (with Keil and GNU make)
 ECHO  # %IDE7% [7] SourceryG++Lite (with Keil)
 ECHO  # %IDE8% [8] HT32-IDE
+ECHO  # %IDE9% [9] HT32 VS Code
 ECHO  #   [A] All Compiler/IDE
 ECHO  #   [N] OK, go next step
 ECHO ?
-choice /C 12345678AN /N
+choice /C 123456789AN /N
 
 IF %errorlevel% == 1 (
   IF %IDE1% == - (
@@ -126,6 +128,13 @@ IF %errorlevel% == 8 (
   )
 )
 IF %errorlevel% == 9 (
+  IF %IDE9% == - (
+    SET IDE9=*
+  ) ELSE (
+    SET IDE9=-
+  )
+)
+IF %errorlevel% == 10 (
   REM SET IDEALL=*
   SET IDE1=*
   SET IDE2=*
@@ -135,10 +144,11 @@ IF %errorlevel% == 9 (
   SET IDE6=*
   SET IDE7=*
   SET IDE8=*
+  SET IDE9=*
   GOTO CONFIG_MENU_NEXT
 )
 
-IF %errorlevel% == 10 (
+IF %errorlevel% == 11 (
   GOTO CONFIG_MENU_NEXT
 )
 
@@ -234,6 +244,8 @@ IF %IDE7% == * ECHO SET IDE_SGPP=Y>> %CREATE_CONF_FILE%
 IF %IDE7% == - ECHO SET IDE_SGPP=N>> %CREATE_CONF_FILE%
 IF %IDE8% == * ECHO SET IDE_HT32=Y>> %CREATE_CONF_FILE%
 IF %IDE8% == - ECHO SET IDE_HT32=N>> %CREATE_CONF_FILE%
+IF %IDE9% == * ECHO SET IDE_VSCODE=Y>> %CREATE_CONF_FILE%
+IF %IDE9% == - ECHO SET IDE_VSCODE=N>> %CREATE_CONF_FILE%
 ECHO.>> %CREATE_CONF_FILE%
 ECHO.>> %CREATE_CONF_FILE%
 

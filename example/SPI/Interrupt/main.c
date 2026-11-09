@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    SPI/Interrupt/main.c
- * @version $Rev:: 9705         $
- * @date    $Date:: 2026-03-18 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -70,7 +70,7 @@ vu8 SPI_Master_Tx_Index = 0, SPI_Slave_Tx_Index = 0, SPI_Master_Rx_Index = 0, SP
 int main(void)
 {
   /* Initialize LED1 on HT32 board                                                                          */
-  HT32F_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED1);
 
   SPI_Configuration();
 
@@ -167,12 +167,12 @@ void SPI_Loopback(void)
   if (CmpBuffer(SPI_Master_Buffer_Tx, SPI_Slave_Buffer_Rx, BufferSize) && CmpBuffer(SPI_Slave_Buffer_Tx, SPI_Master_Buffer_Rx, BufferSize))
   {
     /* Turn on LED1 if the transmitted and received data are equal                                          */
-    HT32F_DVB_LEDOn(HT_LED1);
+    HT32_DVB_LEDOn(HT_LED1);
   }
   else
   {
     /* Turn off LED1 if the transmitted and received data are different                                     */
-    HT32F_DVB_LEDOff(HT_LED1);
+    HT32_DVB_LEDOff(HT_LED1);
   }
 }
 

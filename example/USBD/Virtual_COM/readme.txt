@@ -29,7 +29,6 @@ The data flow is as below.
 - USBD/Virtual_COM/ht32_usbd_class.h                         Header file of the USB Device Class
 - USBD/Virtual_COM/ht32_usbd_descriptor.c                    Descriptor of USB Device
 - USBD/Virtual_COM/ht32_usbd_descriptor.h                    Header file of the USB Device Descriptor
-- USBD/Virtual_COM/HT32_VCP.inf                              USB CDC inf file
 
 @par Hardware and Software Environment:
 

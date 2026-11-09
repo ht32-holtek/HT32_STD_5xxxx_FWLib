@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_exti.h
- * @version $Rev:: 8552         $
- * @date    $Date:: 2025-04-14 #$
+ * @version $Rev:: 10078        $
+ * @date    $Date:: 2026-10-13 #$
  * @brief   The header file of the EXTI library.
  *************************************************************************************************************
  * @attention
@@ -205,7 +205,7 @@ typedef struct
 #define IS_EXTI_WAKEUP_TYPE(TYPE)                   ((TYPE == EXTI_WAKEUP_HIGH_LEVEL) || \
                                                      (TYPE == EXTI_WAKEUP_LOW_LEVEL))
 
-
+/* Definitions of EXTI edge polarity                                                                        */
 #define EXTI_EDGE_POSITIVE                          ((u8)0x0)
 #define EXTI_EDGE_NEGATIVE                          ((u8)0x1)
 

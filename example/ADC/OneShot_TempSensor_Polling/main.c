@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ADC/OneShot_TempSensor_Polling/main.c
- * @version $Rev:: 9771         $
- * @date    $Date:: 2026-04-16 #$
+ * @version $Rev:: 10131        $
+ * @date    $Date:: 2026-10-28 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -75,7 +75,11 @@ void ADC_TempSensor_Configuration(void)
   CKCU_PeripClockConfig(CKCUClock, ENABLE);
 
   /* ADC related settings                                                                                   */
-  /* CK_ADC frequency is set to (CK_AHB / HTCFG_ADC_CKCU_ADCPRE_DIV)                                        */
+  /* !!! NOTICE !!!
+     CK_ADC frequency is set to (CK_AHB / n).
+     The ADC clock frequency must meet the minimum requirement.
+     Please refer to the IC Datasheet for detailed specifications.
+  */
   CKCU_SetADCnPrescaler(HTCFG_ADC_CKCU_ADCPRE, HTCFG_ADC_CKCU_ADCPRE_DIV);
 
   /* One Shot mode, sequence length = 1                                                                     */

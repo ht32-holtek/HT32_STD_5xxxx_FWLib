@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    CORDIC/CosSin_Interrupt/main.c
- * @version $Rev:: 9907         $
- * @date    $Date:: 2026-07-09 #$
+ * @version $Rev:: 10036        $
+ * @date    $Date:: 2026-10-06 #$
  * @brief   Main program.
  *************************************************************************************************************
  * @attention
@@ -72,8 +72,8 @@ int main(void)
   RETARGET_Configuration();
 
   /* Initialize LED1 & LED2 on HT32 board                                                                   */
-  HT32F_DVB_LEDInit(HT_LED1);
-  HT32F_DVB_LEDInit(HT_LED2);
+  HT32_DVB_LEDInit(HT_LED1);
+  HT32_DVB_LEDInit(HT_LED2);
 
   CORDIC_Configuration();                /* CORDIC configuration                                            */
 
@@ -99,7 +99,7 @@ int main(void)
       if ((Check_Residual_Error(cosOutput, COS_REF, DELTA) == Fail) ||
           (Check_Residual_Error(sinOutput, SIN_REF, DELTA) == Fail))
       {
-        HT32F_DVB_LEDOn(HT_LED2);
+        HT32_DVB_LEDOn(HT_LED2);
 
         printf("Result: Unexpected result.\r\n");
         printf("Check residual error on cosine and sine fail.\r\n");
@@ -108,7 +108,7 @@ int main(void)
       }
       else
       {
-        HT32F_DVB_LEDOn(HT_LED1);
+        HT32_DVB_LEDOn(HT_LED1);
 
         printf("Result: Success.\r\n");
         printf("cosOutput = 0x%X", cosOutput);

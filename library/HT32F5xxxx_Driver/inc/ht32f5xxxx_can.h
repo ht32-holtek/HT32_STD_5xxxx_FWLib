@@ -1,7 +1,7 @@
 /*********************************************************************************************************//**
  * @file    ht32f5xxxx_can.h
- * @version $Rev:: 9427         $
- * @date    $Date:: 2025-09-04 #$
+ * @version $Rev:: 10018        $
+ * @date    $Date:: 2026-09-24 #$
  * @brief   The header file of the CAN library.
  *************************************************************************************************************
  * @attention
@@ -196,7 +196,7 @@ typedef struct
 #define CAN_LEC_Msk         (0x7ul << CAN_LEC_Pos)                 /*!< CAN_T::STATUS: LEC Mask             */
 
 #define IS_CAN_FLAG(FLAG)  ((FLAG & (CAN_FLAG_BOFF  | \
-                                     CAN_FLAG_EPASS | \
+                                     CAN_FLAG_EWARN | \
                                      CAN_FLAG_EPASS | \
                                      CAN_FLAG_RXOK  | \
                                      CAN_FLAG_TXOK)) != 0)
