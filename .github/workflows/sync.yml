@@ -3,22 +3,20 @@ name: Sync to Gitee
 on:
   push:
     branches:
-      - main  # 如果是 master 請自行修改
+      - main # 如果是 master 請自行修改
   release:
-    types: [published] # 未來發布新版本時自動觸發
-  workflow_dispatch: # 👈 允許你在網頁上手動點擊按鈕，強制全面同步
+    types: [published, edited] # 發布或編輯單一 Release 時自動觸發
+  workflow_dispatch: # 手動執行時，全量同步所有 Releases
 
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
     steps:
-      # 1. 完整下載 GitHub 專案與所有 Git 紀錄、Tags
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 設為 0 才會下載完整歷史紀錄與所有 Tags
+          fetch-depth: 0
 
-      # 2. 用原生 Git 指令直接將代碼與 Tags 強制推送到 Gitee
       - name: Mirror Code and Tags to Gitee
         env:
           GITEE_USER: ${{ secrets.GITEE_USER }}
@@ -26,69 +24,176 @@ jobs:
           GITEE_REPO: ${{ github.event.repository.name }}
         run: |
           echo "🚀 開始同步代碼與 Tags 至 Gitee..."
-          # 組合包含 Token 的安全傳輸 URL
           GITEE_REMOTE_URL="https://${GITEE_USER}:${GITEE_TOKEN}@gitee.com/${GITEE_USER}/${GITEE_REPO}.git"
-          
-          # 強制推送當前分支與所有 Tags
+
           git push --force "$GITEE_REMOTE_URL" refs/remotes/origin/*:refs/heads/*
           git push --tags --force "$GITEE_REMOTE_URL"
           echo "✅ 代碼與 Tags 同步成功！"
 
-      # 3. 同步 Release（原生 cURL 呼叫 Gitee API）
-      - name: Sync Release to Gitee
+      - name: Sync Releases to Gitee (Single on release event, All on workflow_dispatch)
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          GH_EVENT_NAME: ${{ github.event_name }}
+          GH_EVENT_TAG: ${{ github.event.release.tag_name }}
           GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
           GITEE_OWNER: ${{ secrets.GITEE_USER }}
           GITEE_REPO: ${{ github.event.repository.name }}
         run: |
-          # 取得最新 GitHub Release 的標籤與名稱
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          RELEASE_NAME="${{ github.event.release.name }}"
-          RELEASE_BODY="${{ github.event.release.body }}"
+          set -e
 
-          # 防呆：手動觸發時若抓不到 release 變數，就自動拿最後一個 Git Tag
-          if [ -z "$TAG_NAME" ] || [ "$TAG_NAME" = "null" ]; then
-            TAG_NAME=$(git describe --tags `git rev-list --tags --max-count=1`)
-            RELEASE_NAME="Release $TAG_NAME"
-            RELEASE_BODY="Automated sync from GitHub"
-          fi
+          GITEE_BASE_API="https://gitee.com/api/v5/repos/${GITEE_OWNER}/${GITEE_REPO}/releases"
 
-          echo "🔍 偵測到要同步的 Tag 為: $TAG_NAME"
+          # 定義單一 Tag 同步函式
+          sync_single_release() {
+            local TAG_NAME="$1"
+            echo "----------------------------------------"
+            echo "🔍 正在處理 Tag: $TAG_NAME"
 
-          if [ -z "$TAG_NAME" ]; then
-            echo "❌ 錯誤：找不到任何有效的 Git Tag！"
-            exit 1
-          fi
+            # 1. 從 GitHub API 取得該 Tag 完整的 Release 資訊
+            local GH_API_URL="https://api.github.com/repos/${GH_REPO}/releases/tags/${TAG_NAME}"
+            local GH_RESPONSE
+            GH_RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "$GH_API_URL")
 
-          echo "🚀 正在發送請求到 Gitee API 建立 Release..."
-          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST "https://gitee.com/api/v5/repos/${GITEE_OWNER}/${GITEE_REPO}/releases" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"access_token\": \"${GITEE_TOKEN}\",
-              \"tag_name\": \"${TAG_NAME}\",
-              \"name\": \"${RELEASE_NAME}\",
-              \"body\": \"${RELEASE_BODY}\",
-              \"target_commitish\": \"main\",
-              \"prerelease\": false
-            }")
+            local GH_STATUS
+            GH_STATUS=$(echo "$GH_RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
+            local GH_BODY
+            GH_BODY=$(echo "$GH_RESPONSE" | sed '/HTTP_STATUS/d')
 
-          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
-          BODY=$(echo "$RESPONSE" | sed '/HTTP_STATUS/d')
+            if [[ "$GH_STATUS" != "200" ]]; then
+              echo "⚠️ GitHub 上找不到對應 Tag ($TAG_NAME) 的正式 Release（狀態碼: $GH_STATUS），略過。"
+              return 0
+            fi
 
-          echo "📡 Gitee API 回應狀態碼: $HTTP_STATUS"
-          echo "📡 Gitee API 回應內容: $BODY"
+            local RELEASE_NAME
+            RELEASE_NAME=$(echo "$GH_BODY" | jq -r '.name // .tag_name')
+            local RELEASE_BODY
+            RELEASE_BODY=$(echo "$GH_BODY" | jq -r '.body // ""')
+            local PRERELEASE
+            PRERELEASE=$(echo "$GH_BODY" | jq -r '.prerelease')
 
-          # 檢查回傳內容是否包含「标签已经存在」的關鍵字
-          if echo "$BODY" | grep -q "标签已经存在"; then
-            echo "⚠️ 提示：Gitee 上已存在此 Release，無需重複建立。"
-            echo "✅ 視同同步成功！"
-            exit 0
-          fi
-          
-          # 201 代表成功建立，422 代表該 Release 其實已經存在
-          if [ "$HTTP_STATUS" != "201" ] && [ "$HTTP_STATUS" != "422" ]; then
-            echo "❌ Gitee Release 同步失敗！"
-            exit 1
+            echo "📄 GitHub Release 標題: $RELEASE_NAME"
+
+            # 2. 查詢 Gitee 上是否已存在該 Tag 的 Release，若有則先刪除
+            local EXISTING_JSON
+            EXISTING_JSON=$(curl -s "${GITEE_BASE_API}/tags/${TAG_NAME}?access_token=${GITEE_TOKEN}")
+            local EXISTING_ID
+            EXISTING_ID=$(echo "$EXISTING_JSON" | jq -r '.id // empty')
+
+            if [[ -n "$EXISTING_ID" ]]; then
+              echo "🗑️ 發現 Gitee 已存在舊 Release (ID: $EXISTING_ID)，正在刪除..."
+              local DEL_STATUS
+              DEL_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE "${GITEE_BASE_API}/${EXISTING_ID}?access_token=${GITEE_TOKEN}")
+              if [[ "$DEL_STATUS" == "204" || "$DEL_STATUS" == "200" ]]; then
+                echo "✅ 舊 Release 已刪除。"
+              else
+                echo "❌ 刪除舊 Release 失敗 (HTTP $DEL_STATUS)"
+                exit 1
+              fi
+            fi
+
+            # 3. 在 Gitee 建立全新的完整 Release
+            local PAYLOAD
+            PAYLOAD=$(jq -n \
+              --arg token "$GITEE_TOKEN" \
+              --arg tag "$TAG_NAME" \
+              --arg name "$RELEASE_NAME" \
+              --arg body "$RELEASE_BODY" \
+              --arg branch "main" \
+              --argjson pre "$PRERELEASE" \
+              '{
+                access_token: $token,
+                tag_name: $tag,
+                name: $name,
+                body: $body,
+                target_commitish: $branch,
+                prerelease: $pre
+              }')
+
+            echo "🚀 正在建立新的 Gitee Release..."
+            local CREATE_RES
+            CREATE_RES=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST "$GITEE_BASE_API" \
+              -H "Content-Type: application/json" \
+              -d "$PAYLOAD")
+
+            local CREATE_STATUS
+            CREATE_STATUS=$(echo "$CREATE_RES" | grep "HTTP_STATUS" | cut -d':' -f2)
+            local CREATE_BODY
+            CREATE_BODY=$(echo "$CREATE_RES" | sed '/HTTP_STATUS/d')
+
+            if [[ "$CREATE_STATUS" != "201" ]]; then
+              echo "❌ 建立 Gitee Release 失敗 (HTTP $CREATE_STATUS): $CREATE_BODY"
+              exit 1
+            fi
+
+            local NEW_RELEASE_ID
+            NEW_RELEASE_ID=$(echo "$CREATE_BODY" | jq -r '.id')
+            echo "✅ Gitee Release 建立成功 (ID: $NEW_RELEASE_ID)！"
+
+            # 4. 下載並上傳所有 GitHub Release 附件（Assets）至 Gitee
+            local ASSET_COUNT
+            ASSET_COUNT=$(echo "$GH_BODY" | jq '.assets | length')
+            if [[ "$ASSET_COUNT" -gt 0 ]]; then
+              echo "📦 偵測到 $ASSET_COUNT 個附件，開始同步上傳..."
+              mkdir -p /tmp/gh_assets
+
+              for i in $(seq 0 $((ASSET_COUNT - 1))); do
+                local ASSET_NAME
+                ASSET_NAME=$(echo "$GH_BODY" | jq -r ".assets[$i].name")
+                local ASSET_API_URL
+                ASSET_API_URL=$(echo "$GH_BODY" | jq -r ".assets[$i].url")
+
+                echo "⬇️ 下載附件: $ASSET_NAME"
+                curl -sL \
+                  -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+                  -H "Accept: application/octet-stream" \
+                  "$ASSET_API_URL" -o "/tmp/gh_assets/${ASSET_NAME}"
+
+                echo "⬆️ 上傳至 Gitee: $ASSET_NAME"
+                local UP_STATUS
+                UP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+                  "${GITEE_BASE_API}/${NEW_RELEASE_ID}/attach_files" \
+                  -F "access_token=${GITEE_TOKEN}" \
+                  -F "file=@/tmp/gh_assets/${ASSET_NAME}")
+
+                if [[ "$UP_STATUS" == "201" || "$UP_STATUS" == "200" ]]; then
+                  echo "✅ 附件 $ASSET_NAME 上傳成功！"
+                else
+                  echo "❌ 附件 $ASSET_NAME 上傳失敗 (HTTP $UP_STATUS)"
+                  exit 1
+                fi
+              done
+              rm -rf /tmp/gh_assets
+            fi
+          }
+
+          # 依觸發模式決定同步範圍
+          if [[ "$GH_EVENT_NAME" == "workflow_dispatch" ]]; then
+            echo "🔄 手動觸發模式：開始抓取 GitHub 所有正式 Releases 進行全量同步..."
+            ALL_RELEASES_JSON=$(curl -s \
+              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GH_REPO}/releases?per_page=100")
+
+            # 過濾掉草稿（draft == false），並反轉順序（由舊到新建立，確保最新版在最上方）
+            TAGS=$(echo "$ALL_RELEASES_JSON" | jq -r '[.[] | select(.draft == false)] | reverse | .[].tag_name')
+
+            if [[ -z "$TAGS" ]]; then
+              echo "⚠️ GitHub 上沒有任何正式 Release，略過同步。"
+              exit 0
+            fi
+
+            for TAG in $TAGS; do
+              sync_single_release "$TAG"
+            done
+          elif [[ "$GH_EVENT_NAME" == "release" && -n "$GH_EVENT_TAG" && "$GH_EVENT_TAG" != "null" ]]; then
+            echo "⚡ Release 事件觸發：僅同步單一版本 $GH_EVENT_TAG"
+            sync_single_release "$GH_EVENT_TAG"
           else
-            echo "✅ Gitee Release 同步完成！"
+            echo "ℹ️ 偵測為一般 push 事件，僅同步代碼與 Tags，略過 Release 重建。"
           fi
+
+          echo "🎉 全部同步完成！"
